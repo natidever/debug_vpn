@@ -3,8 +3,8 @@ import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/curvedLine.dart';
 import 'package:reward_vpn/utils/texts.dart';
 
-class OnBoarding1 extends StatelessWidget {
-  const OnBoarding1({super.key});
+class OnBoarding3 extends StatelessWidget {
+  const OnBoarding3({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class OnBoarding1 extends StatelessWidget {
                       constriants.maxWidth * 0.1,
                       0),
                   // top: constriants.maxHeight * 0.73,
-                  child: Poppins32(text: "Stay safe, secure, and connected")),
+                  child: Poppins32(text: "Earn While You Surf")),
               Padding(
                   padding: EdgeInsets.fromLTRB(
                       constriants.maxWidth * 0.2,
@@ -79,7 +79,7 @@ class OnBoarding1 extends StatelessWidget {
                   // top: constriants.maxHeight * 0.73,
                   child: Montserrat12(
                       text:
-                          "Unlock a world of privacy with a twist: Earn rewards just by using our VPN.")),
+                          "Connect to the VPN and earn points redeemable for cash or gift cards.")),
               Constants.check()
             ],
           );
