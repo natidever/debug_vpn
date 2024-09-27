@@ -57,7 +57,7 @@ class OnBoarding3 extends StatelessWidget {
                     constriants.maxWidth * 0.002,
                     0),
                 child: Image.asset(
-                  Constants.secure,
+                  Constants.dollar,
                   width: 80,
                   height: 80,
                 ),

@@ -39,3 +39,30 @@ class Montserrat12 extends StatelessWidget {
     // TODO: implement build
   }
 }
+
+class Montserrat extends StatelessWidget {
+  String text;
+  FontWeight fontWeight;
+  double fontSize;
+  Color? color;
+
+  Montserrat(
+      {required this.text,
+      required this.fontSize,
+      required this.fontWeight,
+      this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      textAlign: TextAlign.center,
+      text,
+      style: GoogleFonts.montserrat(
+          // fontStyle: FontStyle.italic,
+          color: color ?? Constants.white,
+          fontSize: fontSize,
+          fontWeight: fontWeight),
+    );
+    // TODO: implement build
+  }
+}

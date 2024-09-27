@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:reward_vpn/bindings/main_binder.dart';
 import 'package:reward_vpn/route/app_route.dart';
 
 void main() {
@@ -14,8 +15,9 @@ class MyApp extends StatelessWidget {
         designSize: const Size(375, 812),
         builder: (_, context) {
           return GetMaterialApp(
-            initialRoute: AppRoute.onBoarding,
+            initialRoute: AppRoute.signup,
             getPages: AppRoute.route,
+            initialBinding: MainBinder(),
             debugShowCheckedModeBanner: false,
             // initialBinding: ,
           );

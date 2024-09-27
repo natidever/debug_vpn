@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reward_vpn/pages/onBoardings/onBoarding1.dart';
 import 'package:reward_vpn/pages/onBoardings/onBoarding2.dart';
 import 'package:reward_vpn/pages/onBoardings/onBoarding3.dart';
+import 'package:reward_vpn/route/app_route.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -53,15 +56,18 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
                   activeDotColor: Color.fromRGBO(63, 177, 227, 1),
                 ),
               ),
-              VeticalSpace(constraints.maxHeight * 0.065),
+              VerticalSpace(constraints.maxHeight * 0.065),
               Padding(
                 padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
+                    GestureDetector(
                       onTap: () {
                         // Animate to the next page
+
+                        // pageController.
+
                         pageController.previousPage(
                           duration: const Duration(milliseconds: 300),
                           curve: Curves
@@ -82,14 +88,19 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
                         ],
                       ),
                     ),
-                    InkWell(
+                    GestureDetector(
                       onTap: () {
                         // Animate to the next page
-                        pageController.nextPage(
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves
-                              .easeInOut, // You can change the curve if needed
-                        );
+                        print(pageController.page);
+                        if (pageController.page == 2) {
+                          Get.toNamed(AppRoute.signup);
+                        } else {
+                          pageController.nextPage(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves
+                                .easeInOut, // You can change the curve if needed
+                          );
+                        }
                       },
                       child: Container(
                         width: 125.w,

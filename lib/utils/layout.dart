@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget VeticalSpace(double height) {
+Widget VerticalSpace(double height) {
   return SizedBox(
     height: height,
   );
