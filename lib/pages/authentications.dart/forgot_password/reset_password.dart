@@ -23,26 +23,38 @@ class ResetPassword extends StatelessWidget {
           description:
               "You can reset your password now. Make sure you remember it now or you can reset again & again",
           overlaychild: Column(
+            // mainAxisSize: MainAxisSize.min,
             children: [
               VerticalSpace(25),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18.0),
                 child: CustomForms(
-                  isPassword: false.obs,
-                  hintText: "Email",
-                  prefix: Constants.email,
+                  isPassword: true.obs,
+                  hintText: "Password",
+                  prefix: Constants.password,
                 ),
               ),
-              VerticalSpace(constriants.maxHeight * 0.05),
+              VerticalSpace(constriants.maxHeight * 0.035),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                child: CustomForms(
+                  isPassword: true.obs,
+                  hintText: "Confirm Password",
+                  prefix: Constants.password,
+                ),
+              ),
+              VerticalSpace(constriants.maxHeight * 0.35),
+
+              // Expanded(child: Container()),
               GestureDetector(
                 onTap: () {
-                  Get.toNamed(AppRoute.forgotPasswordVerificaion);
+                  // Get.toNamed(AppRoute.forgotPasswordVerificaion);
                 },
                 child: PrimaryButton(
                     fontSize: 16,
                     height: 60.h,
                     width: 343.w,
-                    text: "Send Code"),
+                    text: "Change Now"),
               )
             ],
           ),

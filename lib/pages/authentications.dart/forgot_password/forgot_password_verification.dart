@@ -74,10 +74,15 @@ class ForgotPasswordVerification extends StatelessWidget {
                 ),
               ),
               VerticalSpace(screenHeight * 0.02),
-              PrimaryButton(
-                text: "Verify",
-                width: 343.w,
-                height: 60.h,
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoute.resetPassword);
+                },
+                child: PrimaryButton(
+                  text: "Verify",
+                  width: 343.w,
+                  height: 60.h,
+                ),
               )
             ],
           ),
