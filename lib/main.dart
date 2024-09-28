@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         designSize: const Size(375, 812),
         builder: (_, context) {
           return GetMaterialApp(
-            initialRoute: AppRoute.forgotPasswordVerificaion,
+            initialRoute: AppRoute.signup,
             getPages: AppRoute.route,
             initialBinding: MainBinder(),
             debugShowCheckedModeBanner: false,

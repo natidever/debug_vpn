@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:reward_vpn/controller/authentication_controllers/authentication_controller.dart';
 import 'package:reward_vpn/pages/authentications.dart/login.dart';
-import 'package:reward_vpn/pages/authentications.dart/signup.dart';
+import 'package:reward_vpn/pages/authentications.dart/signup/signup.dart';
 import 'package:reward_vpn/pages/onBoardings/onBoarding1.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/curvedLine.dart';

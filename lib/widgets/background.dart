@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/curvedLine.dart';
 import 'package:reward_vpn/utils/layout.dart';
@@ -12,11 +13,12 @@ class Background extends StatelessWidget {
   String description;
   Column overlaychild;
 
-  Background(
-      {required this.title,
-      required this.description,
-      required this.appBarText,
-      required this.overlaychild});
+  Background({
+    required this.title,
+    required this.description,
+    required this.appBarText,
+    required this.overlaychild,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +33,24 @@ class Background extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(0.0, 45, 18, 0),
             child: Row(
               children: [
-                Image.asset(
-                  fit: BoxFit.cover,
-                  Constants.backglow,
-                  width: 90,
-                  height: 65,
+                GestureDetector(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Image.asset(
+                    fit: BoxFit.cover,
+                    Constants.backglow,
+                    width: 80,
+                    height: 65,
+                  ),
                 ),
                 HorizontalSpace(screenWidth * 0.15),
                 Montserrat(
-                    color: Colors.white,
-                    text: appBarText,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600)
+                  color: Colors.white,
+                  text: appBarText,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                )
               ],
             ),
           ),

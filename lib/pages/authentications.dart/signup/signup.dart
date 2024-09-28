@@ -136,10 +136,14 @@ class Signup extends StatelessWidget {
                     //the two button goes here
                   ],
                 ),
-                VerticalSpace(screenHeight * 0.08),
+                VerticalSpace(screenHeight * 0.060),
                 // VerticalSpace(50.h),
 
-                PrimaryButton(text: "Sign up"),
+                GestureDetector(
+                    onTap: () {
+                      Get.toNamed(AppRoute.signupVerification);
+                    },
+                    child: PrimaryButton(text: "Sign up")),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 45.0, vertical: 5),

@@ -59,7 +59,7 @@ class Login extends StatelessWidget {
                     )
                   ],
                 ),
-                VerticalSpace(constriants.maxHeight * 0.12),
+                VerticalSpace(constriants.maxHeight * 0.1),
 
                 // VerticalSpace(30.h),
 
@@ -151,10 +151,13 @@ class Login extends StatelessWidget {
                     //the two button goes here
                   ],
                 ),
-                VerticalSpace(screenHeight * 0.081),
+                VerticalSpace(screenHeight * 0.069),
                 // VerticalSpace(50.h),
 
-                PrimaryButton(text: "Login"),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0),
+                  child: PrimaryButton(text: "Login"),
+                ),
                 // Padding(
                 //   padding:
                 //       const EdgeInsets.symmetric(horizontal: 45.0, vertical: 5),
