@@ -33,4 +33,6 @@ class Constants {
   static const next = 'assets/icons/next.png';
   static const email = 'assets/icons/email.png';
   static const password = 'assets/icons/password.png';
+  static const google = 'assets/icons/google.png';
+  static const apple = 'assets/icons/apple.png';
 }

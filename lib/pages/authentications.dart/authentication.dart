@@ -164,23 +164,25 @@ class Authentication extends StatelessWidget {
                           ],
                         ),
                       ),
-                      VerticalSpace(constriants.maxHeight * 0.05),
-                      SizedBox(
-                        height: 200,
-                        child: PageView(
-                          controller: pageController,
-                          onPageChanged: (index) {
-                            if (index == 0) {
-                              authenticationController.isSignup.value = true;
-                            } else if (index == 1) {
-                              authenticationController.isSignup.value = false;
-                            }
-                          },
-                          children: [
-                            Signup(),
-                            Signup(),
-                            // login(),
-                          ],
+                      VerticalSpace(constriants.maxHeight * 0.03),
+                      Expanded(
+                        child: SizedBox(
+                          // height: constriants.maxHeight * 0.7,
+                          child: PageView(
+                            controller: pageController,
+                            onPageChanged: (index) {
+                              if (index == 0) {
+                                authenticationController.isSignup.value = true;
+                              } else if (index == 1) {
+                                authenticationController.isSignup.value = false;
+                              }
+                            },
+                            children: [
+                              Signup(),
+                              Signup(),
+                              // login(),
+                            ],
+                          ),
                         ),
                       )
 
