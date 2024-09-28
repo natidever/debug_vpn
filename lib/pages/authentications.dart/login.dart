@@ -11,8 +11,8 @@ import 'package:reward_vpn/utils/texts.dart';
 import 'package:reward_vpn/widgets/buttons.dart';
 import 'package:reward_vpn/widgets/form.dart';
 
-class Signup extends StatelessWidget {
-  const Signup({super.key});
+class Login extends StatelessWidget {
+  const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +26,8 @@ class Signup extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                VerticalSpace(screenWidth * 0.07),
+
                 CustomForms(
                   prefix: Constants.email,
                   isPassword: false.obs,
@@ -38,14 +40,27 @@ class Signup extends StatelessWidget {
                   isPassword: true.obs,
                   hintText: "Password",
                 ),
-                VerticalSpace(constriants.maxHeight * 0.05),
-
-                CustomForms(
-                  prefix: Constants.password,
-                  isPassword: true.obs,
-                  hintText: "Confirm Password",
+                VerticalSpace(constriants.maxHeight * 0.02),
+                Row(
+                  children: [
+                    Expanded(child: Container()),
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(AppRoute.forgot);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 18.0),
+                        child: Montserrat(
+                            color: Color.fromRGBO(172, 170, 173, 1),
+                            text: "Forgot Password?",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    )
+                  ],
                 ),
-                VerticalSpace(constriants.maxHeight * 0.07),
+                VerticalSpace(constriants.maxHeight * 0.12),
+
                 // VerticalSpace(30.h),
 
                 Row(
@@ -105,7 +120,7 @@ class Signup extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 18.0),
+                      padding: const EdgeInsets.only(right: 19.0),
                       child: Container(
                         height: 60,
                         width: 159,
@@ -120,7 +135,7 @@ class Signup extends StatelessWidget {
                             Image.asset(
                               fit: BoxFit.cover,
                               Constants.apple,
-                              height: 18,
+                              height: 20,
                               width: 18,
                             ),
                             HorizontalSpace(10),
@@ -136,69 +151,69 @@ class Signup extends StatelessWidget {
                     //the two button goes here
                   ],
                 ),
-                VerticalSpace(screenHeight * 0.08),
+                VerticalSpace(screenHeight * 0.081),
                 // VerticalSpace(50.h),
 
-                PrimaryButton(text: "Sign up"),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 45.0, vertical: 5),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "By creating an account, you agree to the ",
-                          style: GoogleFonts.poppins(
-                            fontSize: 9,
-                            color: Color.fromRGBO(148, 148, 148, 0.43),
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        TextSpan(
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              // Get.toNamed(AppRoute.termOfUse);
-                            },
-                          text: "Term of use ",
-                          style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              decoration: TextDecoration.underline,
-                            ),
-                            fontSize: 9.sp,
-                            color: Color.fromRGBO(255, 255, 255, 0.61),
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        TextSpan(
-                          text: "and  ",
-                          style: GoogleFonts.poppins(
-                            fontSize: 9.sp,
-                            // color: Constants.dimTextColor,
-                            color: Color.fromRGBO(148, 148, 148, 0.43),
+                PrimaryButton(text: "Login"),
+                // Padding(
+                //   padding:
+                //       const EdgeInsets.symmetric(horizontal: 45.0, vertical: 5),
+                //   child: RichText(
+                //     textAlign: TextAlign.center,
+                //     text: TextSpan(
+                //       children: [
+                //         TextSpan(
+                //           text: "By creating an account, you agree to the ",
+                //           style: GoogleFonts.poppins(
+                //             fontSize: 9,
+                //             color: Color.fromRGBO(148, 148, 148, 0.43),
+                //             fontWeight: FontWeight.w400,
+                //           ),
+                //         ),
+                //         TextSpan(
+                //           recognizer: TapGestureRecognizer()
+                //             ..onTap = () {
+                //               // Get.toNamed(AppRoute.termOfUse);
+                //             },
+                //           text: "Term of use ",
+                //           style: GoogleFonts.poppins(
+                //             textStyle: const TextStyle(
+                //               decoration: TextDecoration.underline,
+                //             ),
+                //             fontSize: 9.sp,
+                //             color: Color.fromRGBO(255, 255, 255, 0.61),
+                //             fontWeight: FontWeight.w400,
+                //           ),
+                //         ),
+                //         TextSpan(
+                //           text: "and  ",
+                //           style: GoogleFonts.poppins(
+                //             fontSize: 9.sp,
+                //             // color: Constants.dimTextColor,
+                //             color: Color.fromRGBO(148, 148, 148, 0.43),
 
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        TextSpan(
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              // Get.toNamed(AppRoute.privacyPolicy);
-                            },
-                          text: "Privacy olicy ",
-                          style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              decoration: TextDecoration.underline,
-                            ),
-                            fontSize: 9.sp,
-                            color: Color.fromRGBO(255, 255, 255, 0.61),
-                            fontWeight: FontWeight.w400,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                //             fontWeight: FontWeight.w400,
+                //           ),
+                //         ),
+                //         TextSpan(
+                //           recognizer: TapGestureRecognizer()
+                //             ..onTap = () {
+                //               // Get.toNamed(AppRoute.privacyPolicy);
+                //             },
+                //           text: "Privacy Policy ",
+                //           style: GoogleFonts.poppins(
+                //             textStyle: const TextStyle(
+                //               decoration: TextDecoration.underline,
+                //             ),
+                //             fontSize: 9.sp,
+                //             color: Color.fromRGBO(255, 255, 255, 0.61),
+                //             fontWeight: FontWeight.w400,
+                //           ),
+                //         )
+                //       ],
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

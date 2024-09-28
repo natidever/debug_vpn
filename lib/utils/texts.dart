@@ -58,6 +58,7 @@ class Montserrat extends StatelessWidget {
       textAlign: TextAlign.center,
       text,
       style: GoogleFonts.montserrat(
+          height: 1.9,
           // fontStyle: FontStyle.italic,
           color: color ?? Constants.white,
           fontSize: fontSize,

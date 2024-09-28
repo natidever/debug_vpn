@@ -6,13 +6,17 @@ import 'package:reward_vpn/utils/texts.dart';
 
 class PrimaryButton extends StatelessWidget {
   String text;
-  PrimaryButton({required this.text});
+  double? height;
+  double? width;
+  double? fontSize;
+
+  PrimaryButton({required this.text, this.height, this.width, this.fontSize});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 332.w,
-      height: 48.h,
+      width: width ?? 332.w,
+      height: height ?? 48.h,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
           gradient: LinearGradient(
@@ -20,7 +24,9 @@ class PrimaryButton extends StatelessWidget {
           )),
       child: Center(
           child: Montserrat(
-              text: text, fontSize: 12.sp, fontWeight: FontWeight.w500)),
+              text: text,
+              fontSize: fontSize ?? 12.sp,
+              fontWeight: FontWeight.w500)),
     );
   }
 }

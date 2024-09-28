@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:reward_vpn/controller/authentication_controller.dart';
+import 'package:reward_vpn/pages/authentications.dart/login.dart';
 import 'package:reward_vpn/pages/authentications.dart/signup.dart';
 import 'package:reward_vpn/pages/onBoardings/onBoarding1.dart';
 import 'package:reward_vpn/utils/constants.dart';
@@ -82,7 +83,9 @@ class Authentication extends StatelessWidget {
                   return Column(
                     children: [
                       Montserrat(
-                          text: "Create Account",
+                          text: authenticationController.isSignup.value
+                              ? "Create Account"
+                              : "Welcome Back",
                           fontSize: 24,
                           fontWeight: FontWeight.w700),
                       Padding(
@@ -93,8 +96,9 @@ class Authentication extends StatelessWidget {
                             0),
                         child: Montserrat(
                             color: Constants.dimColor,
-                            text:
-                                "Join Reward VPN to secure your browsing and earn rewards effortlessly.",
+                            text: authenticationController.isSignup.value
+                                ? "Join Reward VPN to secure your browsing and earn rewards effortlessly."
+                                : "Good to see you again. Log in to continue earning and browsing securely.",
                             fontSize: 12,
                             fontWeight: FontWeight.w400),
                       ),
@@ -104,7 +108,16 @@ class Authentication extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              authenticationController.isSignup.toggle();
+                              pageController.animateToPage(0,
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut);
+
+                              // authenticationController.isSignup.toggle();
+                              authenticationController.isSignup.value = false;
+
+                              // pageController.previousPage(
+                              //     duration: Duration(microseconds: 1000),
+                              //     curve: Easing.legacy);
                             },
                             child: Montserrat(
                                 text: "Login",
@@ -114,7 +127,14 @@ class Authentication extends StatelessWidget {
                           HorizontalSpace(constriants.maxWidth * 0.18),
                           GestureDetector(
                             onTap: () {
-                              authenticationController.isSignup.toggle();
+                              pageController.animateToPage(1,
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut);
+                              authenticationController.isSignup.value = true;
+
+                              // pageController.nextPage(
+                              //     duration: Duration(microseconds: 1000),
+                              //     curve: Easing.legacy);
                             },
                             child: Montserrat(
                                 text: "Sign Up",
@@ -171,15 +191,17 @@ class Authentication extends StatelessWidget {
                           child: PageView(
                             controller: pageController,
                             onPageChanged: (index) {
+                              ///this controll the scrolling trigger to update the tabbar
                               if (index == 0) {
-                                authenticationController.isSignup.value = true;
-                              } else if (index == 1) {
                                 authenticationController.isSignup.value = false;
+                              } else if (index == 1) {
+                                authenticationController.isSignup.value = true;
                               }
                             },
                             children: [
+                              Login(),
                               Signup(),
-                              Signup(),
+
                               // login(),
                             ],
                           ),
