@@ -48,7 +48,9 @@ class SignupVerification extends StatelessWidget {
                   focusNode: forgorPasswordVerificationController.focusNode,
 
                   textStyle: GoogleFonts.inter(
-                      fontWeight: FontWeight.w500, fontSize: 32),
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 32),
                   appContext: context,
                   length: 5, // Number of OTP fields
                   cursorColor: Constants.white,

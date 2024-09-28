@@ -6,6 +6,6 @@ class MainBinder extends Bindings {
   @override
   void dependencies() {
     Get.put(AuthenticationController());
-    Get.lazyPut(() => ForgotPasswordVerificationController());
+    Get.lazyPut(() => ForgotPasswordVerificationController(), fenix: true);
   }
 }

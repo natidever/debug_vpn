@@ -102,7 +102,9 @@ class Authentication extends StatelessWidget {
                             fontSize: 12,
                             fontWeight: FontWeight.w400),
                       ),
-                      VerticalSpace(constriants.maxHeight * 0.1),
+                      authenticationController.isSignup.value
+                          ? VerticalSpace(constriants.maxHeight * 0.068)
+                          : VerticalSpace(constriants.maxHeight * 0.048),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
