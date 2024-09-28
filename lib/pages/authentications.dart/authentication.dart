@@ -16,6 +16,7 @@ class Authentication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authenticationController = Get.find<AuthenticationController>();
+    final PageController pageController = PageController();
     return Scaffold(
       backgroundColor: Constants.primaryColor,
       body: LayoutBuilder(builder: (context, constriants) {
@@ -167,6 +168,14 @@ class Authentication extends StatelessWidget {
                       SizedBox(
                         height: 200,
                         child: PageView(
+                          controller: pageController,
+                          onPageChanged: (index) {
+                            if (index == 0) {
+                              authenticationController.isSignup.value = true;
+                            } else if (index == 1) {
+                              authenticationController.isSignup.value = false;
+                            }
+                          },
                           children: [
                             Signup(),
                             Signup(),
