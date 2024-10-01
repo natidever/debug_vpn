@@ -38,4 +38,5 @@ class Constants {
   static const google = 'assets/icons/google.png';
   static const apple = 'assets/icons/apple.png';
   static const backglow = 'assets/icons/backglow.png';
+  static const homepage_background = 'assets/images/homepage_background.png';
 }
