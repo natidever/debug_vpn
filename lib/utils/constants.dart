@@ -20,13 +20,23 @@ class Constants {
 
   static List<Color> HomeBackgroundgradiant() {
     return [
-      // Color.fromRGBO(21, 23, 24, 1),
-      // Color.fromRGBO(36, 40, 41, 1),
-      // Color.fromRGBO(110, 121, 126, 1),
-
       Color.fromRGBO(21, 23, 24, 1),
       Color.fromRGBO(36, 40, 41, 1),
       Color.fromRGBO(110, 121, 126, 1),
+    ];
+  }
+
+  static List<Color> buttonGradiant() {
+    return [
+      Color.fromRGBO(149, 226, 123, 1),
+      Color.fromRGBO(136, 191, 176, 1),
+    ];
+  }
+
+  static List<Color> fakeGradiant() {
+    return [
+      buttonBackgroundColor,
+      buttonBackgroundColor,
     ];
   }
 
@@ -38,6 +48,7 @@ class Constants {
   static const black = Color.fromRGBO(0, 0, 0, 1);
   static const buttonBackgroundColor = Color.fromRGBO(55, 60, 63, 1);
   static const textColor = Color.fromRGBO(236, 236, 236, 1);
+  static const buttonTextColor = Color.fromRGBO(21, 23, 24, 1);
 
   //images
   static const background = 'assets/images/purplePlanet.png';
@@ -55,6 +66,7 @@ class Constants {
   static const apple = 'assets/icons/apple.png';
   static const backglow = 'assets/icons/backglow.png';
   static const connectButton = 'assets/icons/connect_button.png';
+  static const connectButtonActive = 'assets/icons/connect_button_active.png';
   static const buna = 'assets/icons/buna.png';
   static const box = 'assets/icons/box.png';
   static const download = 'assets/icons/download.png';
