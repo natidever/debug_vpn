@@ -18,16 +18,32 @@ class Constants {
     ];
   }
 
+  static List<Color> HomeBackgroundgradiant() {
+    return [
+      // Color.fromRGBO(21, 23, 24, 1),
+      // Color.fromRGBO(36, 40, 41, 1),
+      // Color.fromRGBO(110, 121, 126, 1),
+
+      Color.fromRGBO(21, 23, 24, 1),
+      Color.fromRGBO(36, 40, 41, 1),
+      Color.fromRGBO(110, 121, 126, 1),
+    ];
+  }
+
   //Colors
   static const primaryColor = Color.fromRGBO(20, 26, 61, 1);
   static const dimColor = Color.fromRGBO(143, 137, 150, 1);
   static const borderColor = Color.fromRGBO(69, 69, 69, 1);
   static const white = Color.fromRGBO(255, 255, 255, 1);
   static const black = Color.fromRGBO(0, 0, 0, 1);
+  static const buttonBackgroundColor = Color.fromRGBO(55, 60, 63, 1);
+  static const textColor = Color.fromRGBO(236, 236, 236, 1);
 
   //images
   static const background = 'assets/images/purplePlanet.png';
   static const curvedLine = 'assets/images/curvedLine.png';
+  static const country = 'assets/images/country.png';
+
   static const secure = 'assets/icons/secure.png';
   static const key = 'assets/icons/key.png';
   static const dollar = 'assets/icons/dollar.png';
@@ -38,5 +54,12 @@ class Constants {
   static const google = 'assets/icons/google.png';
   static const apple = 'assets/icons/apple.png';
   static const backglow = 'assets/icons/backglow.png';
-  static const homepage_background = 'assets/images/homepage_background.png';
+  static const connectButton = 'assets/icons/connect_button.png';
+  static const buna = 'assets/icons/buna.png';
+  static const box = 'assets/icons/box.png';
+  static const download = 'assets/icons/download.png';
+  static const upload = 'assets/icons/upload.png';
+
+  static const homepage_background = 'assets/images/homepage_background.jpg';
+  // static const home = 'assets/images/home.jpg';
 }

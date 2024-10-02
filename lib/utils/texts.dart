@@ -67,3 +67,59 @@ class Montserrat extends StatelessWidget {
     // TODO: implement build
   }
 }
+
+class MontserratNoHeight extends StatelessWidget {
+  String text;
+  FontWeight fontWeight;
+  double fontSize;
+  Color? color;
+
+  MontserratNoHeight(
+      {required this.text,
+      required this.fontSize,
+      required this.fontWeight,
+      this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      textAlign: TextAlign.center,
+      text,
+      style: GoogleFonts.montserrat(
+          height: 0,
+          // fontStyle: FontStyle.italic,
+          color: color ?? Constants.white,
+          fontSize: fontSize,
+          fontWeight: fontWeight),
+    );
+    // TODO: implement build
+  }
+}
+
+class Poppins extends StatelessWidget {
+  String text;
+  FontWeight fontWeight;
+  double fontSize;
+  Color? color;
+
+  Poppins(
+      {required this.text,
+      required this.fontSize,
+      required this.fontWeight,
+      this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      textAlign: TextAlign.center,
+      text,
+      style: GoogleFonts.montserrat(
+          height: 1.9,
+          // fontStyle: FontStyle.italic,
+          color: color ?? Constants.white,
+          fontSize: fontSize,
+          fontWeight: fontWeight),
+    );
+    // TODO: implement build
+  }
+}
