@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:reward_vpn/controller/main_page_controllers/homescreen_controller.dart';
@@ -43,7 +40,7 @@ class Homescreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(15.0.sp, 26.sp, 16.sp, 0),
+              padding: EdgeInsets.fromLTRB(15.0.sp, 16.sp, 16.sp, 0),
               child: Obx(() {
                 return Column(
                   children: [
@@ -70,15 +67,17 @@ class Homescreen extends StatelessWidget {
                               children: [
                                 Image.asset(
                                   Constants.buna,
-                                  width: 54,
-                                  height: 54,
+                                  width: getResponsiveWidth(context, 54),
+                                  height: getResponsiveHeight(context, 54),
+                                  // width: 54,
+                                  // height: 54,
                                 ),
                                 Positioned(
                                   right: screenWidht * 0.015,
                                   top: screenHeight * 0.015,
                                   child: Montserrat(
                                       text: "2",
-                                      fontSize: 12,
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.w600),
                                 )
                               ],
@@ -86,8 +85,10 @@ class Homescreen extends StatelessWidget {
                             HorizontalSpace(screenWidht * 0.01),
                             Image.asset(
                               Constants.settingIcon,
-                              width: 24,
-                              height: 24,
+                              // width: 24,
+                              // height: 24,
+                              width: getResponsiveWidth(context, 24),
+                              height: getResponsiveHeight(context, 24),
                             ),
                           ],
                         ),
@@ -109,8 +110,10 @@ class Homescreen extends StatelessWidget {
                       children: [
                         Image.asset(
                           Constants.flash,
-                          width: 15,
-                          height: 26,
+                          // width: 15,
+                          // height: 26,
+                          width: getResponsiveWidth(context, 15),
+                          height: getResponsiveHeight(context, 26),
                         ),
                         HorizontalSpace(screenWidht * 0.009),
                         Column(
@@ -130,13 +133,21 @@ class Homescreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        HorizontalSpace(screenWidht * 0.13),
-                        Image.asset(width: 45, height: 45, Constants.box),
+                        HorizontalSpace(screenWidht * 0.1),
+                        Image.asset(
+                          // width: 45,
+                          // height: 45,
+                          width: getResponsiveWidth(context, 45),
+                          height: getResponsiveHeight(context, 45),
+                          Constants.box,
+                        ),
                         HorizontalSpace(screenWidht * 0.03),
-                        MontserratNoHeight(
-                            text: "2000",
-                            fontSize: 48,
-                            fontWeight: FontWeight.w500),
+                        Expanded(
+                          child: MontserratNoHeight(
+                              text: "10",
+                              fontSize: 48.sp,
+                              fontWeight: FontWeight.w500),
+                        ),
                       ],
                     ),
                     VerticalSpace(screenWidht * 0.06),
@@ -169,7 +180,8 @@ class Homescreen extends StatelessWidget {
                                 ? "Claim in 1 min"
                                 : "Connect VPN first"),
 
-                    VerticalSpace(screenWidht * 0.07),
+                    VerticalSpace(screenWidht * 0.04),
+                    // VerticalSpace(screenWidht * 0.07),
                     Stack(
                       children: [
                         Align(
@@ -194,7 +206,8 @@ class Homescreen extends StatelessWidget {
                       ],
                     ),
                     // Constants.check(),
-                    VerticalSpace(screenWidht * 0.15),
+                    // VerticalSpace(screenWidht * 0.15),
+                    VerticalSpace(getResponsiveHeight(context, 25)),
                     // VerticalSpace(41.h),
 
                     GestureDetector(
@@ -207,8 +220,10 @@ class Homescreen extends StatelessWidget {
                         }
                       },
                       child: Image.asset(
-                        width: 233.w,
-                        height: 241.h,
+                        // width: 233.w,
+                        // height: 241.h,
+                        height: getResponsiveHeight(context, 241),
+                        width: getResponsiveWidth(context, 233),
                         homescreenController
                                 .connectionStateModel.isConnected.value
                             ? Constants.connectButtonActive
@@ -224,7 +239,7 @@ class Homescreen extends StatelessWidget {
                                   .connectionStateModel.isConnected.isTrue
                               ? "Connected"
                               : "Tap to connect",
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w700,
                     ),
 
@@ -255,7 +270,7 @@ class Homescreen extends StatelessWidget {
                                   text: "Download",
                                   fontSize: 9,
                                   fontWeight: FontWeight.w300),
-                              VerticalSpace(2),
+                              VerticalSpace(getResponsiveHeight(context, 2)),
                               MontserratNoHeight(
                                   text: "10 Mbp/s",
                                   fontSize: 12,
@@ -264,7 +279,8 @@ class Homescreen extends StatelessWidget {
                           ),
                           HorizontalSpace(screenWidht * 0.06),
                           VerticalLine(
-                            height: 30,
+                            height: getResponsiveHeight(context, 30),
+                            // height :30
                             width: 1,
                           ),
                           HorizontalSpace(screenWidht * 0.02),
@@ -272,8 +288,11 @@ class Homescreen extends StatelessWidget {
                             children: [
                               Image.asset(
                                 Constants.upload,
-                                width: 12.w,
-                                height: 12.h,
+                                width: getResponsiveWidth(context, 12),
+                                height: getResponsiveHeight(context, 12),
+
+                                // width: 12.w,
+                                // height: 12.h,
                               ),
                               HorizontalSpace(screenWidht * 0.02),
                               Column(
@@ -283,7 +302,9 @@ class Homescreen extends StatelessWidget {
                                       text: "Upload",
                                       fontSize: 9,
                                       fontWeight: FontWeight.w300),
-                                  VerticalSpace(2),
+                                  // VerticalSpace(2),
+                                  VerticalSpace(
+                                      getResponsiveHeight(context, 2)),
                                   MontserratNoHeight(
                                       text: "10 Mbp/s",
                                       fontSize: 12,
@@ -301,14 +322,18 @@ class Homescreen extends StatelessWidget {
                           Stack(
                             children: [
                               Image.asset(
-                                height: 33,
-                                width: 33,
+                                height: getResponsiveHeight(context, 33),
+                                width: getResponsiveWidth(context, 33),
+                                // height: 33,
+                                // width: 33,
                                 // color: Color.fromARGB(24, 192, 169, 169),
                                 Constants.country,
                               ),
                               Container(
-                                height: 33,
-                                width: 33,
+                                height: getResponsiveHeight(context, 33),
+                                width: getResponsiveWidth(context, 33),
+                                // height: 33,
+                                // width: 33,
                                 decoration: BoxDecoration(
                                     color: homescreenController
                                             .connectionStateModel
