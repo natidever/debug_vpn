@@ -64,21 +64,31 @@ class Homescreen extends StatelessWidget {
                                 fontWeight: FontWeight.w600),
                           ],
                         ),
-                        Stack(
+                        Row(
                           children: [
-                            Image.asset(
-                              Constants.buna,
-                              width: 54,
-                              height: 54,
+                            Stack(
+                              children: [
+                                Image.asset(
+                                  Constants.buna,
+                                  width: 54,
+                                  height: 54,
+                                ),
+                                Positioned(
+                                  right: screenWidht * 0.015,
+                                  top: screenHeight * 0.015,
+                                  child: Montserrat(
+                                      text: "2",
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600),
+                                )
+                              ],
                             ),
-                            Positioned(
-                              right: screenWidht * 0.015,
-                              top: screenHeight * 0.015,
-                              child: Montserrat(
-                                  text: "2",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            )
+                            HorizontalSpace(screenWidht * 0.01),
+                            Image.asset(
+                              Constants.settingIcon,
+                              width: 24,
+                              height: 24,
+                            ),
                           ],
                         ),
                       ],
@@ -97,6 +107,12 @@ class Homescreen extends StatelessWidget {
                     ),
                     Row(
                       children: [
+                        Image.asset(
+                          Constants.flash,
+                          width: 15,
+                          height: 26,
+                        ),
+                        HorizontalSpace(screenWidht * 0.009),
                         Column(
                           // mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,7 +130,7 @@ class Homescreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        HorizontalSpace(screenWidht * 0.15),
+                        HorizontalSpace(screenWidht * 0.13),
                         Image.asset(width: 45, height: 45, Constants.box),
                         HorizontalSpace(screenWidht * 0.03),
                         MontserratNoHeight(
@@ -201,7 +217,13 @@ class Homescreen extends StatelessWidget {
                     ),
 
                     MontserratNoHeight(
-                      text: "Tap to connect",
+                      text: homescreenController
+                              .connectionStateModel.isConnecting.isTrue
+                          ? "Connecting"
+                          : homescreenController
+                                  .connectionStateModel.isConnected.isTrue
+                              ? "Connected"
+                              : "Tap to connect",
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                     ),
@@ -276,7 +298,33 @@ class Homescreen extends StatelessWidget {
                             width: 1,
                           ),
                           HorizontalSpace(screenWidht * 0.02),
-                          Image.asset(Constants.country),
+                          Stack(
+                            children: [
+                              Image.asset(
+                                height: 33,
+                                width: 33,
+                                // color: Color.fromARGB(24, 192, 169, 169),
+                                Constants.country,
+                              ),
+                              Container(
+                                height: 33,
+                                width: 33,
+                                decoration: BoxDecoration(
+                                    color: homescreenController
+                                            .connectionStateModel
+                                            .isConnected
+                                            .value
+                                        ? Colors.transparent
+                                        : Color.fromRGBO(19, 19, 19, 0.6),
+                                    shape: BoxShape.circle),
+                              )
+                            ],
+                          ),
+                          // Image.asset(
+                          //   color: Color.fromARGB(24, 192, 169, 169),
+                          //   Constants.country,
+                          // ),
+
                           HorizontalSpace(screenWidht * 0.03),
                           MontserratNoHeight(
                               text: "UK",

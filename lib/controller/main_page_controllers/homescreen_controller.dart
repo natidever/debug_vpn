@@ -37,7 +37,7 @@ class HomescreenController extends GetxController {
         connectionTime.value =
             formattedTime; // Update the displayed connection time
 
-        if (value >= 600) {
+        if (value >= 60000) {
           connectionReach1Minute.value = true;
         } else {
           connectionReach1Minute.value = false;

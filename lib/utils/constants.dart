@@ -73,6 +73,8 @@ class Constants {
   static const upload = 'assets/icons/upload.png';
   static const iconBackground = 'assets/icons/icon_background.png';
   static const homeIcon = 'assets/icons/home.png';
+  static const settingIcon = 'assets/icons/setting_icon.png';
+  static const flash = 'assets/icons/flash.png';
 
   static const homepage_background = 'assets/images/homepage_background.jpg';
   // static const home = 'assets/images/home.jpg';
