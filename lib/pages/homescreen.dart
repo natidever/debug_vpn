@@ -7,6 +7,7 @@ import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
 import 'package:reward_vpn/widgets/buttons.dart';
+import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 
 class Homescreen extends StatelessWidget {
   const Homescreen({super.key});
@@ -233,7 +234,7 @@ class Homescreen extends StatelessWidget {
                         MontserratNoHeight(
                             text: "UK",
                             fontSize: 15,
-                            fontWeight: FontWeight.w700)
+                            fontWeight: FontWeight.w700),
                       ],
                     ),
                   )
