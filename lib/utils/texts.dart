@@ -74,12 +74,15 @@ class MontserratNoHeight extends StatelessWidget {
   FontWeight fontWeight;
   double fontSize;
   Color? color;
+  FontStyle? fontStyle;
 
-  MontserratNoHeight(
-      {required this.text,
-      required this.fontSize,
-      required this.fontWeight,
-      this.color});
+  MontserratNoHeight({
+    required this.text,
+    required this.fontSize,
+    required this.fontWeight,
+    this.color,
+    this.fontStyle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +91,7 @@ class MontserratNoHeight extends StatelessWidget {
       text,
       style: GoogleFonts.montserrat(
           height: 0,
-          // fontStyle: FontStyle.italic,
+          fontStyle: fontStyle ?? FontStyle.normal,
           color: color ?? Constants.white,
           fontSize: fontSize,
           fontWeight: fontWeight),

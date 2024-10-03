@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
+import 'package:reward_vpn/utils/texts.dart';
+import 'package:reward_vpn/widgets/buttons.dart';
 
 class Wallet extends StatelessWidget {
   const Wallet({super.key});
@@ -65,13 +68,166 @@ class Wallet extends StatelessWidget {
                         ),
                         HorizontalSpace(getResponsiveWidth(context, 15)),
                         Image.asset(
-                            width: getResponsiveWidth(context, 24),
-                            height: getResponsiveHeight(context, 24),
-                            Constants.settingIcon)
+                          width: getResponsiveWidth(context, 24),
+                          height: getResponsiveHeight(context, 24),
+                          Constants.settingIcon,
+                        )
                       ],
                     )
                   ],
-                )
+                ),
+                //
+
+                VerticalSpace(
+                  getResponsiveHeight(context, 68),
+                ),
+
+                Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset(
+                      Constants.flash,
+                      // width: 15,
+                      // height: 26,
+                      width: getResponsiveWidth(context, 15),
+                      height: getResponsiveHeight(context, 26),
+                    ),
+                    HorizontalSpace(screenWidth * 0.02),
+                    Column(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MontserratNoHeight(
+                            text: "Profit per hour ",
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w300),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5.0),
+                          child: MontserratNoHeight(
+                              text: "147 \$RV/h",
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                    HorizontalSpace(
+                      getResponsiveHeight(context, 70),
+                    ),
+                    Image.asset(Constants.arrow_up),
+                    HorizontalSpace(
+                      getResponsiveHeight(context, 6),
+                    ),
+                    Column(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MontserratNoHeight(
+                          text: "Increase ppr by",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        MontserratNoHeight(
+                          text: "Referring friend",
+                          fontSize: 14,
+                          fontStyle: FontStyle.italic,
+                          color: Constants.greenColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ],
+                    )
+
+                    // Expanded(
+                    //   child: MontserratNoHeight(
+                    //       text: "10",
+                    //       fontSize: 48.sp,
+                    //       fontWeight: FontWeight.w500),
+                    // ),
+                  ],
+                ),
+
+                VerticalSpace(
+                  getResponsiveWidth(context, 47),
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      Constants.box,
+                      width: getResponsiveWidth(context, 63),
+                      height: getResponsiveHeight(context, 63),
+                    ),
+                    HorizontalSpace(
+                      getResponsiveWidth(context, 14),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MontserratNoHeight(
+                          text: "Total Available \$RV",
+                          fontSize: 15.sp,
+                          color: Constants.white,
+                          fontWeight: FontWeight.w200,
+                        ),
+
+                        // Constants.check()
+                        MontserratNoHeight(
+                          text: "5673",
+                          fontSize: 66.sp,
+                          color: Constants.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+
+                VerticalSpace(
+                  getResponsiveHeight(context, 45),
+                ),
+
+                Center(
+                  child: SecondaryButton(
+                    text: '',
+                    textColor: Color.fromRGBO(21, 23, 24, 1),
+                    row: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Montserrat(
+                            text: "Claim",
+                            color: Constants.buttonTextColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
+                        HorizontalSpace(5),
+                        Montserrat(
+                            color: Constants.buttonTextColor,
+                            text: "3O\$RV",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600),
+                      ],
+                    ),
+                    showGradiant: true,
+                  ),
+                ),
+
+                VerticalSpace(
+                  getResponsiveHeight(context, 45),
+                ),
+
+                RichText(
+                    text: TextSpan(children: [
+                  TextSpan(
+                    text: "Earn More ",
+                    style: GoogleFonts.montserrat(
+                        fontSize: 16.sp, fontWeight: FontWeight.w700),
+                  ),
+                  TextSpan(
+                    text: "by ",
+                    style: GoogleFonts.montserrat(
+                        fontSize: 16.sp, fontWeight: FontWeight.w300),
+                  ),
+                ]))
               ],
             ),
           ),

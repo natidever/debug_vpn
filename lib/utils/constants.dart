@@ -52,6 +52,7 @@ class Constants {
   static const buttonBackgroundColor = Color.fromRGBO(55, 60, 63, 1);
   static const textColor = Color.fromRGBO(236, 236, 236, 1);
   static const buttonTextColor = Color.fromRGBO(21, 23, 24, 1);
+  static const greenColor = Color.fromRGBO(149, 226, 123, 1);
 
   //images
   static const background = 'assets/images/purplePlanet.png';
@@ -79,6 +80,7 @@ class Constants {
   static const settingIcon = 'assets/icons/setting_icon.png';
   static const flash = 'assets/icons/flash.png';
   static const wallet = 'assets/icons/wallet.png';
+  static const arrow_up = 'assets/icons/arrow_up.png';
 
   static const homepage_background = 'assets/images/homepage_background.jpg';
   static const onboarding_background = 'assets/images/onboarding.jpg';
