@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:reward_vpn/controller/main_page_controllers/task.dart';
 import 'package:reward_vpn/pages/authentications/authentication_wrapper.dart';
 import 'package:reward_vpn/pages/authentications/forgot_password/forgot_password.dart';
 import 'package:reward_vpn/pages/authentications/forgot_password/forgot_password_verification.dart';
@@ -21,6 +22,7 @@ class AppRoute {
   static const homescreen = '/homescreen';
   static const bottomNavWrapper = '/bottomNavWrapper';
   static const wallet = '/wallet';
+  static const task = '/task';
 
   static List<GetPage> route = [
     GetPage(name: onBoarding, page: () => OnboardingWrapper()),
@@ -35,5 +37,6 @@ class AppRoute {
     GetPage(name: signupVerification, page: () => SignupVerification()),
     GetPage(name: homescreen, page: () => Homescreen()),
     GetPage(name: wallet, page: () => Wallet()),
+    GetPage(name: task, page: () => Task()),
   ];
 }
