@@ -5,8 +5,8 @@ class CurvedLinePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = Color.fromARGB(255, 255, 255, 255) // Color of the line
-      ..color = const Color.fromRGBO(39, 39, 49, 1) // Color of the line
-      ..strokeWidth = 3 // Thickness of the line
+      ..color = const Color.fromRGBO(149, 226, 123, 1) // Color of the line
+      ..strokeWidth = 10 // Thickness of the line
       ..style = PaintingStyle.stroke;
 
     final path = Path();

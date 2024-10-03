@@ -83,6 +83,7 @@ class Constants {
   static const homepage_background = 'assets/images/homepage_background.jpg';
   static const onboarding_background = 'assets/images/onboarding.jpg';
   static const green_planet = 'assets/images/green_planet.png';
+  static const verification_background = 'assets/images/forgot_background.png';
   static const authentication_background =
       'assets/images/authentication_background.png';
   // static const home = 'assets/images/home.jpg';

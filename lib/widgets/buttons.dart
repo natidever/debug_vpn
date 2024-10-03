@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -20,6 +21,7 @@ class PrimaryButton extends StatelessWidget {
       width: width ?? 332.w,
       height: height ?? 48.h,
       decoration: BoxDecoration(
+          color: Color.fromRGBO(0, 0, 0, 0.70),
           borderRadius: BorderRadius.circular(50),
           gradient: LinearGradient(
             colors: Constants.gradiant(),

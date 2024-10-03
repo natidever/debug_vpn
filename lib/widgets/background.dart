@@ -25,83 +25,59 @@ class Background extends StatelessWidget {
     return LayoutBuilder(builder: (context, constraints) {
       double screenWidth = constraints.maxWidth;
       double screenHeight = constraints.maxHeight;
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
+      return Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 45, 18, 0),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Image.asset(
-                    fit: BoxFit.cover,
-                    Constants.backglow,
-                    width: 80,
-                    height: 65,
-                  ),
-                ),
-                HorizontalSpace(screenWidth * 0.15),
-                Montserrat(
-                  color: Colors.white,
-                  text: appBarText,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                )
-              ],
-            ),
-          ),
-          // Constants.check()
-          Stack(
-            children: [
-              Column(
+          Positioned.fill(
+              child: Image.asset(
+                  fit: BoxFit.cover,
+                  height: screenHeight,
+                  width: screenWidth,
+                  Constants.verification_background)),
+          Positioned(
+            top: getResponsiveHeight(context, 2),
+            left: getResponsiveWidth(context, 15),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 45, 18, 0),
+              child: Row(
                 children: [
-                  CustomPaint(
-                    size: Size(screenWidth, 0),
-                    painter: CurvedLinePainter(),
+                  GestureDetector(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Constants.white,
+                    ),
                   ),
-                  VerticalSpace(screenWidth * 0.13),
-                  CustomPaint(
-                    size: Size(screenWidth, 0),
-                    painter: CurvedLinePainter(),
-                  ),
-                  VerticalSpace(screenWidth * 0.13),
-                  CustomPaint(
-                    size: Size(screenWidth, 0),
-                    painter: CurvedLinePainter(),
+                  HorizontalSpace(screenWidth * 0.2),
+                  Montserrat(
+                    color: Colors.white,
+                    text: appBarText,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   )
                 ],
               ),
-              Positioned(
-                top: screenHeight * 0.06,
-                left: screenWidth * 0.2,
-                child: Column(
-                  children: [
-                    Montserrat(
-                        // text: "Forget Password?",
-                        text: title,
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.w700),
-                  ],
-                ),
-              ),
-              Positioned(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(screenWidth * 0.15,
-                      screenHeight * 0.11, screenWidth * 0.1, 0),
-                  child: Montserrat(
-                      color: Color.fromRGBO(143, 137, 150, 1),
-                      text: description,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500),
-                ),
-              )
-            ],
+            ),
           ),
-          overlaychild
+          // SizedBox(
+          //   height: 32,
+          //   width: 32,
+          //   child: Positioned(
+          //     top: screenHeight * 0.3,
+          //     left: screenWidth * 0.2,
+          //     child: Column(
+          //       children: [
+          //         Montserrat(
+          //             // text: "Forget Password?",
+          //             text: title,
+          //             fontSize: 24.sp,
+          //             fontWeight: FontWeight.w700),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // Constants.check()
         ],
       );
     });
