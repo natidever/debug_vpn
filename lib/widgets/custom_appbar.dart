@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CustomAppbar extends StatelessWidget {
-  const CustomAppbar({super.key});
+  Widget firstText;
+  Widget secondText;
+
+  CustomAppbar({required this.secondText, required this.firstText});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Row(children: []);
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reward_vpn/controller/main_page_controllers/wallet_controller.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
@@ -11,6 +13,8 @@ class Wallet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final walletController = Get.find<WalletController>();
+
     return Scaffold(
       // appBar: AppBar(
       //   backgroundColor: Constants.black,
@@ -216,18 +220,77 @@ class Wallet extends StatelessWidget {
                 ),
 
                 RichText(
-                    text: TextSpan(children: [
-                  TextSpan(
-                    text: "Earn More ",
-                    style: GoogleFonts.montserrat(
-                        fontSize: 16.sp, fontWeight: FontWeight.w700),
-                  ),
-                  TextSpan(
-                    text: "by ",
-                    style: GoogleFonts.montserrat(
-                        fontSize: 16.sp, fontWeight: FontWeight.w300),
-                  ),
-                ]))
+                  text: TextSpan(children: [
+                    TextSpan(
+                      text: "Earn More ",
+                      style: GoogleFonts.montserrat(
+                          fontSize: 16.sp, fontWeight: FontWeight.w700),
+                    ),
+                    TextSpan(
+                      text: "by ",
+                      style: GoogleFonts.montserrat(
+                          fontSize: 16.sp, fontWeight: FontWeight.w300),
+                    ),
+                  ]),
+                ),
+
+                VerticalSpace(
+                  getResponsiveHeight(context, 10),
+                ),
+
+                SizedBox(
+                  width: screenWidth,
+                  height: getResponsiveHeight(context, 150),
+                  child: ListView.builder(
+                      itemCount: walletController.earnByList.length,
+                      itemExtent: 150,
+
+                      // padding: EdgeInsets.all(0),
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return Stack(
+                          children: [
+                            Image.asset(
+                              Constants.card2,
+                            ),
+                            Positioned(
+                              top: getResponsiveHeight(context, 15),
+                              left: getResponsiveWidth(context, 15),
+                              child: Image.asset(
+                                  width: getResponsiveWidth(context, 80),
+                                  height: getResponsiveHeight(context, 80),
+                                  // Constants.referral,
+                                  walletController.earnByList[index]['icon']),
+                            ),
+                            Positioned(
+                              bottom: getResponsiveHeight(context, 25),
+                              left: getResponsiveWidth(context, 12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  MontserratNoHeight(
+                                      text: walletController.earnByList[index]
+                                          ["title"],
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w600),
+                                  MontserratNoHeight(
+                                    // text: "Streak",
+                                    text: walletController.earnByList[index]
+                                                ['second'] ==
+                                            null
+                                        ? ''
+                                        : walletController.earnByList[index]
+                                            ['second'],
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
+                )
               ],
             ),
           ),
