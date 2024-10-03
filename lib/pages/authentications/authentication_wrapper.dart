@@ -19,68 +19,26 @@ class Authentication extends StatelessWidget {
     final authenticationController = Get.find<AuthenticationController>();
     final PageController pageController = PageController();
     return Scaffold(
-      backgroundColor: Constants.primaryColor,
+      backgroundColor: Color.fromRGBO(21, 23, 23, 1),
       body: LayoutBuilder(builder: (context, constriants) {
         final double screenHeight = constriants.maxHeight;
         final double screenWidth = constriants.maxWidth;
         return Stack(
           children: [
-            ClipRect(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                heightFactor: 0.3,
-                // widthFactor: 1\\,
-                child: Transform.scale(
-                  scale: 1.6,
-                  child: Image.asset(
+            Positioned.fill(
+                child: Image.asset(
+                    height: screenHeight,
+                    width: screenWidth,
                     fit: BoxFit.cover,
-                    height: constriants.maxHeight * 0.70,
-                    width: double.infinity,
-                    Constants.background,
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              // bottom:
-              top: constriants.maxHeight * 0.16,
-              child: CustomPaint(
-                size: Size(constriants.maxWidth, 0),
-                painter: CurvedLinePainter(),
-              ),
-            ),
+                    Constants.authentication_background)),
             Positioned(
               // bottom: 0,
-              // top: constriants.maxHeight * 0.1,
-
-              child: Padding(
-                padding: EdgeInsets.only(top: constriants.maxHeight * 0.23),
-                child: CustomPaint(
-                  size: Size(constriants.maxWidth, 0),
-                  painter: CurvedLinePainter(),
-                ),
-              ),
-            ),
-            Positioned(
-              // bottom: 0,
-              // top: constriants.maxHeight * 0.1,
-
-              child: Padding(
-                padding: EdgeInsets.only(top: constriants.maxHeight * 0.3),
-                child: CustomPaint(
-                  size: Size(constriants.maxWidth, 0),
-                  painter: CurvedLinePainter(),
-                ),
-              ),
-            ),
-            Positioned(
-              // bottom: 0,
-              // top: constriants.maxHeight * 0.1,
-
-              child: Padding(
-                padding: EdgeInsets.only(top: constriants.maxHeight * 0.18),
-                child: Obx(() {
-                  return Column(
+              top: constriants.maxHeight * 0.2,
+              child: Obx(() {
+                return SizedBox(
+                  height: screenHeight * 0.8,
+                  width: screenWidth,
+                  child: Column(
                     children: [
                       Montserrat(
                           text: authenticationController.isSignup.value
@@ -220,9 +178,9 @@ class Authentication extends StatelessWidget {
                       //   ),
                       // )
                     ],
-                  );
-                }),
-              ),
+                  ),
+                );
+              }),
             ),
           ],
         );

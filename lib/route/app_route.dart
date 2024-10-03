@@ -4,8 +4,8 @@ import 'package:reward_vpn/pages/authentications/forgot_password/forgot_password
 import 'package:reward_vpn/pages/authentications/forgot_password/forgot_password_verification.dart';
 import 'package:reward_vpn/pages/authentications/forgot_password/reset_password.dart';
 import 'package:reward_vpn/pages/authentications/signup/signup_verification.dart';
-import 'package:reward_vpn/pages/bottom_nav_wrapper.dart';
-import 'package:reward_vpn/pages/homescreen.dart';
+import 'package:reward_vpn/pages/main_pages/bottom_nav_wrapper.dart';
+import 'package:reward_vpn/pages/main_pages/homescreen.dart';
 import 'package:reward_vpn/pages/onBoardings/onboarding_wrapper.dart';
 import 'package:reward_vpn/pages/onBoardings/onBoarding1.dart';
 

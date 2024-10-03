@@ -78,7 +78,7 @@ class SignupVerification extends StatelessWidget {
               VerticalSpace(screenHeight * 0.02),
               GestureDetector(
                 onTap: () {
-                  Get.toNamed(AppRoute.resetPassword);
+                  Get.toNamed(AppRoute.signup);
                 },
                 child: PrimaryButton(
                   text: "Verify",

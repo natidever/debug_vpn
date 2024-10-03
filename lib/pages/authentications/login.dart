@@ -17,7 +17,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Constants.primaryColor,
+      backgroundColor: Constants.buttonTextColor,
       body: LayoutBuilder(builder: (context, constriants) {
         final double screenHeight = constriants.maxHeight;
         final double screenWidth = constriants.maxWidth;
@@ -97,7 +97,7 @@ class Login extends StatelessWidget {
                       height: 60,
                       width: 159,
                       decoration: BoxDecoration(
-                        color: Color.fromRGBO(27, 33, 67, 1),
+                        color: Color.fromRGBO(55, 60, 63, 1),
                         // color: Color.fromRGBO(255, 255, 255, 1),
                         borderRadius: BorderRadius.circular(100),
                       ),
@@ -125,7 +125,8 @@ class Login extends StatelessWidget {
                         height: 60,
                         width: 159,
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(27, 33, 67, 1),
+                          color: Color.fromRGBO(55, 60, 63, 1),
+
                           // color: Color.fromRGBO(255, 255, 255, 1),
                           borderRadius: BorderRadius.circular(100),
                         ),
@@ -156,7 +157,11 @@ class Login extends StatelessWidget {
 
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20.0),
-                  child: PrimaryButton(text: "Login"),
+                  child: GestureDetector(
+                      onTap: () {
+                        Get.toNamed(AppRoute.bottomNavWrapper);
+                      },
+                      child: PrimaryButton(text: "Login")),
                 ),
                 // Padding(
                 //   padding:

@@ -17,7 +17,7 @@ class Signup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Constants.primaryColor,
+      backgroundColor: Color.fromRGBO(21, 23, 23, 1),
       body: LayoutBuilder(builder: (context, constriants) {
         final double screenHeight = constriants.maxHeight;
         final double screenWidth = constriants.maxWidth;
@@ -82,7 +82,8 @@ class Signup extends StatelessWidget {
                       height: 60,
                       width: 159,
                       decoration: BoxDecoration(
-                        color: Color.fromRGBO(27, 33, 67, 1),
+                        color: Color.fromRGBO(55, 60, 63, 1),
+
                         // color: Color.fromRGBO(255, 255, 255, 1),
                         borderRadius: BorderRadius.circular(100),
                       ),
@@ -110,7 +111,8 @@ class Signup extends StatelessWidget {
                         height: 60,
                         width: 159,
                         decoration: BoxDecoration(
-                          color: Color.fromRGBO(27, 33, 67, 1),
+                          color: Color.fromRGBO(55, 60, 63, 1),
+
                           // color: Color.fromRGBO(255, 255, 255, 1),
                           borderRadius: BorderRadius.circular(100),
                         ),

@@ -59,7 +59,7 @@ class _CustomFormsState extends State<CustomForms> {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
-              color: Constants.primaryColor, // Background color of the field
+              color: Constants.buttonTextColor, // Background color of the field
             ),
             child: Obx(() {
               return TextFormField(

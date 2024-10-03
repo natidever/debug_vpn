@@ -10,11 +10,14 @@ class Constants {
 
   static List<Color> gradiant() {
     return [
-      Color.fromRGBO(48, 84, 172, 1),
-      Color.fromRGBO(48, 82, 177, 1),
-      Color.fromRGBO(50, 98, 180, 1),
-      Color.fromRGBO(52, 110, 187, 1),
-      Color.fromRGBO(63, 177, 227, 1),
+      // Color.fromRGBO(48, 84, 172, 1),
+      // Color.fromRGBO(48, 82, 177, 1),
+      // Color.fromRGBO(50, 98, 180, 1),
+      // Color.fromRGBO(52, 110, 187, 1),
+      // Color.fromRGBO(63, 177, 227, 1),
+
+      Color.fromRGBO(149, 226, 123, 1),
+      Color.fromRGBO(123, 191, 173, 1),
     ];
   }
 
@@ -75,7 +78,12 @@ class Constants {
   static const homeIcon = 'assets/icons/home.png';
   static const settingIcon = 'assets/icons/setting_icon.png';
   static const flash = 'assets/icons/flash.png';
+  static const wallet = 'assets/icons/wallet.png';
 
   static const homepage_background = 'assets/images/homepage_background.jpg';
+  static const onboarding_background = 'assets/images/onboarding.jpg';
+  static const green_planet = 'assets/images/green_planet.png';
+  static const authentication_background =
+      'assets/images/authentication_background.png';
   // static const home = 'assets/images/home.jpg';
 }

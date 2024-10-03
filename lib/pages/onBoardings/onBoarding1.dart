@@ -63,23 +63,25 @@ class OnBoarding1 extends StatelessWidget {
                 ),
               ),
               Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      constriants.maxWidth * 0.19,
-                      constriants.maxHeight * 0.80,
-                      constriants.maxWidth * 0.1,
-                      0),
-                  // top: constriants.maxHeight * 0.73,
-                  child: Poppins32(text: "Stay safe, secure, and connected")),
+                padding: EdgeInsets.fromLTRB(
+                    constriants.maxWidth * 0.19,
+                    constriants.maxHeight * 0.80,
+                    constriants.maxWidth * 0.1,
+                    0),
+                // top: constriants.maxHeight * 0.73,
+                child: Poppins32(text: "Stay safe and secure"),
+              ),
               Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      constriants.maxWidth * 0.2,
-                      constriants.maxHeight * 0.93,
-                      constriants.maxWidth * 0.15,
-                      0),
-                  // top: constriants.maxHeight * 0.73,
-                  child: Montserrat12(
-                      text:
-                          "Unlock a world of privacy with a twist: Earn rewards just by using our VPN.")),
+                padding: EdgeInsets.fromLTRB(
+                    constriants.maxWidth * 0.2,
+                    constriants.maxHeight * 0.93,
+                    constriants.maxWidth * 0.15,
+                    0),
+                // top: constriants.maxHeight * 0.73,
+                child: Montserrat12(
+                    text:
+                        "Unlock a world of privacy with a twist: Earn rewards just by using our VPN."),
+              ),
               Constants.check()
             ],
           );

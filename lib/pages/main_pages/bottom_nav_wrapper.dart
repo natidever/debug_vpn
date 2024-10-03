@@ -1,8 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
-import 'package:reward_vpn/pages/homescreen.dart';
+import 'package:reward_vpn/pages/main_pages/homescreen.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 // DartPluginRegistrant
@@ -77,8 +75,8 @@ class _BottomNavWrapperState extends State<BottomNavWrapper>
                         if (tabController.index == 0)
                           Image.asset(Constants.iconBackground),
                         Positioned(
-                          top: constraints.maxHeight * 0.016,
-                          left: constraints.maxWidth * 0.016,
+                          top: constraints.maxHeight * 0.018,
+                          left: constraints.maxWidth * 0.035,
                           child: Image.asset(
                             Constants.homeIcon,
                             width: getResponsiveWidth(context, 37),
@@ -98,40 +96,97 @@ class _BottomNavWrapperState extends State<BottomNavWrapper>
 
                 // IconButton(
                 //   icon: Icon(
-                //     Icons.home,
-                //     color: tabController.index == 0 ? Colors.blue : Colors.grey,
+                //     Icons.add,
+                //     color: tabController.index == 1 ? Colors.blue : Colors.grey,
                 //   ),
                 //   onPressed: () {
                 //     setState(() {
-                //       tabController.index = 0;
+                //       tabController.index = 1;
                 //     });
                 //   },
                 // ),
-                // Post Icon
-                IconButton(
-                  icon: Icon(
-                    Icons.add,
-                    color: tabController.index == 1 ? Colors.blue : Colors.grey,
-                  ),
-                  onPressed: () {
+                GestureDetector(
+                  onTap: () {
                     setState(() {
                       tabController.index = 1;
                     });
                   },
+                  child: SizedBox(
+                    height: getResponsiveHeight(context, 60),
+                    width: getResponsiveWidth(context, 60),
+                    child: Stack(
+                      children: [
+                        if (tabController.index == 1)
+                          Image.asset(
+                            Constants.iconBackground,
+                          ),
+                        Positioned(
+                          top: constraints.maxHeight * 0.02,
+                          left: constraints.maxWidth * 0.037,
+                          child: Image.asset(
+                            Constants.dollar,
+                            width: getResponsiveWidth(context, 27),
+                            height: getResponsiveHeight(context, 27),
+                          ),
+                        ),
+                        // if (tabController.index != 0)
+                        //   Image.asset(
+                        //     Constants.homeIcon,
+                        //     width: 37,
+                        //     height: 37,
+                        //   )
+                      ],
+                    ),
+                  ),
                 ),
 
-                // Profile Icon
-                IconButton(
-                  icon: Icon(
-                    Icons.person,
-                    color: tabController.index == 2 ? Colors.blue : Colors.grey,
-                  ),
-                  onPressed: () {
+                GestureDetector(
+                  onTap: () {
                     setState(() {
                       tabController.index = 2;
                     });
                   },
-                ),
+                  child: SizedBox(
+                    height: getResponsiveHeight(context, 60),
+                    width: getResponsiveWidth(context, 60),
+                    child: Stack(
+                      children: [
+                        if (tabController.index == 2)
+                          Image.asset(
+                            Constants.iconBackground,
+                          ),
+                        Positioned(
+                          top: constraints.maxHeight * 0.02,
+                          left: constraints.maxWidth * 0.037,
+                          child: Image.asset(
+                            Constants.wallet,
+                            width: getResponsiveWidth(context, 27),
+                            height: getResponsiveHeight(context, 27),
+                          ),
+                        ),
+                        // if (tabController.index != 0)
+                        //   Image.asset(
+                        //     Constants.homeIcon,
+                        //     width: 37,
+                        //     height: 37,
+                        //   )
+                      ],
+                    ),
+                  ),
+                )
+
+                // Profile Icon
+                // IconButton(
+                //   icon: Icon(
+                //     Icons.person,
+                //     color: tabController.index == 2 ? Colors.blue : Colors.grey,
+                //   ),
+                //   onPressed: () {
+                //     setState(() {
+                //       tabController.index = 2;
+                //     });
+                //   },
+                // ),
               ],
             ),
           ),
@@ -163,33 +218,13 @@ class _BottomNavWrapperState extends State<BottomNavWrapper>
             children: [
               // HomePage(),
               Homescreen(), // First tab
-              PostPage(), // Second tab
-              ProfilePage(), // Third tab
+              Homescreen(), // First tab
+              Homescreen(), // First tab
+              // Second tab
             ],
           ),
         );
       }),
     );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Home Page'));
-  }
-}
-
-class PostPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Post Page'));
-  }
-}
-
-class ProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Profile Page'));
   }
 }
