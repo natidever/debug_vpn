@@ -6,6 +6,7 @@ import 'package:reward_vpn/pages/authentications/forgot_password/reset_password.
 import 'package:reward_vpn/pages/authentications/signup/signup_verification.dart';
 import 'package:reward_vpn/pages/main_pages/bottom_nav_wrapper.dart';
 import 'package:reward_vpn/pages/main_pages/homescreen.dart';
+import 'package:reward_vpn/pages/main_pages/wallet.dart';
 import 'package:reward_vpn/pages/onBoardings/onboarding_wrapper.dart';
 import 'package:reward_vpn/pages/onBoardings/onBoarding1.dart';
 
@@ -19,6 +20,7 @@ class AppRoute {
   static const signupVerification = '/signupVerification';
   static const homescreen = '/homescreen';
   static const bottomNavWrapper = '/bottomNavWrapper';
+  static const wallet = '/wallet';
 
   static List<GetPage> route = [
     GetPage(name: onBoarding, page: () => OnboardingWrapper()),
@@ -32,5 +34,6 @@ class AppRoute {
         page: () => ForgotPasswordVerification()),
     GetPage(name: signupVerification, page: () => SignupVerification()),
     GetPage(name: homescreen, page: () => Homescreen()),
+    GetPage(name: wallet, page: () => Wallet()),
   ];
 }

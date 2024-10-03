@@ -22,10 +22,13 @@ class Signup extends StatelessWidget {
         final double screenHeight = constriants.maxHeight;
         final double screenWidth = constriants.maxWidth;
         return Padding(
-          padding: EdgeInsets.only(left: screenWidth * 0.08),
+          padding: EdgeInsets.only(left: screenWidth * 0.03),
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                VerticalSpace(screenWidth * 0.07),
+
                 CustomForms(
                   prefix: Constants.email,
                   isPassword: false.obs,
@@ -45,7 +48,7 @@ class Signup extends StatelessWidget {
                   isPassword: true.obs,
                   hintText: "Confirm Password",
                 ),
-                VerticalSpace(constriants.maxHeight * 0.07),
+                VerticalSpace(constriants.maxHeight * 0.03),
                 // VerticalSpace(30.h),
 
                 Row(
@@ -74,7 +77,7 @@ class Signup extends StatelessWidget {
                   ],
                 ),
                 // HorizontalLine(height: 1, width: 400)
-                VerticalSpace(screenHeight * 0.05),
+                VerticalSpace(screenHeight * 0.03),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -138,14 +141,16 @@ class Signup extends StatelessWidget {
                     //the two button goes here
                   ],
                 ),
-                VerticalSpace(screenHeight * 0.060),
+                VerticalSpace(screenHeight * 0.050),
                 // VerticalSpace(50.h),
 
                 GestureDetector(
                     onTap: () {
                       Get.toNamed(AppRoute.signupVerification);
                     },
-                    child: PrimaryButton(text: "Sign up")),
+                    child: Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: PrimaryButton(text: "Sign up"))),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 45.0, vertical: 5),

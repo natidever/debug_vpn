@@ -106,7 +106,7 @@ class ResetPassword extends StatelessWidget {
                   // Expanded(child: Container()),
                   GestureDetector(
                     onTap: () {
-                      // Get.toNamed(AppRoute.forgotPasswordVerificaion);
+                      Get.toNamed(AppRoute.signup);
                     },
                     child: PrimaryButton(
                         fontSize: 16,
@@ -114,35 +114,6 @@ class ResetPassword extends StatelessWidget {
                         width: 343.w,
                         text: "Change Now"),
                   )
-
-                  // VerticalSpace(25),
-
-                  // Montserrat(
-                  //     color: Color.fromRGBO(143, 137, 150, 1),
-                  //     text:
-                  //         "Enter your email to reset your password. We will send the code to the email so you can reset password",
-                  //     fontSize: 12,
-                  //     fontWeight: FontWeight.w500),
-
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                  //   child: CustomForms(
-                  //     isPassword: false.obs,
-                  //     hintText: "Email",
-                  //     prefix: Constants.email,
-                  //   ),
-                  // ),
-                  // VerticalSpace(constriants.maxHeight * 0.05),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     Get.toNamed(AppRoute.forgotPasswordVerificaion);
-                  //   },
-                  //   child: PrimaryButton(
-                  //       fontSize: 16,
-                  //       height: 60.h,
-                  //       width: 343.w,
-                  //       text: "Send Code"),
-                  // )
                 ],
               ),
             )
@@ -150,51 +121,6 @@ class ResetPassword extends StatelessWidget {
           ],
         );
       }),
-      // body: LayoutBuilder(builder: (context, constriants) {
-      //   // return Background(
-      //   //   appBarText: "Reset Password",
-      //   //   title: "Reset Password ",
-      //   //   description:
-      //   //       "You can reset your password now. Make sure you remember it now or you can reset again & again",
-      //   //   overlaychild: Column(
-      //   //     // mainAxisSize: MainAxisSize.min,
-      //   //     children: [
-      //   //       VerticalSpace(25),
-      //   //       Padding(
-      //   //         padding: const EdgeInsets.symmetric(horizontal: 18.0),
-      //   //         child: CustomForms(
-      //   //           isPassword: true.obs,
-      //   //           hintText: "Password",
-      //   //           prefix: Constants.password,
-      //   //         ),
-      //   //       ),
-      //   //       VerticalSpace(constriants.maxHeight * 0.035),
-      //   //       Padding(
-      //   //         padding: const EdgeInsets.symmetric(horizontal: 18.0),
-      //   //         child: CustomForms(
-      //   //           isPassword: true.obs,
-      //   //           hintText: "Confirm Password",
-      //   //           prefix: Constants.password,
-      //   //         ),
-      //   //       ),
-      //   //       VerticalSpace(constriants.maxHeight * 0.35),
-
-      //   //       // Expanded(child: Container()),
-      //   //       GestureDetector(
-      //   //         onTap: () {
-      //   //           // Get.toNamed(AppRoute.forgotPasswordVerificaion);
-      //   //         },
-      //   //         child: PrimaryButton(
-      //   //             fontSize: 16,
-      //   //             height: 60.h,
-      //   //             width: 343.w,
-      //   //             text: "Change Now"),
-      //   //       )
-      //   //     ],
-      //   //   ),
-      //   // );
-      // },
-      // ),
     );
   }
 }

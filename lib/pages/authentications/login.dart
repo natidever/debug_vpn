@@ -22,7 +22,7 @@ class Login extends StatelessWidget {
         final double screenHeight = constriants.maxHeight;
         final double screenWidth = constriants.maxWidth;
         return Padding(
-          padding: EdgeInsets.only(left: screenWidth * 0.08),
+          padding: EdgeInsets.only(left: screenWidth * 0.01),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -59,7 +59,7 @@ class Login extends StatelessWidget {
                     )
                   ],
                 ),
-                VerticalSpace(constriants.maxHeight * 0.1),
+                VerticalSpace(constriants.maxHeight * 0.06),
 
                 // VerticalSpace(30.h),
 
@@ -90,43 +90,16 @@ class Login extends StatelessWidget {
                 ),
                 // HorizontalLine(height: 1, width: 400)
                 VerticalSpace(screenHeight * 0.05),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: 60,
-                      width: 159,
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(55, 60, 63, 1),
-                        // color: Color.fromRGBO(255, 255, 255, 1),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            fit: BoxFit.cover,
-                            Constants.google,
-                            height: 18,
-                            width: 18,
-                          ),
-                          HorizontalSpace(10),
-                          Montserrat(
-                            text: "Google",
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 19.0),
-                      child: Container(
+                Padding(
+                  padding: const EdgeInsets.only(left: 18.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
                         height: 60,
                         width: 159,
                         decoration: BoxDecoration(
                           color: Color.fromRGBO(55, 60, 63, 1),
-
                           // color: Color.fromRGBO(255, 255, 255, 1),
                           borderRadius: BorderRadius.circular(100),
                         ),
@@ -135,33 +108,64 @@ class Login extends StatelessWidget {
                           children: [
                             Image.asset(
                               fit: BoxFit.cover,
-                              Constants.apple,
-                              height: 20,
+                              Constants.google,
+                              height: 18,
                               width: 18,
                             ),
                             HorizontalSpace(10),
                             Montserrat(
-                              text: "Apple",
+                              text: "Google",
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                             )
                           ],
                         ),
                       ),
-                    )
-                    //the two button goes here
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.only(right: 19.0),
+                        child: Container(
+                          height: 60,
+                          width: 159,
+                          decoration: BoxDecoration(
+                            color: Color.fromRGBO(55, 60, 63, 1),
+
+                            // color: Color.fromRGBO(255, 255, 255, 1),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                fit: BoxFit.cover,
+                                Constants.apple,
+                                height: 20,
+                                width: 18,
+                              ),
+                              HorizontalSpace(10),
+                              Montserrat(
+                                text: "Apple",
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                      //the two button goes here
+                    ],
+                  ),
                 ),
-                VerticalSpace(screenHeight * 0.069),
+                VerticalSpace(screenHeight * 0.075),
                 // VerticalSpace(50.h),
 
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
+                  padding: const EdgeInsets.only(bottom: 1000.0),
                   child: GestureDetector(
-                      onTap: () {
-                        Get.toNamed(AppRoute.bottomNavWrapper);
-                      },
-                      child: PrimaryButton(text: "Login")),
+                    onTap: () {
+                      Get.toNamed(AppRoute.bottomNavWrapper);
+                    },
+                    child: PrimaryButton(text: "Login"),
+                  ),
                 ),
                 // Padding(
                 //   padding:

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:reward_vpn/pages/main_pages/homescreen.dart';
+import 'package:reward_vpn/pages/main_pages/wallet.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 // DartPluginRegistrant
@@ -218,7 +219,8 @@ class _BottomNavWrapperState extends State<BottomNavWrapper>
             children: [
               // HomePage(),
               Homescreen(), // First tab
-              Homescreen(), // First tab
+              // Homescreen(), // First tab
+              Wallet(), // First tab
               Homescreen(), // First tab
               // Second tab
             ],

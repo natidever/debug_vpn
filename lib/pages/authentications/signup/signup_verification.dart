@@ -125,7 +125,8 @@ class SignupVerification extends StatelessWidget {
                         inactiveColor:
                             Constants.borderColor, // Border color when inactive
                         selectedColor: Constants.borderColor, //
-                        activeColor: Color.fromRGBO(50, 98, 180, 1),
+                        activeColor: Color.fromRGBO(149, 226, 123, 1),
+
                         // selectedColor:
                         //     Colors.black, // Border color when selecteds333
                       ),
