@@ -22,7 +22,7 @@ class Signup extends StatelessWidget {
         final double screenHeight = constriants.maxHeight;
         final double screenWidth = constriants.maxWidth;
         return Padding(
-          padding: const EdgeInsets.only(left: 16.0),
+          padding: EdgeInsets.only(left: screenWidth * 0.08),
           child: SingleChildScrollView(
             child: Column(
               children: [
