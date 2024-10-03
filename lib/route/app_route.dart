@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:reward_vpn/controller/main_page_controllers/task.dart';
+import 'package:reward_vpn/pages/main_pages/task.dart';
 import 'package:reward_vpn/pages/authentications/authentication_wrapper.dart';
 import 'package:reward_vpn/pages/authentications/forgot_password/forgot_password.dart';
 import 'package:reward_vpn/pages/authentications/forgot_password/forgot_password_verification.dart';

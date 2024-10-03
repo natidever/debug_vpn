@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
-import 'package:reward_vpn/controller/main_page_controllers/task.dart';
+import 'package:reward_vpn/pages/main_pages/task.dart';
 import 'package:reward_vpn/pages/main_pages/homescreen.dart';
 import 'package:reward_vpn/pages/main_pages/wallet.dart';
 import 'package:reward_vpn/utils/constants.dart';

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reward_vpn/controller/main_page_controllers/task_controller.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
@@ -10,6 +12,8 @@ class Task extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final taskController = Get.find<TaskController>();
+
     return Scaffold(
       body: LayoutBuilder(builder: (context, constriants) {
         final double screenHeight = constriants.maxHeight;
@@ -132,6 +136,52 @@ class Task extends StatelessWidget {
                           ),
                         ])
                   ],
+                ),
+                VerticalSpace(
+                  getResponsiveHeight(context, 25),
+                ),
+                Container(
+                  // width: 328.w,
+                  // height: 40,
+
+                  width: getResponsiveWidth(context, 328),
+                  height: getResponsiveHeight(context, 40),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    // color: const Color.fromARGB(255, 98, 0, 210),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            gradient: taskController.isTask.value == false
+                                ? LinearGradient(
+                                    colors: Constants.gradiant(),
+                                  )
+                                : const LinearGradient(colors: [
+                                    Color.fromRGBO(255, 255, 255, 0.4),
+                                    Color.fromRGBO(255, 255, 255, 0.1),
+                                  ]),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          child: Container(
+                              decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: taskController.isTask.value
+                            ? LinearGradient(
+                                colors: Constants.gradiant(),
+                              )
+                            : const LinearGradient(colors: [
+                                Color.fromRGBO(255, 255, 255, 0.4),
+                                Color.fromRGBO(255, 255, 255, 0.1),
+                              ]),
+                      ))),
+                    ],
+                  ),
                 )
               ],
             ),
