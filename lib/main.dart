@@ -12,15 +12,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: const Size(370, 812),
-        builder: (_, context) {
-          return GetMaterialApp(
-            initialRoute: AppRoute.bottomNavWrapper,
-            getPages: AppRoute.route,
-            initialBinding: MainBinder(),
-            debugShowCheckedModeBanner: false,
-            // initialBinding: ,
-          );
-        });
+      designSize: const Size(370, 812),
+      builder: (_, context) {
+        return GetMaterialApp(
+          initialRoute: AppRoute.onboarding,
+          getPages: AppRoute.route,
+          initialBinding: MainBinder(),
+          debugShowCheckedModeBanner: false,
+          // initialBinding: ,
+        );
+      },
+    );
   }
 }

@@ -13,8 +13,10 @@ import 'package:reward_vpn/pages/onBoardings/onboarding_wrapper.dart';
 import 'package:reward_vpn/pages/onBoardings/onBoarding1.dart';
 
 class AppRoute {
-  static const onBoarding = '/onBoarding';
-  static const onBoarding1 = '/onBoarding1';
+  // static const onBoarding = '/onBoarding';
+  // static const onBoarding1 = '/onBoarding1';
+  static const onboarding = '/onboarding';
+
   static const signup = '/signup';
   static const forgot = '/forgot';
   static const forgotPasswordVerificaion = '/forgotPasswordVerificaion';
@@ -27,8 +29,10 @@ class AppRoute {
   static const setting = '/setting';
 
   static List<GetPage> route = [
-    GetPage(name: onBoarding, page: () => OnboardingWrapper()),
-    GetPage(name: onBoarding1, page: () => OnBoarding1()),
+    // GetPage(name: onBoarding, page: () => OnboardingWrapper()),
+    // GetPage(name: onBoarding1, page: () => OnboardingWrapper()),
+    GetPage(name: onboarding, page: () => OnboardingWrapper()),
+
     GetPage(name: signup, page: () => Authentication()),
     GetPage(name: forgot, page: () => ForgotPassword()),
     GetPage(name: resetPassword, page: () => ResetPassword()),
