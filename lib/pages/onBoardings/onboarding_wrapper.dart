@@ -6,8 +6,6 @@ import 'package:reward_vpn/route/app_route.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 
-// Example of the next page to navigate to
-
 class OnboardingWrapper extends StatefulWidget {
   @override
   _OnboardingWrapperState createState() => _OnboardingWrapperState();
@@ -51,7 +49,8 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AnimatedSwitcher(
-                duration: Duration(milliseconds: 500),
+                duration: Duration(milliseconds: 50),
+                // duration: Duration(milliseconds: 500),
                 child: animations[_animationIndex],
                 switchInCurve: Curves.easeIn,
                 switchOutCurve: Curves.easeOut,
@@ -97,7 +96,8 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
             height: 1.5,
           ),
           textAlign: TextAlign.center,
-          speed: Duration(milliseconds: 100),
+          speed: Duration(milliseconds: 50),
+          // speed: Duration(milliseconds: 100),
         ),
       ],
     );
@@ -122,7 +122,8 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
             height: 1.5,
           ),
           textAlign: TextAlign.center,
-          speed: Duration(milliseconds: 100),
+          speed: Duration(milliseconds: 50),
+          // speed: Duration(milliseconds: 100),
         ),
       ],
     );
@@ -133,8 +134,10 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
       key: ValueKey(2),
       isRepeatingAnimation: false,
       onFinished: () {
-        // Navigate to next page after third animation completes
-        Get.toNamed(AppRoute.signup);
+        // Immediately navigate to next page after third animation completes
+        Future.delayed(Duration(milliseconds: 4), () {
+          Get.toNamed(AppRoute.signup); // Change route here with minimal delay
+        });
       },
       animatedTexts: [
         TypewriterAnimatedText(
@@ -146,7 +149,8 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
             height: 1.5,
           ),
           textAlign: TextAlign.center,
-          speed: Duration(milliseconds: 100),
+          speed: Duration(milliseconds: 50),
+          // speed: Duration(milliseconds: 100),
         ),
       ],
     );
