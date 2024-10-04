@@ -3,12 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reward_vpn/controller/main_page_controllers/task_controller.dart';
+import 'package:reward_vpn/pages/main_pages/tasks/boosts.dart';
+import 'package:reward_vpn/pages/main_pages/tasks/task.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
 
-class Task extends StatelessWidget {
-  const Task({super.key});
+class Task_Wrapper extends StatelessWidget {
+  const Task_Wrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +20,7 @@ class Task extends StatelessWidget {
       body: LayoutBuilder(builder: (context, constriants) {
         final double screenHeight = constriants.maxHeight;
         final double screenWidth = constriants.maxWidth;
+        PageController pageController = PageController();
         return Container(
           width: screenWidth,
           height: screenHeight,
@@ -141,6 +144,13 @@ class Task extends StatelessWidget {
                   VerticalSpace(
                     getResponsiveHeight(context, 25),
                   ),
+
+                  //CUSTOM tab BAR TO HANDLE THE TWO PAGE
+                  //Page controller will be used to hande the animation
+                  //
+                  //
+                  //
+
                   Container(
                     // width: 328.w,
                     // height: 40,
@@ -158,11 +168,16 @@ class Task extends StatelessWidget {
                         // color: const Color.fromARGB(255, 98, 0, 210),
 
                         ),
+
                     child: Row(
                       children: [
                         GestureDetector(
                           onTap: () {
                             taskController.isTask.value = true;
+                            //changing to next page
+                            pageController.animateToPage(0,
+                                duration: Duration(microseconds: 23),
+                                curve: Curves.linear);
                             print("task");
                           },
                           child: Container(
@@ -194,6 +209,11 @@ class Task extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             taskController.isTask.value = false;
+                            pageController.animateToPage(
+                              1,
+                              curve: Curves.linear,
+                              duration: Duration(microseconds: 23),
+                            );
                             print("bossts");
                           },
                           child: Container(
@@ -207,7 +227,7 @@ class Task extends StatelessWidget {
                                     )
                                   : const LinearGradient(colors: [
                                       Color.fromRGBO(255, 255, 255, 0),
-                                      Color.fromRGBO(255, 255, 255, 0.0),
+                                      Color.fromRGBO(255, 255, 255, 0.5),
                                     ]),
                             ),
                             child: Center(
@@ -222,6 +242,34 @@ class Task extends StatelessWidget {
                             ),
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+
+                  /// the two page boost and the task
+                  /// 2 page makes it easy to maintain
+                  /// and to create animation effect cause custm nav bar is used
+                  ///
+                  ///
+                  VerticalSpace(
+                    getResponsiveHeight(context, 15),
+                  ),
+                  Container(
+                    height: getResponsiveHeight(context, screenHeight * 0.55),
+                    width: screenWidth,
+                    // color: Colors.transparent,
+                    child: PageView(
+                      onPageChanged: (index) {
+                        if (index == 0) {
+                          taskController.isTask.value = true;
+                        } else if (index == 1) {
+                          taskController.isTask.value = false;
+                        }
+                      },
+                      controller: pageController,
+                      children: [
+                        Task(),
+                        Boosts(),
                       ],
                     ),
                   )

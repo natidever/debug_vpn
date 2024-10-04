@@ -53,6 +53,7 @@ class Constants {
   static const textColor = Color.fromRGBO(236, 236, 236, 1);
   static const buttonTextColor = Color.fromRGBO(21, 23, 24, 1);
   static const greenColor = Color.fromRGBO(149, 226, 123, 1);
+  static const taskBackgroundColor = Color.fromRGBO(37, 39, 41, 1);
 
   //images
   static const background = 'assets/images/purplePlanet.png';
@@ -86,6 +87,13 @@ class Constants {
   static const referral = 'assets/icons/referral.png';
   static const ad = 'assets/icons/ad.png';
   static const task = 'assets/icons/task.png';
+//icons found in the task page
+  static const adduser = 'assets/icons/add_user.png';
+  static const award = 'assets/icons/award.png';
+  static const letter = 'assets/icons/letter.png';
+  static const play_icon = 'assets/icons/play_icon.png';
+  static const read = 'assets/icons/read.png';
+  //
 
   static const homepage_background = 'assets/images/homepage_background.jpg';
   static const onboarding_background = 'assets/images/onboarding.jpg';
