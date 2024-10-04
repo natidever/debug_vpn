@@ -33,158 +33,201 @@ class Task extends StatelessWidget {
                 getResponsiveHeight(context, 40),
                 getResponsiveWidth(context, 16),
                 0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    RichText(
-                      text: TextSpan(
+            child: Obx(() {
+              return Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "My ",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 22, fontWeight: FontWeight.w600),
+                            ),
+                            TextSpan(
+                              text: "Task ",
+                              style: GoogleFonts.poppins(
+                                  fontSize: 22, fontWeight: FontWeight.w200),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          TextSpan(
-                            text: "My ",
-                            style: GoogleFonts.poppins(
-                                fontSize: 22, fontWeight: FontWeight.w600),
+                          // HorizontalSpace(getResponsiveWidth(context, 15)),
+                          Image.asset(
+                            width: getResponsiveWidth(context, 24),
+                            height: getResponsiveHeight(context, 24),
+                            Constants.settingIcon,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  VerticalSpace(
+                    getResponsiveHeight(context, 36),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        Constants.box,
+                        width: getResponsiveWidth(context, 34),
+                        height: getResponsiveHeight(context, 34),
+                      ),
+                      HorizontalSpace(
+                        getResponsiveWidth(context, 14),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          MontserratNoHeight(
+                            text: "Total Available \$RV",
+                            fontSize: 8.sp,
+                            color: Constants.white,
+                            fontWeight: FontWeight.w300,
                           ),
-                          TextSpan(
-                            text: "Task ",
-                            style: GoogleFonts.poppins(
-                                fontSize: 22, fontWeight: FontWeight.w200),
+
+                          // Constants.check()
+                          MontserratNoHeight(
+                            text: "5673",
+                            fontSize: 36.sp,
+                            color: Constants.white,
+                            fontWeight: FontWeight.w500,
                           ),
                         ],
                       ),
-                    ),
-                    Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // HorizontalSpace(getResponsiveWidth(context, 15)),
-                        Image.asset(
-                          width: getResponsiveWidth(context, 24),
-                          height: getResponsiveHeight(context, 24),
-                          Constants.settingIcon,
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                VerticalSpace(
-                  getResponsiveHeight(context, 36),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      Constants.box,
-                      width: getResponsiveWidth(context, 34),
-                      height: getResponsiveHeight(context, 34),
-                    ),
-                    HorizontalSpace(
-                      getResponsiveWidth(context, 14),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        MontserratNoHeight(
-                          text: "Total Available \$RV",
-                          fontSize: 8.sp,
-                          color: Constants.white,
-                          fontWeight: FontWeight.w300,
-                        ),
-
-                        // Constants.check()
-                        MontserratNoHeight(
-                          text: "5673",
-                          fontSize: 36.sp,
-                          color: Constants.white,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ],
-                    ),
-                    // Constants.check(),
-                    HorizontalSpace(
-                      getResponsiveWidth(context, 72),
-                    ),
-                    Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Image.asset(
-                            Constants.flash,
-                            // width: 15,
-                            // height: 26,
-                            width: getResponsiveWidth(context, 15),
-                            height: getResponsiveHeight(context, 26),
-                          ),
-                          HorizontalSpace(screenWidth * 0.02),
-                          Column(
-                            // mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              MontserratNoHeight(
-                                  text: "Profit per hour ",
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w300),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 5.0),
-                                child: MontserratNoHeight(
-                                    text: "147 \$RV/h",
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ],
-                          ),
-                        ])
-                  ],
-                ),
-                VerticalSpace(
-                  getResponsiveHeight(context, 25),
-                ),
-                Container(
-                  // width: 328.w,
-                  // height: 40,
-
-                  width: getResponsiveWidth(context, 328),
-                  height: getResponsiveHeight(context, 40),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    // color: const Color.fromARGB(255, 98, 0, 210),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            gradient: taskController.isTask.value == false
-                                ? LinearGradient(
-                                    colors: Constants.gradiant(),
-                                  )
-                                : const LinearGradient(colors: [
-                                    Color.fromRGBO(255, 255, 255, 0.4),
-                                    Color.fromRGBO(255, 255, 255, 0.1),
-                                  ]),
-                          ),
-                        ),
+                      // Constants.check(),
+                      HorizontalSpace(
+                        getResponsiveWidth(context, 72),
                       ),
-                      Expanded(
-                          child: Container(
-                              decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: taskController.isTask.value
-                            ? LinearGradient(
-                                colors: Constants.gradiant(),
-                              )
-                            : const LinearGradient(colors: [
-                                Color.fromRGBO(255, 255, 255, 0.4),
-                                Color.fromRGBO(255, 255, 255, 0.1),
-                              ]),
-                      ))),
+                      Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Image.asset(
+                              Constants.flash,
+                              // width: 15,
+                              // height: 26,
+                              width: getResponsiveWidth(context, 15),
+                              height: getResponsiveHeight(context, 26),
+                            ),
+                            HorizontalSpace(screenWidth * 0.02),
+                            Column(
+                              // mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                MontserratNoHeight(
+                                    text: "Profit per hour ",
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w300),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5.0),
+                                  child: MontserratNoHeight(
+                                      text: "147 \$RV/h",
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ],
+                            ),
+                          ])
                     ],
                   ),
-                )
-              ],
-            ),
+                  VerticalSpace(
+                    getResponsiveHeight(context, 25),
+                  ),
+                  Container(
+                    // width: 328.w,
+                    // height: 40,
+
+                    width: getResponsiveWidth(context, 328),
+                    height: getResponsiveHeight(context, 40),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color.fromRGBO(255, 255, 255, 0.4),
+                            Color.fromARGB(24, 99, 96, 96)
+                          ],
+                        )
+                        // color: const Color.fromARGB(255, 98, 0, 210),
+
+                        ),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            taskController.isTask.value = true;
+                            print("task");
+                          },
+                          child: Container(
+                            width: getResponsiveWidth(context, 164),
+                            height: getResponsiveHeight(context, 40),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              gradient: taskController.isTask.value == true
+                                  ? LinearGradient(
+                                      colors: Constants.gradiant(),
+                                    )
+                                  : const LinearGradient(colors: [
+                                      Color.fromRGBO(255, 255, 255, 0),
+                                      Color.fromRGBO(255, 0, 0, 0),
+                                    ]),
+                            ),
+                            child: Center(
+                              child: MontserratNoHeight(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w500,
+                                text: "Task",
+                                color: taskController.isTask.value == true
+                                    ? Colors.black
+                                    : Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            taskController.isTask.value = false;
+                            print("bossts");
+                          },
+                          child: Container(
+                            width: getResponsiveWidth(context, 164),
+                            height: getResponsiveHeight(context, 40),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              gradient: taskController.isTask.value == false
+                                  ? LinearGradient(
+                                      colors: Constants.gradiant(),
+                                    )
+                                  : const LinearGradient(colors: [
+                                      Color.fromRGBO(255, 255, 255, 0),
+                                      Color.fromRGBO(255, 255, 255, 0.0),
+                                    ]),
+                            ),
+                            child: Center(
+                              child: MontserratNoHeight(
+                                fontSize: 13.sp,
+                                fontWeight: FontWeight.w500,
+                                text: "Boosts",
+                                color: taskController.isTask.value == false
+                                    ? Colors.black
+                                    : Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              );
+            }),
           ),
         );
       }),
