@@ -43,6 +43,22 @@ class Constants {
     ];
   }
 
+  static List<Color> settingGradiant() {
+    return [
+      // Color.fromRGBO(63, 67, 68, 1),
+
+      // Color.fromRGBO(21, 23, 24, 1),
+      // Color.fromRGBO(36, 40, 41, 1),
+      // black,
+      // black
+      Color.fromRGBO(46, 50, 52, 1),
+      Color.fromRGBO(21, 21, 24, 1),
+      Color.fromRGBO(21, 21, 24, 1),
+
+      // buttonBackgroundColor,
+    ];
+  }
+
   //Colors
   static const primaryColor = Color.fromRGBO(20, 26, 61, 1);
   static const dimColor = Color.fromRGBO(143, 137, 150, 1);
@@ -94,6 +110,13 @@ class Constants {
   static const play_icon = 'assets/icons/play_icon.png';
   static const read = 'assets/icons/read.png';
   //
+
+  //icons found in setting page
+  static const general = 'assets/icons/general.png';
+  static const help = 'assets/icons/help.png';
+  static const privacy = 'assets/icons/privacy.png';
+  static const profile = 'assets/images/profile.png';
+  static const notification = 'assets/images/notification.png';
 
   static const homepage_background = 'assets/images/homepage_background.jpg';
   static const onboarding_background = 'assets/images/onboarding.jpg';

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:reward_vpn/controller/main_page_controllers/homescreen_controller.dart';
+import 'package:reward_vpn/route/app_route.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
@@ -40,7 +41,7 @@ class Homescreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(15.0.sp, 16.sp, 16.sp, 0),
+              padding: EdgeInsets.fromLTRB(15.0.sp, 30.sp, 16.sp, 0),
               child: Obx(() {
                 return Column(
                   children: [
@@ -83,12 +84,18 @@ class Homescreen extends StatelessWidget {
                               ],
                             ),
                             HorizontalSpace(screenWidht * 0.01),
-                            Image.asset(
-                              Constants.settingIcon,
-                              // width: 24,
-                              // height: 24,
-                              width: getResponsiveWidth(context, 24),
-                              height: getResponsiveHeight(context, 24),
+                            GestureDetector(
+                              onTap: () {
+                                print("object");
+                                Get.toNamed(AppRoute.setting);
+                              },
+                              child: Image.asset(
+                                Constants.settingIcon,
+                                // width: 24,
+                                // height: 24,
+                                width: getResponsiveWidth(context, 24),
+                                height: getResponsiveHeight(context, 24),
+                              ),
                             ),
                           ],
                         ),

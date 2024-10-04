@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reward_vpn/controller/main_page_controllers/wallet_controller.dart';
+import 'package:reward_vpn/route/app_route.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
@@ -71,10 +72,15 @@ class Wallet extends StatelessWidget {
                           size: getResponsiveHeight(context, 26),
                         ),
                         HorizontalSpace(getResponsiveWidth(context, 15)),
-                        Image.asset(
-                          width: getResponsiveWidth(context, 24),
-                          height: getResponsiveHeight(context, 24),
-                          Constants.settingIcon,
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(AppRoute.setting);
+                          },
+                          child: Image.asset(
+                            width: getResponsiveWidth(context, 24),
+                            height: getResponsiveHeight(context, 24),
+                            Constants.settingIcon,
+                          ),
                         )
                       ],
                     )

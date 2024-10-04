@@ -50,14 +50,28 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-# flutter_native_splash:
-#   # image: assets/images/splash.jpg
-#   color : ffffff
-#   android: true
-#   ios: true
-#   fullscreen: true
-#   android_12:
-#       image: "assets/images/splash.jpg"
+flutter_native_splash:
+  color: "#000000"  # Background color for the splash screen
+
+  # The splash image that fills the screen without being clipped. This should be a landscape PNG image.
+  image: assets/images/try1.png
+
+  # Branding image, which is the same as the main splash image.
+  # branding: assets/images/splash/logo3.png
+
+  # Android 12+ specific configurations
+  android_12:
+    image: assets/images/try1.png
+     # The image for Android 12 splash screen.
+    color: "#000000"  # Background color for Android 12 splash screen.
+
+  # Ensures the splash image fills the screen without being clipped or distorted.
+  android_gravity: fill
+
+  # Platform-specific configurations
+  android: true  # Enable splash screen for Android
+  ios: false  # Disable splash screen for iOS
+  web: false
 
 
   

@@ -159,10 +159,11 @@ class _BottomNavWrapperState extends State<BottomNavWrapper>
                           ),
                         Positioned(
                           top: constraints.maxHeight * 0.02,
-                          left: constraints.maxWidth * 0.037,
+                          left: constraints.maxWidth * 0.043,
                           child: Image.asset(
                             Constants.wallet,
-                            width: getResponsiveWidth(context, 27),
+                            fit: BoxFit.cover,
+                            width: getResponsiveWidth(context, 25),
                             height: getResponsiveHeight(context, 27),
                           ),
                         ),
