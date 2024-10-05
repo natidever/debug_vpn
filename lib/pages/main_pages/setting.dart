@@ -27,7 +27,7 @@ class Setting extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.fromLTRB(
                 getResponsiveWidth(context, 20),
-                getResponsiveHeight(context, 40),
+                getResponsiveHeight(context, 60),
                 getResponsiveWidth(context, 16),
                 0),
             child: Column(

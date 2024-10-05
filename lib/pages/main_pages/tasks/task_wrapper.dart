@@ -21,6 +21,11 @@ class Task_Wrapper extends StatelessWidget {
       body: LayoutBuilder(builder: (context, constriants) {
         final double screenHeight = constriants.maxHeight;
         final double screenWidth = constriants.maxWidth;
+
+        //media
+
+        final double mediaHeight = MediaQuery.sizeOf(context).height;
+        final double mediaWidth = MediaQuery.sizeOf(context).width;
         PageController pageController = PageController();
         return Container(
           width: screenWidth,
@@ -34,7 +39,7 @@ class Task_Wrapper extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.fromLTRB(
                 getResponsiveWidth(context, 16),
-                getResponsiveHeight(context, 40),
+                getResponsiveHeight(context, 50),
                 getResponsiveWidth(context, 16),
                 0),
             child: Obx(() {
@@ -47,12 +52,12 @@ class Task_Wrapper extends StatelessWidget {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: "My ",
+                              text: "My",
                               style: GoogleFonts.poppins(
                                   fontSize: 22, fontWeight: FontWeight.w600),
                             ),
                             TextSpan(
-                              text: "Task ",
+                              text: "Task",
                               style: GoogleFonts.poppins(
                                   fontSize: 22, fontWeight: FontWeight.w200),
                             ),
@@ -161,8 +166,10 @@ class Task_Wrapper extends StatelessWidget {
                     // width: 328.w,
                     // height: 40,
 
-                    width: getResponsiveWidth(context, 328),
-                    height: getResponsiveHeight(context, 40),
+                    // width: getResponsiveWidth(context, 328),
+                    // height: getResponsiveHeight(context, 40),
+                    width: screenWidth * 0.9,
+                    height: screenHeight * 0.05,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                         gradient: const LinearGradient(
@@ -188,7 +195,9 @@ class Task_Wrapper extends StatelessWidget {
                           },
                           child: Container(
                             width: getResponsiveWidth(context, 164),
-                            height: getResponsiveHeight(context, 40),
+                            // height: getResponsiveHeight(context, 40),
+                            height: screenHeight * 0.076,
+
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(50),
                               gradient: taskController.isTask.value == true
@@ -224,7 +233,9 @@ class Task_Wrapper extends StatelessWidget {
                           },
                           child: Container(
                             width: getResponsiveWidth(context, 164),
-                            height: getResponsiveHeight(context, 40),
+                            // height: getResponsiveHeight(context, 40),
+                            height: screenHeight * 0.076,
+
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               gradient: taskController.isTask.value == false
@@ -261,7 +272,7 @@ class Task_Wrapper extends StatelessWidget {
                     getResponsiveHeight(context, 15),
                   ),
                   Container(
-                    height: getResponsiveHeight(context, screenHeight * 0.55),
+                    height: mediaHeight * 0.6,
                     width: screenWidth,
                     // color: Colors.transparent,
                     child: PageView(

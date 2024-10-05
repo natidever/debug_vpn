@@ -36,7 +36,7 @@ class Wallet extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.fromLTRB(
                 getResponsiveWidth(context, 16),
-                getResponsiveHeight(context, 40),
+                getResponsiveHeight(context, 50),
                 getResponsiveWidth(context, 16),
                 0),
             child: Column(
@@ -121,8 +121,9 @@ class Wallet extends StatelessWidget {
                       ],
                     ),
                     HorizontalSpace(
-                      getResponsiveHeight(context, 70),
+                      getResponsiveHeight(context, 68),
                     ),
+
                     Image.asset(Constants.arrow_up),
                     HorizontalSpace(
                       getResponsiveHeight(context, 6),

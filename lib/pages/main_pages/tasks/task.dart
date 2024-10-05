@@ -17,13 +17,23 @@ class Task extends StatelessWidget {
       body: ListView.builder(
           itemCount: taskController.taskList.length,
           itemBuilder: (context, index) {
+            final double mediaWidth = MediaQuery.sizeOf(context).width;
+            final double mediaHeight = MediaQuery.sizeOf(context).height;
+
+            double getResponsiveFontSize(double baseFontSize) {
+              // Assuming 375.0 is the base screen width
+              return baseFontSize * (mediaWidth / 375.0);
+            }
+
             final taskList = taskController.taskList[index];
             return Padding(
-              padding:
-                  EdgeInsets.only(bottom: getResponsiveHeight(context, 15)),
+              padding: EdgeInsets.only(bottom: mediaHeight * 0.02),
               child: Container(
-                width: getResponsiveWidth(context, 337),
-                height: getResponsiveHeight(context, 80),
+                // width: getResponsiveWidth(context, 337),
+                // height: getResponsiveHeight(context, 80),
+
+                width: mediaWidth * 0.9,
+                height: mediaHeight * 0.097,
                 decoration: BoxDecoration(
                   color: Constants.taskBackgroundColor,
                   borderRadius: BorderRadius.circular(20),
@@ -34,8 +44,10 @@ class Task extends StatelessWidget {
                       padding: EdgeInsets.only(
                           left: getResponsiveWidth(context, 16)),
                       child: Container(
-                        width: getResponsiveWidth(context, 50),
-                        height: getResponsiveHeight(context, 45),
+                        // width: getResponsiveWidth(context, 50),
+                        // height: getResponsiveHeight(context, 45),
+                        width: mediaWidth * 0.13,
+                        height: mediaWidth * 0.1,
                         decoration: BoxDecoration(
                           color: Color.fromRGBO(27, 27, 28, 1),
                           borderRadius: BorderRadius.circular(10),
@@ -63,15 +75,13 @@ class Task extends StatelessWidget {
                         MontserratNoHeight(
                             // text: "Watch Ad",
                             text: taskList["title"],
-                            fontSize: 16.sp,
+                            fontSize: getResponsiveFontSize(16),
                             fontWeight: FontWeight.w600),
-                        VerticalSpace(
-                          getResponsiveHeight(context, 4),
-                        ),
+                        VerticalSpace(mediaHeight * 0.012),
                         MontserratNoHeight(
                           // text: "0.001 ppr increase",
                           text: taskList["subtitle"],
-                          fontSize: 14.sp,
+                          fontSize: getResponsiveFontSize(14),
                           fontWeight: FontWeight.w400,
                           color: Color.fromRGBO(255, 255, 255, 0.5),
                         ),

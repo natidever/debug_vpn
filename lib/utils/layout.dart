@@ -31,14 +31,16 @@ Widget VerticalLine({required double height, required double width}) {
 }
 
 double getResponsiveWidth(BuildContext context, double pixelValue) {
-  double screenWidth = MediaQuery.of(context).size.width;
+  // double screenWidth = MediaQuery.of(context).size.width;
+  double screenWidth = MediaQuery.sizeOf(context).width;
   // Assuming 375 is the base width for your design
   double baseWidth = 370.0;
   return (pixelValue / baseWidth) * screenWidth;
 }
 
 double getResponsiveHeight(BuildContext context, double pixelValue) {
-  double screenHeight = MediaQuery.of(context).size.height;
+  // double screenHeight = MediaQuery.of(context).size.height;
+  double screenHeight = MediaQuery.sizeOf(context).height;
   // Assuming 812 is the base height for your design
   double baseHeight = 812.0;
   return (pixelValue / baseHeight) * screenHeight;

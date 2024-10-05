@@ -24,20 +24,33 @@ class Authentication extends StatelessWidget {
       body: LayoutBuilder(builder: (context, constriants) {
         final double screenHeight = constriants.maxHeight;
         final double screenWidth = constriants.maxWidth;
+
+//Mediaquery height and width
+        final double mediaHeight = MediaQuery.sizeOf(context).height;
+        final double mediaWidth = MediaQuery.sizeOf(context).width;
         return Stack(
           children: [
             Positioned.fill(
-                child: Image.asset(
-                    height: screenHeight,
-                    width: screenWidth,
-                    fit: BoxFit.cover,
-                    Constants.authentication_background)),
+              child: Container(
+                height: mediaHeight,
+                width: mediaWidth,
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: Image.asset(
+                    height: mediaHeight,
+                    width: mediaWidth,
+                    fit: BoxFit.fill,
+                    Constants.authentication_background,
+                  ),
+                ),
+              ),
+            ),
             Positioned(
               // bottom: 0,
               top: constriants.maxHeight * 0.13,
               child: Obx(() {
                 return SizedBox(
-                  height: screenHeight * 0.8,
+                  height: getResponsiveHeight(context, 760),
                   width: screenWidth,
                   child: SingleChildScrollView(
                     child: Column(

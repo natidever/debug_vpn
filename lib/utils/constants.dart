@@ -79,6 +79,7 @@ class Constants {
   static const secure = 'assets/icons/secure.png';
   static const key = 'assets/icons/key.png';
   static const dollar = 'assets/icons/dollar.png';
+  static const dollar_active = 'assets/icons/dollar_active.png';
   static const back = 'assets/icons/back.png';
   static const next = 'assets/icons/next.png';
   static const email = 'assets/icons/email.png';
@@ -97,12 +98,15 @@ class Constants {
   static const settingIcon = 'assets/icons/setting_icon.png';
   static const flash = 'assets/icons/flash.png';
   static const wallet = 'assets/icons/wallet.png';
+  static const wallet_active = 'assets/icons/wallet_active.png';
   static const arrow_up = 'assets/icons/arrow_up.png';
   static const card = 'assets/icons/card.png';
   static const card2 = 'assets/icons/card2.png';
   static const referral = 'assets/icons/referral.png';
   static const ad = 'assets/icons/ad.png';
   static const task = 'assets/icons/task.png';
+  static const active_home = 'assets/icons/active_home.png';
+
 //icons found in the task page
   static const adduser = 'assets/icons/add_user.png';
   static const award = 'assets/icons/award.png';

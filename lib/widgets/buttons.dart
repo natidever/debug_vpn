@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:reward_vpn/utils/constants.dart';
+import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -20,6 +21,10 @@ class PrimaryButton extends StatelessWidget {
     return Container(
       width: width ?? 332.w,
       height: height ?? 48.h,
+      // width: getResponsiveWidth(context, 332),
+      // height: getResponsiveHeight(context, 48),
+      // height: MediaQuery.sizeOf(context).height * 0.06,
+      // width: MediaQuery.sizeOf(context).width * 0.9,
       decoration: BoxDecoration(
           color: Color.fromRGBO(0, 0, 0, 0.70),
           borderRadius: BorderRadius.circular(50),

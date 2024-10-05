@@ -23,6 +23,17 @@ class Homescreen extends StatelessWidget {
       body: LayoutBuilder(builder: (context, constriants) {
         double screenHeight = constriants.maxHeight;
         double screenWidht = constriants.maxWidth;
+        //
+        double mediaHeight = MediaQuery.sizeOf(context).height;
+        double mediaWidth = MediaQuery.sizeOf(context).width;
+
+//
+//
+        double getResponsiveFontSize(double baseFontSize) {
+          // Assuming 375.0 is the base screen width
+          return baseFontSize * (mediaWidth / 375.0);
+        }
+
         return Stack(
           children: [
             Container(
@@ -53,7 +64,8 @@ class Homescreen extends StatelessWidget {
                           children: [
                             Poppins(
                                 text: "Reward",
-                                fontSize: 22.sp,
+                                // fontSize: 22.sp,
+                                fontSize: getResponsiveFontSize(22),
                                 fontWeight: FontWeight.w400),
                             HorizontalSpace(3),
                             Poppins(
@@ -152,12 +164,13 @@ class Homescreen extends StatelessWidget {
                         Expanded(
                           child: MontserratNoHeight(
                               text: "10",
-                              fontSize: 48.sp,
+                              fontSize: getResponsiveFontSize(48),
+                              // fontSize: 48.sp,
                               fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
-                    VerticalSpace(screenWidht * 0.06),
+                    VerticalSpace(mediaHeight * 0.03),
 
                     ///App bar en
                     homescreenController.connectionReach1Minute.value
@@ -187,7 +200,7 @@ class Homescreen extends StatelessWidget {
                                 ? "Claim in 1 min"
                                 : "Connect VPN first"),
 
-                    VerticalSpace(screenWidht * 0.04),
+                    VerticalSpace(mediaHeight * 0.02),
                     // VerticalSpace(screenWidht * 0.07),
                     Stack(
                       children: [
@@ -196,7 +209,8 @@ class Homescreen extends StatelessWidget {
                           child: MontserratNoHeight(
                             color: Constants.textColor,
                             text: "Connection Time ",
-                            fontSize: 13,
+                            fontSize: getResponsiveFontSize(13),
+                            // fontSize: 13,
                             fontWeight: FontWeight.w300,
                           ),
                         ),
@@ -206,7 +220,8 @@ class Homescreen extends StatelessWidget {
                           child: MontserratNoHeight(
                             color: Constants.textColor,
                             text: homescreenController.connectionTime.value,
-                            fontSize: 57.sp,
+                            // fontSize: getResponsiveFontSize(52),
+                            fontSize: getResponsiveFontSize(52),
                             fontWeight: FontWeight.w500,
                           ),
                         )
@@ -214,7 +229,9 @@ class Homescreen extends StatelessWidget {
                     ),
                     // Constants.check(),
                     // VerticalSpace(screenWidht * 0.15),
-                    VerticalSpace(getResponsiveHeight(context, 25)),
+                    VerticalSpace(
+                      getResponsiveHeight(context, 22),
+                    ),
                     // VerticalSpace(41.h),
 
                     GestureDetector(
@@ -227,10 +244,11 @@ class Homescreen extends StatelessWidget {
                         }
                       },
                       child: Image.asset(
-                        // width: 233.w,
-                        // height: 241.h,
-                        height: getResponsiveHeight(context, 241),
-                        width: getResponsiveWidth(context, 233),
+                        width: 233.w,
+                        height: 241.h,
+                        // height: getResponsiveHeight(context, 241),
+                        // width: getResponsiveWidth(context, 233),
+
                         homescreenController
                                 .connectionStateModel.isConnected.value
                             ? Constants.connectButtonActive
@@ -250,7 +268,7 @@ class Homescreen extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
 
-                    VerticalSpace(screenHeight * 0.03),
+                    VerticalSpace(mediaHeight * 0.02),
 
                     /// vpn dashboard
                     ///
@@ -275,7 +293,7 @@ class Homescreen extends StatelessWidget {
                             children: [
                               MontserratNoHeight(
                                   text: "Download",
-                                  fontSize: 9,
+                                  fontSize: 9.sp,
                                   fontWeight: FontWeight.w300),
                               VerticalSpace(getResponsiveHeight(context, 2)),
                               MontserratNoHeight(

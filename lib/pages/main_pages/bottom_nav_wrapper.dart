@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:reward_vpn/pages/main_pages/tasks/task_wrapper.dart';
 import 'package:reward_vpn/pages/main_pages/homescreen.dart';
 import 'package:reward_vpn/pages/main_pages/wallet.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
-// DartPluginRegistrant
 
 class BottomNavWrapper extends StatefulWidget {
   const BottomNavWrapper({Key? key}) : super(key: key);
@@ -17,18 +17,25 @@ class BottomNavWrapper extends StatefulWidget {
 class _BottomNavWrapperState extends State<BottomNavWrapper>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
+  late PageController pageController; // PageController to detect page scrolls
 
   @override
   void initState() {
     super.initState();
     // Initialize the TabController for 3 tabs
     tabController = TabController(length: 3, vsync: this);
+    pageController = PageController(); // Initialize PageController
+
+    // Update the state when the tab index changes
+    tabController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
-    // Dispose the TabController when not needed anymore
     tabController.dispose();
+    pageController.dispose(); // Dispose PageController
     super.dispose();
   }
 
@@ -37,159 +44,76 @@ class _BottomNavWrapperState extends State<BottomNavWrapper>
     return Scaffold(
       extendBody: true,
       bottomNavigationBar: LayoutBuilder(builder: (context, constraints) {
+        final double mediaWidth = MediaQuery.sizeOf(context).width;
+        final double mediaHeight = MediaQuery.sizeOf(context).height;
         return BottomBar(
           child: Container(
-            height: getResponsiveHeight(context, 60),
+            height: MediaQuery.sizeOf(context).height * 0.07,
             decoration: BoxDecoration(
-                boxShadow: [
-                  // BoxShadow(
-                  //   color: const Color.fromARGB(255, 255, 255, 255)
-                  //       .withOpacity(0.2), // Optional shadow
-                  //   blurRadius: 10.0,
-                  //   spreadRadius: 1.0,
-                  // ),
-                ],
-                color: Color.fromRGBO(78, 78, 78, 0.5),
-
-                // color: Color.fromRGBO(23, 42, 255, 0.08),
-
-                // color:
-                //     Color.fromRGBO(255, 39, 39, 1), // Background color of the bar
-
-                borderRadius: BorderRadius.circular(
-                    32)), // Set the desired height for the background
+              color: Color.fromRGBO(78, 78, 78, 0.5),
+              borderRadius: BorderRadius.circular(32),
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // Home Icon
-
                 GestureDetector(
                   onTap: () {
                     setState(() {
                       tabController.index = 0;
+                      pageController.jumpToPage(0); // Jump to the page
                     });
                   },
-                  child: SizedBox(
-                    height: getResponsiveHeight(context, 60),
-                    width: getResponsiveWidth(context, 60),
-                    child: Stack(
-                      children: [
-                        if (tabController.index == 0)
-                          Image.asset(Constants.iconBackground),
-                        Positioned(
-                          top: constraints.maxHeight * 0.018,
-                          left: constraints.maxWidth * 0.035,
-                          child: Image.asset(
-                            Constants.homeIcon,
-                            width: getResponsiveWidth(context, 37),
-                            height: getResponsiveHeight(context, 37),
+                  child: tabController.index == 0
+                      ? SizedBox(child: Image.asset(Constants.active_home))
+                      : Padding(
+                          padding: EdgeInsets.only(top: mediaHeight * 0.01),
+                          child: SizedBox(
+                            height: mediaHeight * 0.06,
+                            child: Image.asset(Constants.homeIcon),
                           ),
                         ),
-                        // if (tabController.index != 0)
-                        //   Image.asset(
-                        //     Constants.homeIcon,
-                        //     width: 37,
-                        //     height: 37,
-                        //   )
-                      ],
-                    ),
-                  ),
                 ),
 
-                // IconButton(
-                //   icon: Icon(
-                //     Icons.add,
-                //     color: tabController.index == 1 ? Colors.blue : Colors.grey,
-                //   ),
-                //   onPressed: () {
-                //     setState(() {
-                //       tabController.index = 1;
-                //     });
-                //   },
-                // ),
+                // Wallet Icon
                 GestureDetector(
                   onTap: () {
                     setState(() {
                       tabController.index = 1;
+                      pageController.jumpToPage(1); // Jump to the page
                     });
                   },
-                  child: SizedBox(
-                    height: getResponsiveHeight(context, 60),
-                    width: getResponsiveWidth(context, 60),
-                    child: Stack(
-                      children: [
-                        if (tabController.index == 1)
-                          Image.asset(
-                            Constants.iconBackground,
-                          ),
-                        Positioned(
-                          top: constraints.maxHeight * 0.02,
-                          left: constraints.maxWidth * 0.037,
+                  child: tabController.index == 1
+                      ? SizedBox(
                           child: Image.asset(
-                            Constants.dollar,
-                            width: getResponsiveWidth(context, 27),
-                            height: getResponsiveHeight(context, 27),
-                          ),
+                              fit: BoxFit.contain, Constants.dollar_active),
+                        )
+                      : Image.asset(
+                          height: mediaHeight * 0.04,
+                          Constants.dollar,
+                          fit: BoxFit.contain,
                         ),
-                        // if (tabController.index != 0)
-                        //   Image.asset(
-                        //     Constants.homeIcon,
-                        //     width: 37,
-                        //     height: 37,
-                        //   )
-                      ],
-                    ),
-                  ),
                 ),
 
+                // Task Icon
                 GestureDetector(
                   onTap: () {
                     setState(() {
                       tabController.index = 2;
+                      pageController.jumpToPage(2); // Jump to the page
                     });
                   },
-                  child: SizedBox(
-                    height: getResponsiveHeight(context, 60),
-                    width: getResponsiveWidth(context, 60),
-                    child: Stack(
-                      children: [
-                        if (tabController.index == 2)
-                          Image.asset(
-                            Constants.iconBackground,
-                          ),
-                        Positioned(
-                          top: constraints.maxHeight * 0.02,
-                          left: constraints.maxWidth * 0.043,
+                  child: tabController.index == 2
+                      ? SizedBox(
                           child: Image.asset(
-                            Constants.wallet,
-                            fit: BoxFit.cover,
-                            width: getResponsiveWidth(context, 25),
-                            height: getResponsiveHeight(context, 27),
-                          ),
+                              fit: BoxFit.contain, Constants.wallet_active),
+                        )
+                      : Image.asset(
+                          height: mediaHeight * 0.04,
+                          Constants.wallet,
+                          fit: BoxFit.contain,
                         ),
-                        // if (tabController.index != 0)
-                        //   Image.asset(
-                        //     Constants.homeIcon,
-                        //     width: 37,
-                        //     height: 37,
-                        //   )
-                      ],
-                    ),
-                  ),
-                )
-
-                // Profile Icon
-                // IconButton(
-                //   icon: Icon(
-                //     Icons.person,
-                //     color: tabController.index == 2 ? Colors.blue : Colors.grey,
-                //   ),
-                //   onPressed: () {
-                //     setState(() {
-                //       tabController.index = 2;
-                //     });
-                //   },
-                // ),
+                ),
               ],
             ),
           ),
@@ -206,28 +130,21 @@ class _BottomNavWrapperState extends State<BottomNavWrapper>
           iconHeight: 35,
           iconWidth: 35,
           reverse: false,
-          // barDecoration: BoxDecoration(
-          //   color: Color.fromRGBO(
-          //       255, 255, 255, 0.09), // Set your desired background color
-          //   borderRadius: BorderRadius.circular(500),
-          // ),
           hideOnScroll: true,
           scrollOpposite: false,
-          onBottomBarHidden: () {},
-          onBottomBarShown: () {},
-          body: (context, controller) => TabBarView(
-            controller: tabController,
+          body: (context, controller) => PageView(
+            controller: pageController, // Attach the PageController to PageView
             physics: const BouncingScrollPhysics(),
+            onPageChanged: (index) {
+              // Update TabController index when page changes
+              setState(() {
+                tabController.index = index;
+              });
+            },
             children: [
-              // HomePage(),
               Homescreen(), // First tab
-              // Homescreen(), // First tab
-              Wallet(),
-
-              Task_Wrapper()
-              // First tab
-              // Homescreen(), // First tab
-              // Second tab
+              Wallet(), // Second tab
+              Task_Wrapper() // Third tab
             ],
           ),
         );

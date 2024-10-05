@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reward_vpn/controller/authentication_controllers/authentication_controller.dart';
 import 'package:reward_vpn/utils/constants.dart';
+import 'package:reward_vpn/utils/layout.dart';
 
 class CustomForms extends StatefulWidget {
   RxBool isPassword;
@@ -40,8 +41,13 @@ class _CustomFormsState extends State<CustomForms> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 343.w,
-          height: 54.h,
+          // width: getResponsiveWidth(context, 343),
+          // height: getResponsiveHeight(context, 53),
+          width: MediaQuery.sizeOf(context).width * 0.9,
+          height: MediaQuery.sizeOf(context).width * 0.129,
+          // width: 343.w,
+          // height: 54.h,
+
           padding: EdgeInsets.all(2.0), // Padding to simulate border thickness
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
