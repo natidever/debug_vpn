@@ -130,7 +130,8 @@ class Homescreen extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            _showCustomDialog(context);
+                            // _showCustomDialog(context);
+                            Get.toNamed(AppRoute.streak);
                           },
                           child: Row(
                             children: [

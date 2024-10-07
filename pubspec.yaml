@@ -44,6 +44,7 @@ dependencies:
   flutter_floating_bottom_bar: ^1.2.1+1
   stop_watch_timer: ^3.2.1
   animated_text_kit: ^4.2.2
+  table_calendar: ^3.1.2
 
 
 dev_dependencies:

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:reward_vpn/pages/main_pages/setting.dart';
+import 'package:reward_vpn/pages/main_pages/streak.dart';
 import 'package:reward_vpn/pages/main_pages/tasks/task_wrapper.dart';
 import 'package:reward_vpn/pages/authentications/authentication_wrapper.dart';
 import 'package:reward_vpn/pages/authentications/forgot_password/forgot_password.dart';
@@ -27,6 +28,7 @@ class AppRoute {
   static const wallet = '/wallet';
   static const task = '/task';
   static const setting = '/setting';
+  static const streak = '/streak';
 
   static List<GetPage> route = [
     // GetPage(name: onBoarding, page: () => OnboardingWrapper()),
@@ -45,5 +47,6 @@ class AppRoute {
     GetPage(name: wallet, page: () => Wallet()),
     GetPage(name: task, page: () => Task_Wrapper()),
     GetPage(name: setting, page: () => Setting()),
+    GetPage(name: streak, page: () => Streak()),
   ];
 }

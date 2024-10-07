@@ -59,6 +59,22 @@ class Constants {
     ];
   }
 
+  static List<Color> backgroundGradiant() {
+    return [
+      // Color.fromRGBO(63, 67, 68, 1),
+
+      // Color.fromRGBO(21, 23, 24, 1),
+      // Color.fromRGBO(36, 40, 41, 1),
+      // black,
+      // black
+      Color.fromRGBO(110, 121, 126, 1),
+      Color.fromRGBO(36, 40, 41, 1),
+      Color.fromRGBO(21, 23, 24, 1),
+
+      // buttonBackgroundColor,
+    ];
+  }
+
   //Colors
   static const primaryColor = Color.fromRGBO(20, 26, 61, 1);
   static const dimColor = Color.fromRGBO(143, 137, 150, 1);
@@ -106,6 +122,10 @@ class Constants {
   static const ad = 'assets/icons/ad.png';
   static const task = 'assets/icons/task.png';
   static const active_home = 'assets/icons/active_home.png';
+  static const selected_day = 'assets/icons/selected_day.png';
+  // static const day = 'assets/icons/days.png';
+  static const day1 = 'assets/icons/day1.png';
+  static const freez = 'assets/icons/freez.png';
 
 //icons found in the task page
   static const adduser = 'assets/icons/add_user.png';
