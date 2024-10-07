@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -11,10 +13,56 @@ import 'package:reward_vpn/widgets/buttons.dart';
 class Homescreen extends StatelessWidget {
   Homescreen({super.key});
 
+  OverlayEntry? overlayEntry;
+
   final homescreenController = Get.find<HomescreenController>();
 
   @override
   Widget build(BuildContext context) {
+    void _showCustomDialog(BuildContext context) {
+      OverlayState? overlayState = Overlay.of(context);
+
+      overlayEntry = OverlayEntry(builder: (context) {
+        return Positioned(
+          top: 150,
+          left: 10,
+          right: 10,
+          bottom: 50,
+          child: ClipRect(
+            child: Container(
+              // width: 323,
+              height: 505,
+              // color: Color.fromRGBO(0, 255, 135, 1),
+              child: Stack(
+                children: [
+                  BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                    child: Container(),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Colors.white.withOpacity(0.4),
+                              Colors.white.withOpacity(0.1),
+                            ]),
+                        borderRadius: BorderRadius.circular(39),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.13),
+                        )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      });
+
+      overlayState.insert(overlayEntry!);
+    }
+
     RxBool isVPNConnected =
         homescreenController.connectionStateModel.isConnected;
 
@@ -60,56 +108,67 @@ class Homescreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            Poppins(
-                                text: "Reward",
-                                // fontSize: 22.sp,
-                                fontSize: getResponsiveFontSize(22),
-                                fontWeight: FontWeight.w400),
-                            HorizontalSpace(3),
-                            Poppins(
-                                text: "VPN",
-                                fontSize: 22.sp,
-                                fontWeight: FontWeight.w600),
-                          ],
+                        GestureDetector(
+                          onTap: () {
+                            overlayEntry?.remove();
+                            overlayEntry = null;
+                          },
+                          child: Row(
+                            children: [
+                              Poppins(
+                                  text: "Reward",
+                                  // fontSize: 22.sp,
+                                  fontSize: getResponsiveFontSize(22),
+                                  fontWeight: FontWeight.w400),
+                              HorizontalSpace(3),
+                              Poppins(
+                                  text: "VPN",
+                                  fontSize: 22.sp,
+                                  fontWeight: FontWeight.w600),
+                            ],
+                          ),
                         ),
-                        Row(
-                          children: [
-                            Stack(
-                              children: [
-                                Image.asset(
-                                  Constants.buna,
-                                  width: getResponsiveWidth(context, 54),
-                                  height: getResponsiveHeight(context, 54),
-                                  // width: 54,
-                                  // height: 54,
-                                ),
-                                Positioned(
-                                  right: screenWidht * 0.015,
-                                  top: screenHeight * 0.015,
-                                  child: Montserrat(
-                                      text: "2",
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w600),
-                                )
-                              ],
-                            ),
-                            HorizontalSpace(screenWidht * 0.01),
-                            GestureDetector(
-                              onTap: () {
-                                print("object");
-                                Get.toNamed(AppRoute.setting);
-                              },
-                              child: Image.asset(
-                                Constants.settingIcon,
-                                // width: 24,
-                                // height: 24,
-                                width: getResponsiveWidth(context, 24),
-                                height: getResponsiveHeight(context, 24),
+                        GestureDetector(
+                          onTap: () {
+                            _showCustomDialog(context);
+                          },
+                          child: Row(
+                            children: [
+                              Stack(
+                                children: [
+                                  Image.asset(
+                                    Constants.buna,
+                                    width: getResponsiveWidth(context, 54),
+                                    height: getResponsiveHeight(context, 54),
+                                    // width: 54,
+                                    // height: 54,
+                                  ),
+                                  Positioned(
+                                    right: screenWidht * 0.015,
+                                    top: screenHeight * 0.015,
+                                    child: Montserrat(
+                                        text: "2",
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600),
+                                  )
+                                ],
                               ),
-                            ),
-                          ],
+                              HorizontalSpace(screenWidht * 0.01),
+                              GestureDetector(
+                                onTap: () {
+                                  print("object");
+                                  Get.toNamed(AppRoute.setting);
+                                },
+                                child: Image.asset(
+                                  Constants.settingIcon,
+                                  // width: 24,
+                                  // height: 24,
+                                  width: getResponsiveWidth(context, 24),
+                                  height: getResponsiveHeight(context, 24),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
