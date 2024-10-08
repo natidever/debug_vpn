@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:reward_vpn/route/app_route.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
@@ -76,22 +77,27 @@ class Setting extends StatelessWidget {
                 VerticalSpace(
                   getResponsiveHeight(context, 45),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                        width: getResponsiveWidth(context, 40),
-                        height: getResponsiveHeight(context, 49),
-                        Constants.general),
-                    HorizontalSpace(
-                      getResponsiveWidth(context, 10),
-                    ),
-                    MontserratNoHeight(
-                      text: "General",
-                      fontWeight: FontWeight.w400,
-                      fontSize: 19,
-                    ),
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(AppRoute.genera);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                          width: getResponsiveWidth(context, 40),
+                          height: getResponsiveHeight(context, 49),
+                          Constants.general),
+                      HorizontalSpace(
+                        getResponsiveWidth(context, 10),
+                      ),
+                      MontserratNoHeight(
+                        text: "General",
+                        fontWeight: FontWeight.w400,
+                        fontSize: 19,
+                      ),
+                    ],
+                  ),
                 ),
                 VerticalSpace(
                   getResponsiveHeight(context, 10),

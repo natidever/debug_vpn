@@ -12,6 +12,13 @@ class CustomForms extends StatefulWidget {
   String prefix;
   TextEditingController? controller;
   Function(String)? onChanged;
+  Color? formBackground;
+  Color? borderColor;
+  double? formWidth;
+  double? formHeight;
+  double? borderRadius;
+  Color? hintColor;
+  String? suffixIcons;
 
   CustomForms({
     required this.isPassword,
@@ -19,6 +26,13 @@ class CustomForms extends StatefulWidget {
     required this.prefix,
     this.onChanged,
     this.controller,
+    this.formBackground,
+    this.borderColor,
+    this.formHeight,
+    this.formWidth,
+    this.borderRadius,
+    this.hintColor,
+    this.suffixIcons,
   });
 
   @override
@@ -43,29 +57,31 @@ class _CustomFormsState extends State<CustomForms> {
         Container(
           // width: getResponsiveWidth(context, 343),
           // height: getResponsiveHeight(context, 53),
-          width: MediaQuery.sizeOf(context).width * 0.9,
-          height: MediaQuery.sizeOf(context).width * 0.129,
+          width: widget.formWidth ?? MediaQuery.sizeOf(context).width * 0.9,
+          height: widget.formHeight ?? MediaQuery.sizeOf(context).width * 0.129,
           // width: 343.w,
           // height: 54.h,
 
           padding: EdgeInsets.all(2.0), // Padding to simulate border thickness
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.circular(widget.borderRadius ?? 50),
+
             gradient: _focusNode.hasFocus
                 ? LinearGradient(colors: Constants.gradiant())
                 : null, // Only show gradient when focused
             border: _focusNode.hasFocus
                 ? null
                 : Border.all(
-                    color: Constants.borderColor,
+                    color: widget.borderColor ?? Constants.borderColor,
                     // color: Colors.red, // Solid red border when not focused
                     width: 2.0, // Adjust the width if needed
                   ),
           ),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: Constants.buttonTextColor, // Background color of the field
+              borderRadius: BorderRadius.circular(widget.borderRadius ?? 50),
+              color: widget.formBackground ??
+                  Constants.buttonTextColor, // Background color of the field
             ),
             child: Obx(() {
               return TextFormField(
@@ -88,7 +104,7 @@ class _CustomFormsState extends State<CustomForms> {
                   hintStyle: GoogleFonts.montserrat(
                     fontSize: 14,
                     fontWeight: FontWeight.w300,
-                    color: Constants.dimColor,
+                    color: widget.hintColor ?? Constants.dimColor,
                   ),
                   contentPadding: const EdgeInsets.symmetric(
                       vertical: 15, horizontal: 28), // Adjust padding
@@ -114,7 +130,15 @@ class _CustomFormsState extends State<CustomForms> {
                       },
                       icon: widget.isPassword.value
                           ? authenticationController.showAppropriateWidget()
-                          : Text(''),
+                          // :Text('')
+                          : widget.suffixIcons != null
+                              ? Image.asset(
+                                  widget.suffixIcons!,
+                                  width: 14.w,
+                                  height: 14.h,
+                                  fit: BoxFit.cover,
+                                )
+                              : Text(""),
                     );
                   }),
                   border: InputBorder.none,

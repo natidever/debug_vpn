@@ -135,6 +135,7 @@ class Constants {
   static const freez = 'assets/icons/freez.png';
   static const award2 = 'assets/icons/award2.png';
   static const bill = 'assets/icons/bill.png';
+  static const edit = 'assets/icons/edit.png';
 
 //icons found in the task page
   static const adduser = 'assets/icons/add_user.png';
@@ -142,6 +143,8 @@ class Constants {
   static const letter = 'assets/icons/letter.png';
   static const play_icon = 'assets/icons/play_icon.png';
   static const read = 'assets/icons/read.png';
+  static const pen = 'assets/icons/pen.png';
+  static const user = 'assets/icons/user.png';
   //
 
   //icons found in setting page

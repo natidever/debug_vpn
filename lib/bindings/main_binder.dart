@@ -4,6 +4,7 @@ import 'package:reward_vpn/controller/authentication_controllers/forgot_password
 import 'package:reward_vpn/controller/main_page_controllers/homescreen_controller.dart';
 import 'package:reward_vpn/controller/main_page_controllers/task_controller.dart';
 import 'package:reward_vpn/controller/main_page_controllers/wallet_controller.dart';
+import 'package:reward_vpn/controller/setting_controllers/general_settings_controller.dart';
 
 class MainBinder extends Bindings {
   @override
@@ -13,5 +14,6 @@ class MainBinder extends Bindings {
     Get.lazyPut(() => HomescreenController(), fenix: true);
     Get.lazyPut(() => WalletController(), fenix: true);
     Get.lazyPut(() => TaskController(), fenix: true);
+    Get.lazyPut(() => GeneralSettingsController(), fenix: true);
   }
 }
