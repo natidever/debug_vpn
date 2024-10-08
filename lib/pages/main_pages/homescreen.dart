@@ -19,50 +19,6 @@ class Homescreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _showCustomDialog(BuildContext context) {
-      OverlayState? overlayState = Overlay.of(context);
-
-      overlayEntry = OverlayEntry(builder: (context) {
-        return Positioned(
-          top: 150,
-          left: 10,
-          right: 10,
-          bottom: 50,
-          child: ClipRect(
-            child: Container(
-              // width: 323,
-              height: 505,
-              // color: Color.fromRGBO(0, 255, 135, 1),
-              child: Stack(
-                children: [
-                  BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                    child: Container(),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Colors.white.withOpacity(0.4),
-                              Colors.white.withOpacity(0.1),
-                            ]),
-                        borderRadius: BorderRadius.circular(39),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.13),
-                        )),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      });
-
-      overlayState.insert(overlayEntry!);
-    }
-
     RxBool isVPNConnected =
         homescreenController.connectionStateModel.isConnected;
 

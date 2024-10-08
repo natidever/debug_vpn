@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -12,9 +13,17 @@ class PrimaryButton extends StatelessWidget {
   double? height;
   double? width;
   double? fontSize;
+  List<Color>? gradiant;
+
   // Color background;
 
-  PrimaryButton({required this.text, this.height, this.width, this.fontSize});
+  PrimaryButton({
+    required this.text,
+    this.height,
+    this.width,
+    this.fontSize,
+    this.gradiant,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +38,7 @@ class PrimaryButton extends StatelessWidget {
           color: Color.fromRGBO(0, 0, 0, 0.70),
           borderRadius: BorderRadius.circular(50),
           gradient: LinearGradient(
-            colors: Constants.gradiant(),
+            colors: gradiant ?? Constants.gradiant(),
           )),
       child: Center(
           child: Montserrat(

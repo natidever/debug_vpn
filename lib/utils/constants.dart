@@ -75,6 +75,13 @@ class Constants {
     ];
   }
 
+  static List<Color> secondaryButtonGradiant() {
+    return [
+      Color.fromRGBO(98, 203, 245, 1),
+      Color.fromRGBO(183, 234, 255, 1),
+    ];
+  }
+
   //Colors
   static const primaryColor = Color.fromRGBO(20, 26, 61, 1);
   static const dimColor = Color.fromRGBO(143, 137, 150, 1);
@@ -126,6 +133,8 @@ class Constants {
   // static const day = 'assets/icons/days.png';
   static const day1 = 'assets/icons/day1.png';
   static const freez = 'assets/icons/freez.png';
+  static const award2 = 'assets/icons/award2.png';
+  static const bill = 'assets/icons/bill.png';
 
 //icons found in the task page
   static const adduser = 'assets/icons/add_user.png';

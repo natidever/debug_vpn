@@ -15,12 +15,12 @@ class CalanderFreezStreakDates extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Image.asset(width: 60.w, height: 162.h, fit: BoxFit.contain, image
+        Image.asset(width: 30.w, height: 162.h, fit: BoxFit.contain, image
             // Constants.day1, // Background image for streak
             ),
         Positioned(
-          top: 21,
-          left: 20.w,
+          top: 17.h,
+          left: 12.w,
           child: Container(
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 0, 0, 0), // Background color
