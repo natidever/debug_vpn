@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 import 'package:reward_vpn/pages/main_pages/settings/general_setting.dart';
+import 'package:reward_vpn/pages/main_pages/settings/help.dart';
+import 'package:reward_vpn/pages/main_pages/settings/notifications.dart';
+import 'package:reward_vpn/pages/main_pages/settings/privacy_setting.dart';
 import 'package:reward_vpn/pages/main_pages/settings/setting.dart';
 import 'package:reward_vpn/pages/main_pages/streak.dart';
 import 'package:reward_vpn/pages/main_pages/tasks/task_wrapper.dart';
@@ -31,6 +34,9 @@ class AppRoute {
   static const setting = '/setting';
   static const streak = '/streak';
   static const genera = '/genera';
+  static const privacy = '/privacy';
+  static const notification = '/notification';
+  static const help = '/help';
 
   static List<GetPage> route = [
     // GetPage(name: onBoarding, page: () => OnboardingWrapper()),
@@ -51,5 +57,8 @@ class AppRoute {
     GetPage(name: setting, page: () => Setting()),
     GetPage(name: streak, page: () => Streak()),
     GetPage(name: genera, page: () => GeneralSetting()),
+    GetPage(name: privacy, page: () => PrivacySetting()),
+    GetPage(name: notification, page: () => Notifications()),
+    GetPage(name: help, page: () => Help()),
   ];
 }

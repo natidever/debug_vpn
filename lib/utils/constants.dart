@@ -97,9 +97,15 @@ class Constants {
   //images
   static const background = 'assets/images/purplePlanet.png';
   static const curvedLine = 'assets/images/curvedLine.png';
-  static const country = 'assets/images/country.png';
-
+  static const uk = 'assets/icons/uk.png';
   static const secure = 'assets/icons/secure.png';
+  static const usa = 'assets/icons/usa.png';
+  static const cananda = 'assets/icons/canada.png';
+  static const german = 'assets/icons/german.png';
+  static const freezed_ice = 'assets/icons/ice.png';
+  static const freez2 = 'assets/icons/freez2.png';
+  static const cry = 'assets/icons/cry.png';
+
   static const key = 'assets/icons/key.png';
   static const dollar = 'assets/icons/dollar.png';
   static const dollar_active = 'assets/icons/dollar_active.png';

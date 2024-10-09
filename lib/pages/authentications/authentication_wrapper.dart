@@ -19,7 +19,7 @@ class Authentication extends StatelessWidget {
     final authenticationController = Get.find<AuthenticationController>();
     final PageController pageController = PageController();
     return Scaffold(
-      // backgroundColor: Color.fromRGBO(21, 23, 23, 1),
+      backgroundColor: Color.fromRGBO(21, 23, 23, 1),
       // backgroundColor: Color.fromRGBO(0, 255, 255, 1),
       body: LayoutBuilder(builder: (context, constriants) {
         final double screenHeight = constriants.maxHeight;

@@ -1,10 +1,27 @@
 import 'package:get/get.dart';
 import 'package:reward_vpn/models/connection_state_model.dart';
+import 'package:reward_vpn/utils/constants.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class HomescreenController extends GetxController {
   final ConnectionStateModel connectionStateModel = ConnectionStateModel();
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
+
+  List<Map<String, dynamic>> serverList = [
+    {
+      "country": "UK",
+      "image": Constants.uk,
+    },
+    {
+      "country": "US",
+      "image": Constants.usa,
+    },
+    {
+      "country": "CA",
+      "image": Constants.cananda,
+    },
+    {"country": "GR", "image": Constants.german},
+  ];
   // RxString elabsedTime = "00:00:00".obs;
   RxString connectionTime = "00:00:00".obs;
 

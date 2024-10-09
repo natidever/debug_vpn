@@ -134,7 +134,7 @@ class _BottomNavWrapperState extends State<BottomNavWrapper>
           scrollOpposite: false,
           body: (context, controller) => PageView(
             controller: pageController, // Attach the PageController to PageView
-            physics: const BouncingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             onPageChanged: (index) {
               // Update TabController index when page changes
               setState(() {

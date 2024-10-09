@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -10,12 +11,21 @@ import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
 import 'package:reward_vpn/widgets/buttons.dart';
 
-class Homescreen extends StatelessWidget {
+class Homescreen extends StatefulWidget {
   Homescreen({super.key});
 
+  @override
+  State<Homescreen> createState() => _HomescreenState();
+}
+
+class _HomescreenState extends State<Homescreen> {
   OverlayEntry? overlayEntry;
 
   final homescreenController = Get.find<HomescreenController>();
+
+  String? selectedValue;
+
+  bool isSpecialCondition = false;
 
   @override
   Widget build(BuildContext context) {
@@ -295,7 +305,7 @@ class Homescreen extends StatelessWidget {
                     ///
                     ///
                     Padding(
-                      padding: EdgeInsets.fromLTRB(screenWidht * 0.13, 8, 0, 0),
+                      padding: EdgeInsets.fromLTRB(mediaWidth * 0.09, 8, 0, 0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -360,42 +370,195 @@ class Homescreen extends StatelessWidget {
                             width: 1,
                           ),
                           HorizontalSpace(screenWidht * 0.02),
-                          Stack(
-                            children: [
-                              Image.asset(
-                                height: getResponsiveHeight(context, 33),
-                                width: getResponsiveWidth(context, 33),
-                                // height: 33,
-                                // width: 33,
-                                // color: Color.fromARGB(24, 192, 169, 169),
-                                Constants.country,
-                              ),
-                              Container(
-                                height: getResponsiveHeight(context, 33),
-                                width: getResponsiveWidth(context, 33),
-                                // height: 33,
-                                // width: 33,
-                                decoration: BoxDecoration(
-                                    color: homescreenController
-                                            .connectionStateModel
-                                            .isConnected
-                                            .value
-                                        ? Colors.transparent
-                                        : Color.fromRGBO(19, 19, 19, 0.6),
-                                    shape: BoxShape.circle),
-                              )
-                            ],
-                          ),
+                          // Stack(
+                          //   children: [
+                          //     Image.asset(
+                          //       height: getResponsiveHeight(context, 33),
+                          //       width: getResponsiveWidth(context, 33),
+                          //       // height: 33,
+                          //       // width: 33,
+                          //       // color: Color.fromARGB(24, 192, 169, 169),
+                          //       Constants.country,
+                          //     ),
+                          //     Container(
+                          //       height: getResponsiveHeight(context, 33),
+                          //       width: getResponsiveWidth(context, 33),
+                          //       // height: 33,
+                          //       // width: 33,
+                          //       decoration: BoxDecoration(
+                          //           color: homescreenController
+                          //                   .connectionStateModel
+                          //                   .isConnected
+                          //                   .value
+                          //               ? Colors.transparent
+                          //               : Color.fromRGBO(19, 19, 19, 0.6),
+                          //           shape: BoxShape.circle),
+                          //     )
+                          //   ],
+                          // ),
                           // Image.asset(
                           //   color: Color.fromARGB(24, 192, 169, 169),
                           //   Constants.country,
                           // ),
 
-                          HorizontalSpace(screenWidht * 0.03),
-                          MontserratNoHeight(
-                              text: "UK",
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700),
+                          // HorizontalSpace(screenWidht * 0.03),
+                          // MontserratNoHeight(
+                          //     text: "UK",
+                          //     fontSize: 15,
+                          //     fontWeight: FontWeight.w700),
+
+                          Container(
+                            // color: Colors.transparent,
+                            // height: 20,
+                            width: mediaWidth * 0.24,
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton2<String>(
+                                customButton: Row(
+                                  children: [
+                                    Stack(
+                                      children: [
+                                        Image.asset(
+                                          height:
+                                              getResponsiveHeight(context, 33),
+                                          width:
+                                              getResponsiveWidth(context, 33),
+                                          // height: 33,
+                                          // width: 33,
+                                          // color: Color.fromARGB(24, 192, 169, 169),
+                                          // Constants.uk,
+
+                                          selectedValue != null
+                                              ? homescreenController.serverList
+                                                  .firstWhere((item) =>
+                                                      item['country'] ==
+                                                      selectedValue)["image"]
+                                              : Constants.uk,
+                                        ),
+                                        Positioned(
+                                          top: mediaHeight * 0.005,
+                                          left: mediaWidth * 0.0,
+                                          right: mediaWidth * 0.0,
+                                          child: Container(
+                                            height: getResponsiveHeight(
+                                                context, 25),
+                                            width: mediaWidth * 0.1,
+                                            // height: 33,
+                                            // width: 33,
+                                            decoration: BoxDecoration(
+                                                color: homescreenController
+                                                        .connectionStateModel
+                                                        .isConnected
+                                                        .value
+                                                    ? Colors.transparent
+                                                    : Color.fromRGBO(
+                                                        19, 19, 19, 0.6),
+                                                shape: BoxShape.circle),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    HorizontalSpace(mediaWidth * 0.02),
+                                    MontserratNoHeight(
+                                        text: selectedValue != null
+                                            ? homescreenController.serverList
+                                                .firstWhere((item) =>
+                                                    item['country'] ==
+                                                    selectedValue)["country"]
+                                            : "UK",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w700),
+                                  ],
+                                ),
+                                // selectedItemBuilder: (a){
+
+                                // },
+                                hint: Row(
+                                  // mainAxisAlignment:
+                                  //     MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Image.asset(width: 24, Constants.uk),
+                                    HorizontalSpace(mediaWidth * 0.03),
+                                    MontserratNoHeight(
+                                      // text: "item",
+                                      text: "UK",
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ],
+                                ),
+                                buttonStyleData: ButtonStyleData(width: 1),
+                                isDense: true,
+                                isExpanded: true,
+                                // alignment: Alignment.bottomLeft,
+                                // buttonPadding: EdgeInsets.symmetric(horizontal: 0), // Remove extra space around button
+
+                                // barrierColor: Colors.red,
+                                dropdownStyleData: DropdownStyleData(
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(78, 78, 78, 0.38),
+                                    ),
+                                    width: mediaWidth * 0.33,
+                                    maxHeight: mediaHeight * 0.3
+                                    // padding: EdgeInsets.all(0),
+                                    ),
+
+                                value: selectedValue,
+                                items:
+                                    homescreenController.serverList.map((item) {
+                                  print(item['country']);
+                                  return DropdownMenuItem<String>(
+                                    // buttonPadding: const EdgeInsets.only(left: 10, right: 10), // Adjust padding between the icon and the list
+
+                                    value: item['country'],
+                                    child: Row(
+                                      // mainAxisAlignment:
+                                      //     MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Image.asset(
+                                          width: 24,
+                                          item["image"],
+                                        ),
+                                        HorizontalSpace(mediaWidth * 0.03),
+                                        MontserratNoHeight(
+                                            // text: "item",
+                                            text: item['country'],
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w700),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedValue = value!;
+                                  });
+                                },
+                                // iconStyleData: IconStyleData(
+                                //   iconSize: 20,
+                                // ),
+
+                                // customButton: Text("data"),
+                              ),
+                            ),
+                            // child: DropdownButton(items: [
+                            //   DropdownMenuItem(
+                            //       child: Row(
+                            //         children: [
+                            //           Image.asset(
+                            //               height: 33,
+                            //               width: 33,
+                            //               Constants.country),
+                            //           // HorizontalSpace(width)
+                            //           MontserratNoHeight(
+                            //               text: "UK",
+                            //               fontSize: 15,
+                            //               color: Colors.black,
+                            //               fontWeight: FontWeight.w700),
+                            //         ],
+                            //       ),
+                            //       value: "Item 1"),
+                            // ], onChanged: (onChanged) {}),
+                          )
                         ],
                       ),
                     )

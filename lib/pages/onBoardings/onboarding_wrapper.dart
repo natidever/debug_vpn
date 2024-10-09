@@ -34,6 +34,7 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
     ];
 
     return Scaffold(
+      backgroundColor: Color.fromRGBO(20, 22, 22, 1),
       body: Container(
         width: screenWidth,
         height: screenHeight,
@@ -96,7 +97,7 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
             height: 1.5,
           ),
           textAlign: TextAlign.center,
-          speed: Duration(milliseconds: 50),
+          speed: Duration(milliseconds: 30),
           // speed: Duration(milliseconds: 100),
         ),
       ],
@@ -122,7 +123,7 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
             height: 1.5,
           ),
           textAlign: TextAlign.center,
-          speed: Duration(milliseconds: 50),
+          speed: Duration(milliseconds: 30),
           // speed: Duration(milliseconds: 100),
         ),
       ],
@@ -135,8 +136,9 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
       isRepeatingAnimation: false,
       onFinished: () {
         // Immediately navigate to next page after third animation completes
-        Future.delayed(Duration(milliseconds: 4), () {
-          Get.toNamed(AppRoute.signup); // Change route here with minimal delay
+        Future.delayed(Duration(milliseconds: 0), () {
+          Get.toNamed(AppRoute
+              .bottomNavWrapper); // Change route here with minimal delay
         });
       },
       animatedTexts: [
@@ -149,7 +151,7 @@ class _OnboardingWrapperState extends State<OnboardingWrapper> {
             height: 1.5,
           ),
           textAlign: TextAlign.center,
-          speed: Duration(milliseconds: 50),
+          speed: Duration(milliseconds: 30),
           // speed: Duration(milliseconds: 100),
         ),
       ],
