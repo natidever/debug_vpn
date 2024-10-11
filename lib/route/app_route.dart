@@ -22,7 +22,7 @@ class AppRoute {
   // static const onBoarding1 = '/onBoarding1';
   static const onboarding = '/onboarding';
 
-  static const signup = '/signup';
+  static const authentication = '/signup';
   static const forgot = '/forgot';
   static const forgotPasswordVerificaion = '/forgotPasswordVerificaion';
   static const resetPassword = '/resetPassword';
@@ -43,7 +43,7 @@ class AppRoute {
     // GetPage(name: onBoarding1, page: () => OnboardingWrapper()),
     GetPage(name: onboarding, page: () => OnboardingWrapper()),
 
-    GetPage(name: signup, page: () => Authentication()),
+    GetPage(name: authentication, page: () => Authentication()),
     GetPage(name: forgot, page: () => ForgotPassword()),
     GetPage(name: resetPassword, page: () => ResetPassword()),
     GetPage(name: bottomNavWrapper, page: () => BottomNavWrapper()),

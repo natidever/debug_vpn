@@ -10,11 +10,13 @@ import 'package:reward_vpn/widgets/buttons.dart';
 import 'package:reward_vpn/widgets/form.dart';
 
 class ForgotPassword extends StatelessWidget {
-  const ForgotPassword({super.key});
+  ForgotPassword({super.key});
+  FocusNode emailFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false,
       // backgroundColor: Constants.buttonTextCodlor,
       body: LayoutBuilder(builder: (context, constriants) {
@@ -99,6 +101,7 @@ class ForgotPassword extends StatelessWidget {
                       isPassword: false.obs,
                       hintText: "Email",
                       prefix: Constants.email,
+                      focusNode: emailFocusNode,
                     ),
                   ),
                   VerticalSpace(constriants.maxHeight * 0.05),

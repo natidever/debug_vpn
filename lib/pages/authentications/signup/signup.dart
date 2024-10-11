@@ -1,9 +1,13 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reward_vpn/controller/authentication_controllers/signup_controller.dart';
 import 'package:reward_vpn/route/app_route.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
@@ -11,8 +15,38 @@ import 'package:reward_vpn/utils/texts.dart';
 import 'package:reward_vpn/widgets/buttons.dart';
 import 'package:reward_vpn/widgets/form.dart';
 
-class Signup extends StatelessWidget {
-  const Signup({super.key});
+class Signup extends StatefulWidget {
+  @override
+  State<Signup> createState() => _SignupState();
+}
+
+class _SignupState extends State<Signup> {
+  // const Signup({super.key});
+  FocusNode emailFocusNode = FocusNode();
+  FocusNode nameFocusNode = FocusNode();
+
+  FocusNode passwordFocusNode = FocusNode();
+
+  FocusNode confirmPasswordFocusNode = FocusNode();
+  final signUpcontroller = Get.find<SignupController>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Adding listeners to each FocusNode
+    emailFocusNode.addListener(() {
+      setState(() {}); // Rebuild when focus changes
+    });
+
+    passwordFocusNode.addListener(() {
+      setState(() {}); // Rebuild when focus changes
+    });
+
+    confirmPasswordFocusNode.addListener(() {
+      setState(() {}); // Rebuild when focus changes
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,27 +61,42 @@ class Signup extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                VerticalSpace(screenWidth * 0.07),
+                // VerticalSpace(screenWidth * 0.07),
+                VerticalSpace(screenWidth * 0.02),
 
                 CustomForms(
                   prefix: Constants.email,
                   isPassword: false.obs,
                   hintText: "Email",
+                  focusNode: emailFocusNode,
+                  controller: signUpcontroller.emailController,
                 ),
-                VerticalSpace(constriants.maxHeight * 0.05),
-                // VerticalSpace(20.h),
+
+                VerticalSpace(constriants.maxHeight * 0.04),
                 CustomForms(
-                  prefix: Constants.password,
-                  isPassword: true.obs,
-                  hintText: "Password",
+                  prefix: Constants.user,
+                  isPassword: false.obs,
+                  hintText: "Name",
+                  focusNode: nameFocusNode,
+                  controller: signUpcontroller.nameController,
                 ),
-                VerticalSpace(constriants.maxHeight * 0.05),
+                // VerticalSpace(20.h),
+                VerticalSpace(constriants.maxHeight * 0.04),
 
                 CustomForms(
-                  prefix: Constants.password,
-                  isPassword: true.obs,
-                  hintText: "Confirm Password",
-                ),
+                    prefix: Constants.password,
+                    isPassword: true.obs,
+                    hintText: "Password",
+                    focusNode: passwordFocusNode,
+                    controller: signUpcontroller.passwordController),
+                VerticalSpace(constriants.maxHeight * 0.04),
+
+                CustomForms(
+                    prefix: Constants.password,
+                    isPassword: true.obs,
+                    hintText: "Confirm Password",
+                    focusNode: confirmPasswordFocusNode,
+                    controller: signUpcontroller.confirmPasswordController),
                 VerticalSpace(constriants.maxHeight * 0.03),
                 // VerticalSpace(30.h),
 
@@ -77,7 +126,7 @@ class Signup extends StatelessWidget {
                   ],
                 ),
                 // HorizontalLine(height: 1, width: 400)
-                VerticalSpace(screenHeight * 0.03),
+                VerticalSpace(screenHeight * 0.02),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -145,8 +194,35 @@ class Signup extends StatelessWidget {
                 // VerticalSpace(50.h),
 
                 GestureDetector(
-                    onTap: () {
-                      Get.toNamed(AppRoute.signupVerification);
+                    onTap: () async {
+                      String email = signUpcontroller.emailController.text;
+                      String password =
+                          signUpcontroller.passwordController.text;
+                      String confirmPassword =
+                          signUpcontroller.confirmPasswordController.text;
+                      String name = signUpcontroller.nameController.text;
+
+                      print("confirmpassword $confirmPassword");
+
+                      {
+                        final response = await signUpcontroller.signup(
+                            email, password, confirmPassword, name);
+                        if (response.statusCode == 201) {
+                          // go to the otp
+                          Get.snackbar("title", "success");
+                          // Get.toNamed(AppRoute.signupVerification);
+                        } else {
+                          //show error message
+                          var errorResponse = response.data['errors'];
+                          if (errorResponse != null) {
+                            var emailErrorlist = errorResponse['email'];
+                            if (emailErrorlist != null) {
+                              String emailerror = emailErrorlist[0];
+                              signUpcontroller.showSignupErrors(emailerror);
+                            }
+                          }
+                        }
+                      }
                     },
                     child: Padding(
                         padding: EdgeInsets.only(left: 10),

@@ -19,11 +19,13 @@ class CustomForms extends StatefulWidget {
   double? borderRadius;
   Color? hintColor;
   String? suffixIcons;
+  FocusNode focusNode;
 
   CustomForms({
     required this.isPassword,
     required this.hintText,
     required this.prefix,
+    required this.focusNode,
     this.onChanged,
     this.controller,
     this.formBackground,
@@ -41,12 +43,26 @@ class CustomForms extends StatefulWidget {
 
 class _CustomFormsState extends State<CustomForms> {
   final authenticationController = Get.find<AuthenticationController>();
-  FocusNode _focusNode = FocusNode();
+
+  // @override
+  // void dispose() {
+  //   widget.focusNode.dispose(); // Dispose the focus node to avoid memory leaks
+  //   super.dispose();
+  // }
 
   @override
-  void dispose() {
-    _focusNode.dispose(); // Dispose the focus node to avoid memory leaks
-    super.dispose();
+  void initState() {
+    super.initState();
+
+    // Add a listener to the focus node
+    widget.focusNode.addListener(() {
+      setState(() {});
+      // if (widget.focusNode.hasFocus) {
+      //   print("${widget.hintText} Focused");
+      // } else {
+      //   print("${widget.hintText} not Focused");
+      // }
+    });
   }
 
   @override
@@ -66,10 +82,10 @@ class _CustomFormsState extends State<CustomForms> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(widget.borderRadius ?? 50),
 
-            gradient: _focusNode.hasFocus
+            gradient: widget.focusNode.hasFocus
                 ? LinearGradient(colors: Constants.gradiant())
                 : null, // Only show gradient when focused
-            border: _focusNode.hasFocus
+            border: widget.focusNode.hasFocus
                 ? null
                 : Border.all(
                     color: widget.borderColor ?? Constants.borderColor,
@@ -98,7 +114,7 @@ class _CustomFormsState extends State<CustomForms> {
                         ? true
                         : false
                     : false,
-                focusNode: _focusNode,
+                focusNode: widget.focusNode,
                 decoration: InputDecoration(
                   hintText: widget.hintText,
                   hintStyle: GoogleFonts.montserrat(

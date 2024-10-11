@@ -17,6 +17,8 @@ class GeneralSetting extends StatefulWidget {
 }
 
 class _GeneralSettingState extends State<GeneralSetting> {
+  FocusNode nameFocusNode = FocusNode();
+  FocusNode emailFocusNode = FocusNode();
   final generalSettingController = Get.find<GeneralSettingsController>();
 
   @override
@@ -72,6 +74,7 @@ class _GeneralSettingState extends State<GeneralSetting> {
               ),
               VerticalSpace(10.h),
               CustomForms(
+                  focusNode: nameFocusNode,
                   borderRadius: 11,
                   formWidth: 338.w,
                   formHeight: 58.h,
@@ -90,6 +93,7 @@ class _GeneralSettingState extends State<GeneralSetting> {
               ),
               VerticalSpace(10.h),
               CustomForms(
+                  focusNode: emailFocusNode,
                   borderRadius: 11,
                   formWidth: 338.w,
                   formHeight: 58.h,

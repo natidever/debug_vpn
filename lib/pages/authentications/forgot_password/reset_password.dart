@@ -9,8 +9,32 @@ import 'package:reward_vpn/widgets/background.dart';
 import 'package:reward_vpn/widgets/buttons.dart';
 import 'package:reward_vpn/widgets/form.dart';
 
-class ResetPassword extends StatelessWidget {
-  const ResetPassword({super.key});
+class ResetPassword extends StatefulWidget {
+  @override
+  State<ResetPassword> createState() => _ResetPasswordState();
+}
+
+class _ResetPasswordState extends State<ResetPassword> {
+  // const ResetPassword({super.key});
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Adding listeners to each FocusNode
+
+    passwordFocusNode.addListener(() {
+      setState(() {}); // Rebuild when focus changes
+    });
+
+    confirmPasswordFocusNode.addListener(() {
+      setState(() {}); // Rebuild when focus changes
+    });
+  }
+
+  FocusNode passwordFocusNode = FocusNode();
+
+  FocusNode confirmPasswordFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +111,7 @@ class ResetPassword extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18.0),
                     child: CustomForms(
+                      focusNode: passwordFocusNode,
                       isPassword: true.obs,
                       hintText: "Password",
                       prefix: Constants.password,
@@ -99,6 +124,7 @@ class ResetPassword extends StatelessWidget {
                       isPassword: true.obs,
                       hintText: "Confirm Password",
                       prefix: Constants.password,
+                      focusNode: confirmPasswordFocusNode,
                     ),
                   ),
                   VerticalSpace(constriants.maxHeight * 0.35),
@@ -106,7 +132,7 @@ class ResetPassword extends StatelessWidget {
                   // Expanded(child: Container()),
                   GestureDetector(
                     onTap: () {
-                      Get.toNamed(AppRoute.signup);
+                      Get.toNamed(AppRoute.authentication);
                     },
                     child: PrimaryButton(
                         fontSize: 16,
