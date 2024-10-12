@@ -47,6 +47,7 @@ dependencies:
   table_calendar: ^3.1.2
   dropdown_button2: ^2.3.9
   dio: ^5.7.0
+  encrypt: ^5.0.3
 
 
 dev_dependencies:

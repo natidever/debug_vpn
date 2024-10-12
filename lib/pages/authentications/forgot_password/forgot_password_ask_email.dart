@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:reward_vpn/controller/authentication_controllers/forgot_password_ask_email_controller.dart';
 import 'package:reward_vpn/route/app_route.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
@@ -12,6 +13,7 @@ import 'package:reward_vpn/widgets/form.dart';
 class ForgotPassword extends StatelessWidget {
   ForgotPassword({super.key});
   FocusNode emailFocusNode = FocusNode();
+  final forgotController = Get.find<ForgotPasswordAskEmailController>();
 
   @override
   Widget build(BuildContext context) {
@@ -102,12 +104,21 @@ class ForgotPassword extends StatelessWidget {
                       hintText: "Email",
                       prefix: Constants.email,
                       focusNode: emailFocusNode,
+                      controller: forgotController.emailController,
+                      onChanged: (value) {
+                        forgotController.validateEmail(value);
+                      },
                     ),
                   ),
                   VerticalSpace(constriants.maxHeight * 0.05),
                   GestureDetector(
-                    onTap: () {
-                      Get.toNamed(AppRoute.forgotPasswordVerificaion);
+                    onTap: () async {
+                      // Get.toNamed(AppRoute.forgotPasswordVerificaion);
+                      final email = forgotController.emailController.text;
+                      final response =
+                          await forgotController.sendEmail("email");
+                      // print(response.data);
+                      // print("sttuscode :${response.statusCode}");
                     },
                     child: PrimaryButton(
                         fontSize: 16,

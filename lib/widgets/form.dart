@@ -19,6 +19,8 @@ class CustomForms extends StatefulWidget {
   double? borderRadius;
   Color? hintColor;
   String? suffixIcons;
+  // Color? borderColor;
+
   FocusNode focusNode;
 
   CustomForms({
@@ -26,10 +28,11 @@ class CustomForms extends StatefulWidget {
     required this.hintText,
     required this.prefix,
     required this.focusNode,
+    this.borderColor,
     this.onChanged,
     this.controller,
     this.formBackground,
-    this.borderColor,
+    // this.borderColor,
     this.formHeight,
     this.formWidth,
     this.borderRadius,
@@ -44,15 +47,26 @@ class CustomForms extends StatefulWidget {
 class _CustomFormsState extends State<CustomForms> {
   final authenticationController = Get.find<AuthenticationController>();
 
-  // @override
-  // void dispose() {
-  //   widget.focusNode.dispose(); // Dispose the focus node to avoid memory leaks
-  //   super.dispose();
+  var x;
+
+  // dynamic choiseAppropriateGradiant() {
+  //   if (widget.hintText == "Email") {
+  //     x = authenticationController.isEmailvalid.value
+  //         ? LinearGradient(colors: Constants.gradiant())
+  //         : null;
+  //   } else {
+  //     x = widget.focusNode.hasFocus
+  //         ? LinearGradient(colors: Constants.gradiant())
+  //         : null;
+  //   }
+
+  //   return x;
   // }
 
   @override
   void initState() {
     super.initState();
+    // choiseAppropriateGradiant();
 
     // Add a listener to the focus node
     widget.focusNode.addListener(() {
@@ -82,14 +96,16 @@ class _CustomFormsState extends State<CustomForms> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(widget.borderRadius ?? 50),
 
+            //  :authenticationController.isEmailvalid ==true?LinearGradient(colors: Constants.gradiant())
             gradient: widget.focusNode.hasFocus
                 ? LinearGradient(colors: Constants.gradiant())
                 : null, // Only show gradient when focused
+
             border: widget.focusNode.hasFocus
                 ? null
                 : Border.all(
                     color: widget.borderColor ?? Constants.borderColor,
-                    // color: Colors.red, // Solid red border when not focused
+
                     width: 2.0, // Adjust the width if needed
                   ),
           ),

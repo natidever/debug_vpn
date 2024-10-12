@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reward_vpn/controller/authentication_controllers/login_controller.dart';
+import 'package:reward_vpn/controller/main_page_controllers/homescreen_controller.dart';
 import 'package:reward_vpn/route/app_route.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
@@ -24,6 +25,7 @@ class _LoginState extends State<Login> {
   FocusNode emailFocusNode = FocusNode();
 
   final loginController = Get.find<LoginController>();
+  final homeController = Get.find<HomescreenController>();
 
   @override
   void initState() {
@@ -57,13 +59,14 @@ class _LoginState extends State<Login> {
                   VerticalSpace(screenWidth * 0.07),
 
                   CustomForms(
+                    // borderColor: Colors.red,
                     prefix: Constants.email,
                     isPassword: false.obs,
                     hintText: "Email",
                     focusNode: emailFocusNode,
                     controller: loginController.emialController,
                     onChanged: (value) {
-                      loginController.validateEmail(value);
+                      // loginController.validateEmail(value);
                     },
                   ),
 
@@ -216,29 +219,34 @@ class _LoginState extends State<Login> {
                           padding: const EdgeInsets.only(bottom: 1000.0),
                           child: GestureDetector(
                             onTap: () async {
-                              String email =
-                                  loginController.emialController.text;
-
-                              String password =
-                                  loginController.passwordController.text;
-
-                              final response =
-                                  await loginController.login(email, password);
-                              if (response.statusCode == 200) {
-                                // Get.snackbar("title", "pissnw");
-                                print("success:response $response");
-                                loginController.isLoading.value = false;
-                              } else {
-                                loginController.isLoading.value = false;
-                                print("error:respone ${response.statusCode}");
-                                Get.snackbar(
-                                    colorText: Constants.white,
-                                    "Error",
-                                    "Please ,Check Your Credentials ");
-                              }
-
-                              // Get.toNamed(AppRoute.bottomNavWrapper);
+                              String? content = await homeController
+                                  .readEncryptedConfigFile("sydney.conf");
+                              print("Content $content");
                             },
+                            // onTap: () async {
+                            //   String email =
+                            //       loginController.emialController.text;
+
+                            //   String password =
+                            //       loginController.passwordController.text;
+
+                            //   final response =
+                            //       await loginController.login(email, password);
+                            //   if (response.statusCode == 200) {
+                            //     // Get.snackbar("title", "pissnw");
+                            //     print("success:response $response");
+                            //     loginController.isLoading.value = false;
+                            //   } else {
+                            //     loginController.isLoading.value = false;
+                            //     print("error:respone ${response.statusCode}");
+                            //     Get.snackbar(
+                            //         colorText: Constants.white,
+                            //         "Error",
+                            //         "Please ,Check Your Credentials ");
+                            //   }
+
+                            //   // Get.toNamed(AppRoute.bottomNavWrapper);
+                            // },
                             child: PrimaryButton(text: "Login"),
                           ),
                         )

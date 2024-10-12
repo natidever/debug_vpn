@@ -12,6 +12,20 @@ class SignupController extends GetxController {
 
   final apiServices = Get.find<APIServices>();
 
+  RxBool isEmailValid = true.obs;
+
+  void validateEmail(String email) {
+    String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+    RegExp regExp = RegExp(emailPattern);
+
+    // Check if the email matches the regex pattern
+    if (regExp.hasMatch(email)) {
+      isEmailValid.value = true; // Email is valid
+    } else {
+      isEmailValid.value = false; // Email is not valid
+    }
+  }
+
   Future<dio.Response> signup(
       email, String password, String confirmPassword, String name) async {
     try {

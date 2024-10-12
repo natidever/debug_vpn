@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:reward_vpn/controller/authentication_controllers/authentication_controller.dart';
+import 'package:reward_vpn/controller/authentication_controllers/forgot_password_ask_email_controller.dart';
 import 'package:reward_vpn/controller/authentication_controllers/forgot_password_verification_controller.dart';
 import 'package:reward_vpn/controller/authentication_controllers/login_controller.dart';
 import 'package:reward_vpn/controller/authentication_controllers/signup_controller.dart';
@@ -28,5 +29,6 @@ class MainBinder extends Bindings {
     Get.lazyPut(() => NotificationController(), fenix: true);
     Get.lazyPut(() => StreakController(), fenix: true);
     Get.lazyPut(() => LoginController(), fenix: true);
+    Get.lazyPut(() => ForgotPasswordAskEmailController(), fenix: true);
   }
 }

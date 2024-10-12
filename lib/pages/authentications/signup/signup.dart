@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:reward_vpn/controller/authentication_controllers/authentication_controller.dart';
 import 'package:reward_vpn/controller/authentication_controllers/signup_controller.dart';
 import 'package:reward_vpn/route/app_route.dart';
 import 'package:reward_vpn/utils/constants.dart';
@@ -29,6 +30,7 @@ class _SignupState extends State<Signup> {
 
   FocusNode confirmPasswordFocusNode = FocusNode();
   final signUpcontroller = Get.find<SignupController>();
+  final authenticationController = Get.find<AuthenticationController>();
 
   @override
   void initState() {
@@ -65,12 +67,14 @@ class _SignupState extends State<Signup> {
                 VerticalSpace(screenWidth * 0.02),
 
                 CustomForms(
-                  prefix: Constants.email,
-                  isPassword: false.obs,
-                  hintText: "Email",
-                  focusNode: emailFocusNode,
-                  controller: signUpcontroller.emailController,
-                ),
+                    prefix: Constants.email,
+                    isPassword: false.obs,
+                    hintText: "Email",
+                    focusNode: emailFocusNode,
+                    controller: signUpcontroller.emailController,
+                    onChanged: (value) {
+                      authenticationController.validateEmail(value);
+                    }),
 
                 VerticalSpace(constriants.maxHeight * 0.04),
                 CustomForms(
