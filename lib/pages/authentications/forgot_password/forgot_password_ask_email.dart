@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:reward_vpn/controller/authentication_controllers/forgot_password_ask_email_controller.dart';
 import 'package:reward_vpn/route/app_route.dart';
+import 'package:reward_vpn/services/user_data_services.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
@@ -14,7 +15,7 @@ class ForgotPassword extends StatelessWidget {
   ForgotPassword({super.key});
   FocusNode emailFocusNode = FocusNode();
   final forgotController = Get.find<ForgotPasswordAskEmailController>();
-
+  final userServices = Get.find<UserDataServices>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,48 +87,68 @@ class ForgotPassword extends StatelessWidget {
               top: getResponsiveHeight(context, 260),
               left: getResponsiveWidth(context, 00),
               right: getResponsiveWidth(context, 0),
-              child: Column(
-                children: [
-                  // VerticalSpace(25),
+              child: Obx(() {
+                return Column(
+                  children: [
+                    // VerticalSpace(25),
 
-                  // Montserrat(
-                  //     color: Color.fromRGBO(143, 137, 150, 1),
-                  //     text:
-                  //         "Enter your email to reset your password. We will send the code to the email so you can reset password",
-                  //     fontSize: 12,
-                  //     fontWeight: FontWeight.w500),
+                    // Montserrat(
+                    //     color: Color.fromRGBO(143, 137, 150, 1),
+                    //     text:
+                    //         "Enter your email to reset your password. We will send the code to the email so you can reset password",
+                    //     fontSize: 12,
+                    //     fontWeight: FontWeight.w500),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: CustomForms(
-                      isPassword: false.obs,
-                      hintText: "Email",
-                      prefix: Constants.email,
-                      focusNode: emailFocusNode,
-                      controller: forgotController.emailController,
-                      onChanged: (value) {
-                        forgotController.validateEmail(value);
-                      },
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                      child: CustomForms(
+                        isPassword: false.obs,
+                        hintText: "Email",
+                        prefix: Constants.email,
+                        focusNode: emailFocusNode,
+                        controller: forgotController.emailController,
+                        onChanged: (value) {
+                          forgotController.validateEmail(value);
+                        },
+                      ),
                     ),
-                  ),
-                  VerticalSpace(constriants.maxHeight * 0.05),
-                  GestureDetector(
-                    onTap: () async {
-                      // Get.toNamed(AppRoute.forgotPasswordVerificaion);
-                      final email = forgotController.emailController.text;
-                      final response =
-                          await forgotController.sendEmail("email");
-                      // print(response.data);
-                      // print("sttuscode :${response.statusCode}");
-                    },
-                    child: PrimaryButton(
-                        fontSize: 16,
-                        height: 60.h,
-                        width: 343.w,
-                        text: "Send Code"),
-                  )
-                ],
-              ),
+                    VerticalSpace(constriants.maxHeight * 0.05),
+                    forgotController.isLoading.value
+                        ? CircularProgressIndicator(
+                            color: Constants.greenColor,
+                          )
+                        : GestureDetector(
+                            onTap: () async {
+                              // Get.toNamed(AppRoute.forgotPasswordVerificaion);
+                              final email =
+                                  forgotController.emailController.text;
+                              userServices.email = email;
+                              final response =
+                                  await forgotController.sendEmail(email);
+                              if (response.statusCode == 200) {
+                                forgotController.isLoading.value = false;
+                                Get.toNamed(AppRoute.forgotPasswordOtp);
+                                //go to other page
+                              } else {
+                                //show sm kind of  error message
+                                forgotController.isLoading.value = false;
+
+                                Get.snackbar("Error", "...");
+                                print("status code : $response");
+                                print("status code : ${response.statusCode},");
+                              }
+                              // print(response.data);
+                              // print("sttuscode :${response.statusCode}");
+                            },
+                            child: PrimaryButton(
+                                fontSize: 16,
+                                height: 60.h,
+                                width: 343.w,
+                                text: "Send Code"),
+                          )
+                  ],
+                );
+              }),
             )
             // Constants.check()
           ],

@@ -9,6 +9,7 @@ class SignupController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  RxBool isLoading = false.obs;
 
   final apiServices = Get.find<APIServices>();
 
@@ -30,6 +31,8 @@ class SignupController extends GetxController {
       email, String password, String confirmPassword, String name) async {
     try {
       // print("SIGNUP function called ");
+
+      isLoading.value = true;
       final response = await apiServices.postRequest(
         "user/register/",
         {
@@ -44,12 +47,18 @@ class SignupController extends GetxController {
       return response;
     } on dio.DioException catch (e) {
       if (e.response != null) {
+        isLoading.value = false;
+
         return e.response!;
       } else {
         print("Unexpected Dio error: $e");
+        isLoading.value = false;
+
         throw Exception("Unexpected Dio error: $e");
       }
     } catch (e) {
+      isLoading.value = false;
+
       print("Unexpected_error_from_signup_method $e");
       throw e;
     }
@@ -58,7 +67,7 @@ class SignupController extends GetxController {
   void showSignupErrors(String error) {
     Get.snackbar(
       "Error", error,
-      colorText: Constants.white,
+      colorText: Colors.red,
       // backgroundGradient: LinearGradient(
       //   colors: Constants.gradiant(),
       // ),

@@ -33,7 +33,7 @@ class _HomescreenState extends State<Homescreen> {
         homescreenController.connectionStateModel.isConnected;
 
     return Scaffold(
-      // backgroundColor: Color.fromARGB(255, 62, 37, 37),
+      backgroundColor: Color.fromARGB(255, 0, 0, 0),
       body: LayoutBuilder(builder: (context, constriants) {
         double screenHeight = constriants.maxHeight;
         double screenWidht = constriants.maxWidth;
@@ -221,10 +221,15 @@ class _HomescreenState extends State<Homescreen> {
                             ),
                             showGradiant: true,
                           )
-                        : SecondaryButton(
-                            text: isVPNConnected.value
-                                ? "Claim in 1 min"
-                                : "Connect VPN first"),
+                        : GestureDetector(
+                            onTap: () {
+                              // homescreenController.getDeviceData();
+                            },
+                            child: SecondaryButton(
+                                text: isVPNConnected.value
+                                    ? "Claim in 1 min"
+                                    : "Connect VPN first"),
+                          ),
 
                     VerticalSpace(mediaHeight * 0.02),
                     // VerticalSpace(screenWidht * 0.07),

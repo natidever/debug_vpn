@@ -8,7 +8,7 @@ import 'package:reward_vpn/pages/main_pages/streak.dart';
 import 'package:reward_vpn/pages/main_pages/tasks/task_wrapper.dart';
 import 'package:reward_vpn/pages/authentications/authentication_wrapper.dart';
 import 'package:reward_vpn/pages/authentications/forgot_password/forgot_password_ask_email.dart';
-import 'package:reward_vpn/pages/authentications/forgot_password/forgot_password_verification.dart';
+import 'package:reward_vpn/pages/authentications/forgot_password/forgot_password_otp.dart';
 import 'package:reward_vpn/pages/authentications/forgot_password/reset_password.dart';
 import 'package:reward_vpn/pages/authentications/signup/signup_verification.dart';
 import 'package:reward_vpn/pages/main_pages/bottom_nav_wrapper.dart';
@@ -24,7 +24,7 @@ class AppRoute {
 
   static const authentication = '/signup';
   static const forgot = '/forgot';
-  static const forgotPasswordVerificaion = '/forgotPasswordVerificaion';
+  static const forgotPasswordOtp = '/forgotPasswordVerificaion';
   static const resetPassword = '/resetPassword';
   static const signupVerification = '/signupVerification';
   static const homescreen = '/homescreen';
@@ -47,9 +47,7 @@ class AppRoute {
     GetPage(name: forgot, page: () => ForgotPassword()),
     GetPage(name: resetPassword, page: () => ResetPassword()),
     GetPage(name: bottomNavWrapper, page: () => BottomNavWrapper()),
-    GetPage(
-        name: forgotPasswordVerificaion,
-        page: () => ForgotPasswordVerification()),
+    GetPage(name: forgotPasswordOtp, page: () => ForgotPasswordVerification()),
     GetPage(name: signupVerification, page: () => SignupVerification()),
     GetPage(name: homescreen, page: () => Homescreen()),
     GetPage(name: wallet, page: () => Wallet()),

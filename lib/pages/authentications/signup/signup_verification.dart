@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:reward_vpn/controller/authentication_controllers/forgot_password_verification_controller.dart';
+import 'package:reward_vpn/controller/authentication_controllers/forgot_password_otp_controller.dart';
 import 'package:reward_vpn/route/app_route.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
@@ -17,7 +17,7 @@ class SignupVerification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final forgorPasswordVerificationController =
-        Get.find<ForgotPasswordVerificationController>();
+        Get.find<ForgotPasswordOtpController>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Constants.primaryColor,

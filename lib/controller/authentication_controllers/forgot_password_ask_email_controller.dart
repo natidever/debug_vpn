@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 import 'package:reward_vpn/services/api_services.dart';
 
 class ForgotPasswordAskEmailController extends GetxController {
   TextEditingController emailController = TextEditingController();
+  RxBool isLoading = false.obs;
 
   final apiServices = Get.find<APIServices>();
   RxBool isEmailValid = true.obs;
@@ -24,17 +26,26 @@ class ForgotPasswordAskEmailController extends GetxController {
 
   Future<dio.Response> sendEmail(String email) async {
     try {
-      final response = await apiServices.postRequest(
-          'user/send-reset-password-email/', email);
+      isLoading.value = true;
+      final response =
+          await apiServices.postRequest('user/send-reset-password-email/', {
+        "email": email,
+      });
       return response;
     } on dio.DioException catch (e) {
       if (e.response != null) {
+        isLoading.value = false;
+
         return e.response!;
       } else {
+        isLoading.value = false;
+
         print("Unexpected Dio error: $e");
         throw Exception("Unexpected error");
       }
     } catch (e) {
+      isLoading.value = false;
+
       throw Exception(
           "Unexcepted exception when sending email for reseting password");
     }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:reward_vpn/controller/authentication_controllers/reset_password_controller.dart';
 import 'package:reward_vpn/route/app_route.dart';
+import 'package:reward_vpn/services/user_data_services.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
@@ -17,6 +19,9 @@ class ResetPassword extends StatefulWidget {
 class _ResetPasswordState extends State<ResetPassword> {
   // const ResetPassword({super.key});
 
+  final userServices = Get.find<UserDataServices>();
+  final resetPasswordController = Get.find<ResetPasswordController>();
+  RxBool isThePassworsSame = true.obs;
   @override
   void initState() {
     super.initState();
@@ -42,6 +47,8 @@ class _ResetPasswordState extends State<ResetPassword> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Constants.primaryColor,
       body: LayoutBuilder(builder: (context, constriants) {
+        double mediaWidth = MediaQuery.sizeOf(context).width;
+        double mediaHeight = MediaQuery.sizeOf(context).height;
         double screenWidth = constriants.maxWidth;
         double screenHeight = constriants.maxHeight;
         return Stack(
@@ -102,47 +109,125 @@ class _ResetPasswordState extends State<ResetPassword> {
                   fontWeight: FontWeight.w500),
             ),
 
-            Positioned(
-              top: getResponsiveHeight(context, 260),
-              left: getResponsiveWidth(context, 00),
-              right: getResponsiveWidth(context, 0),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: CustomForms(
-                      focusNode: passwordFocusNode,
-                      isPassword: true.obs,
-                      hintText: "Password",
-                      prefix: Constants.password,
+            Obx(() {
+              return Positioned(
+                top: getResponsiveHeight(context, 260),
+                left: getResponsiveWidth(context, 00),
+                right: getResponsiveWidth(context, 0),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                      child: CustomForms(
+                        focusNode: passwordFocusNode,
+                        controller: resetPasswordController.passwordController,
+                        isPassword: true.obs,
+                        hintText: "Password",
+                        prefix: Constants.password,
+                      ),
                     ),
-                  ),
-                  VerticalSpace(constriants.maxHeight * 0.035),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: CustomForms(
-                      isPassword: true.obs,
-                      hintText: "Confirm Password",
-                      prefix: Constants.password,
-                      focusNode: confirmPasswordFocusNode,
+                    VerticalSpace(constriants.maxHeight * 0.035),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                      child: CustomForms(
+                        isPassword: true.obs,
+                        hintText: "Confirm Password",
+                        prefix: Constants.password,
+                        focusNode: confirmPasswordFocusNode,
+                        controller:
+                            resetPasswordController.confirmPasswordController,
+                        onChanged: (value) {
+                          if (value !=
+                              resetPasswordController.passwordController.text) {
+                            isThePassworsSame.value = false;
+                          } else {
+                            isThePassworsSame.value = true;
+                          }
+                        },
+                      ),
                     ),
-                  ),
-                  VerticalSpace(constriants.maxHeight * 0.35),
+                    isThePassworsSame.value
+                        ? Container()
+                        : Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: mediaWidth * 0.08,
+                                vertical: mediaHeight * 0.01),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                MontserratNoHeight(
+                                  text: "Password do not match",
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.red,
+                                ),
+                              ],
+                            ),
+                          ),
+                    VerticalSpace(constriants.maxHeight * 0.35),
 
-                  // Expanded(child: Container()),
-                  GestureDetector(
-                    onTap: () {
-                      Get.toNamed(AppRoute.authentication);
-                    },
-                    child: PrimaryButton(
-                        fontSize: 16,
-                        height: 60.h,
-                        width: 343.w,
-                        text: "Change Now"),
-                  )
-                ],
-              ),
-            )
+                    // Expanded(child: Container()),
+                    resetPasswordController.isLoading.value
+                        ? CircularProgressIndicator(
+                            color: Constants.greenColor,
+                          )
+                        : GestureDetector(
+                            onTap: () async {
+                              String password = resetPasswordController
+                                  .passwordController.text;
+                              String confirmPassword = resetPasswordController
+                                  .confirmPasswordController.text;
+                              String email = userServices.email;
+                              String reset_token =
+                                  userServices.passwordRestToken;
+                              final response =
+                                  await resetPasswordController.resetPassword(
+                                password: password,
+                                confirmPassword: confirmPassword,
+                                email: email,
+                                reset_token: reset_token,
+                              );
+                              if (response.statusCode == 200) {
+                                resetPasswordController.isLoading.value = false;
+
+                                Get.snackbar(
+                                  "Success",
+                                  "Password reseted Successfully",
+                                  colorText: Constants.greenColor,
+                                );
+                                Get.offAllNamed(AppRoute.authentication);
+                                print("successresponse : ${response.data}");
+                              } else {
+                                resetPasswordController.isLoading.value = false;
+
+                                final errorResponse = response.data["errors"]
+                                        ["non_field_errors"][0] ??
+                                    "Something went wrong";
+                                // ['non_field_errors'][0];
+                                print("errorResponse :$errorResponse");
+                                print("Response :$response");
+
+                                Get.snackbar(
+                                  "Error",
+                                  errorResponse,
+                                  colorText: Colors.red,
+                                );
+                              }
+
+                              print("OTP :${userServices.passwordRestToken}");
+                              print("Email : ${userServices.email}");
+                              // Get.toNamed(AppRoute.authentication);
+                            },
+                            child: PrimaryButton(
+                                fontSize: 16,
+                                height: 60.h,
+                                width: 343.w,
+                                text: "Change Now"),
+                          )
+                  ],
+                ),
+              );
+            })
             // Constants.check()
           ],
         );

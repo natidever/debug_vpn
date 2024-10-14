@@ -9,6 +9,7 @@ class AuthenticationController extends GetxController {
   RxBool isPasswordVissible = true.obs;
 
   RxBool isEmailvalid = true.obs;
+  RxBool isPasswordValid = true.obs;
 
   void validateEmail(String email) {
     String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
@@ -19,6 +20,23 @@ class AuthenticationController extends GetxController {
       isEmailvalid.value = true; // Email is valid
     } else {
       isEmailvalid.value = false; // Email is not valid
+    }
+  }
+
+  void validatePassword(String password) {
+    // Regular expression for a password that contains at least:
+    // - 8 characters
+    // - at least one letter
+    // - at least one number
+    // - at least one symbol
+    String passwordPattern =
+        r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$';
+    RegExp regExp = RegExp(passwordPattern);
+
+    if (regExp.hasMatch(password)) {
+      isPasswordValid.value = true; // Password is valid
+    } else {
+      isPasswordValid.value = false; // Password is invalid
     }
   }
 
