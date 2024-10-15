@@ -15,8 +15,16 @@ import 'package:wireguard_flutter/wireguard_flutter_platform_interface.dart';
 class VpnServices extends GetxService {
   final wireguard = WireGuardFlutter.instance;
 
-  String? serverAddress;
-  String? serverConfig;
+  String defautConfigChicago = '';
+  String defaultServerAddress = '';
+
+  Future<void> assignDefaultConfig() async {
+    defautConfigChicago = await readEncryptedConfigFile(ServerConfigs.chicago);
+    defaultServerAddress = extractEndpoint(defautConfigChicago);
+  }
+
+  String serverConfig = "defautConfigChicago";
+  String serverAddress = "";
 
 // initialize the interface
 
@@ -104,7 +112,8 @@ class VpnServices extends GetxService {
     return directory.path;
   }
 
-  Future<void> saveEncryptedConfigFile(String fileName, String contents) async {
+  Future<void> saveEncryptedConfigFile(
+      {required String fileName, required String contents}) async {
     final path = await getLocalPath();
     final file = File('$path/$fileName');
 
@@ -116,10 +125,29 @@ class VpnServices extends GetxService {
   }
 
   Future<void> saveServerConfiguration() async {
-    String sydneyConfig = ServerConfigs.chicago;
-
-    await saveEncryptedConfigFile("chicago.conf", sydneyConfig);
-    // await saveEncryptedConfigFile("toronto.conf", torontoConfig);
+    await saveEncryptedConfigFile(
+        fileName: ServerConfigs.chicagoConf, contents: ServerConfigs.chicago);
+    await saveEncryptedConfigFile(
+        fileName: ServerConfigs.frankfurtConf,
+        contents: ServerConfigs.frankfurt);
+    await saveEncryptedConfigFile(
+        fileName: ServerConfigs.londonConf, contents: ServerConfigs.london);
+    await saveEncryptedConfigFile(
+        fileName: ServerConfigs.losAngelesConf,
+        contents: ServerConfigs.losAngeles);
+    await saveEncryptedConfigFile(
+        fileName: ServerConfigs.newYorkConf, contents: ServerConfigs.newYork);
+    await saveEncryptedConfigFile(
+        fileName: ServerConfigs.seoulConf, contents: ServerConfigs.seoul);
+    await saveEncryptedConfigFile(
+        fileName: ServerConfigs.singaporeConf,
+        contents: ServerConfigs.singapore);
+    await saveEncryptedConfigFile(
+        fileName: ServerConfigs.sydneyConf, contents: ServerConfigs.sydney);
+    await saveEncryptedConfigFile(
+        fileName: ServerConfigs.tokyoConf, contents: ServerConfigs.tokyo);
+    await saveEncryptedConfigFile(
+        fileName: ServerConfigs.torontoConf, contents: ServerConfigs.toronto);
   }
 
   // String decryptContent(String encryptedText) {
@@ -152,7 +180,7 @@ class VpnServices extends GetxService {
   /////                                           /////
   ///           WireGuardConfiguraions            /////
   ///
-  ///
+  ///                                            ////
   Future<void> stopWireGuardTunnel() async {
     await wireguard.stopVpn();
   }
@@ -185,5 +213,84 @@ class VpnServices extends GetxService {
     } catch (e) {
       print("Error starting WireGuard tunnel: $e");
     }
+  }
+
+  /////                                           /////
+  ///          Choising server                     /////
+  ///                                             ///
+  ///                                            ////
+  //   static String chicago = '''''';
+  // static String frankfurt = '''''';
+  // static String london = '''''';
+  // static String losAngeles = '''''';
+  // static String newYork = '''''';
+  // static String seoul = '''''';
+  // static String singapore = '''''';
+  // static String sydney = '''''';
+  // static String tokyo = '''''';
+  // static String toronto = '''''';
+
+  // final chicago = await vpnServices
+  //                             .readEncryptedConfigFile("chicago.conf");
+
+  //                         print("object");
+
+  //                         String serveraddres =
+  //                             await vpnServices.extractEndpoint(chicago);
+  //                         print("server address $serveraddres");
+
+  //                         await vpnServices.startWireGuardTunnel(
+  //                             chicago, serveraddres);
+  Future<void> choiseServer(int index) async {
+    switch (index) {
+      case 0:
+        serverConfig = await readEncryptedConfigFile(ServerConfigs.chicagoConf);
+        serverAddress = await extractEndpoint(serverConfig);
+        break;
+      case 1:
+        serverConfig =
+            await readEncryptedConfigFile(ServerConfigs.frankfurtConf);
+        serverAddress = await extractEndpoint(serverConfig);
+        break;
+      case 2:
+        serverConfig = await readEncryptedConfigFile(ServerConfigs.londonConf);
+        serverAddress = await extractEndpoint(serverConfig);
+        break;
+      case 3:
+        serverConfig =
+            await readEncryptedConfigFile(ServerConfigs.losAngelesConf);
+        serverAddress = await extractEndpoint(serverConfig);
+        break;
+      case 4:
+        serverConfig = await readEncryptedConfigFile(ServerConfigs.newYorkConf);
+        serverAddress = await extractEndpoint(serverConfig);
+        break;
+      case 5:
+        serverConfig = await readEncryptedConfigFile(ServerConfigs.seoulConf);
+        serverAddress = await extractEndpoint(serverConfig);
+        break;
+      case 6:
+        serverConfig =
+            await readEncryptedConfigFile(ServerConfigs.singaporeConf);
+        serverAddress = await extractEndpoint(serverConfig);
+        break;
+      case 7:
+        serverConfig = await readEncryptedConfigFile(ServerConfigs.sydneyConf);
+        serverAddress = await extractEndpoint(serverConfig);
+        break;
+      case 8:
+        serverConfig = await readEncryptedConfigFile(ServerConfigs.tokyoConf);
+        serverAddress = await extractEndpoint(serverConfig);
+        break;
+      case 9:
+        serverConfig = await readEncryptedConfigFile(ServerConfigs.torontoConf);
+        serverAddress = await extractEndpoint(serverConfig);
+        break;
+      default:
+        throw Exception("Invalid server index");
+    }
+
+    // Start the WireGuard tunnel with the selected server configuration
+    await startWireGuardTunnel(serverConfig, serverAddress);
   }
 }

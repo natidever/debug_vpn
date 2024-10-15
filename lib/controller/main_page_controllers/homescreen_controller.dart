@@ -21,7 +21,9 @@ class HomescreenController extends GetxController {
   final ConnectionStateModel connectionStateModel = ConnectionStateModel();
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
   final apiServices = Get.find<APIServices>();
+  final vpnServices = Get.find<VpnServices>();
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
   // final utilServices = Get.find<UtiliteServices>();
   String deviceName = '';
   String deviceId = '';
@@ -52,17 +54,23 @@ class HomescreenController extends GetxController {
 
   RxBool connectionReach1Minute = false.obs;
 
-  void handleVPNConnection() {
+  void handleVPNConnection() async {
     connectionStateModel.isConnecting.value = true;
-    Future.delayed(Duration(seconds: 1), () {
-      connectionStateModel.isConnecting.value = false;
-      connectionStateModel.isConnected.value = true;
-      _startTimer();
-    });
+    // Future.delayed(Duration(seconds: 1), () {
+    //   connectionStateModel.isConnecting.value = false;
+    //   connectionStateModel.isConnected.value = true;
+    //   _startTimer();
+    // });
+    await vpnServices.assignDefaultConfig();
+    logger.i("default config ${vpnServices.defautConfigChicago}");
+    logger.i("default server address ${vpnServices.serverAddress}");
+    vpnServices.startWireGuardTunnel(
+        vpnServices.defautConfigChicago, vpnServices.defaultServerAddress);
   }
 
   void handleDisconnection() {
     connectionStateModel.isConnected.value = false;
+
     _resetimer();
   }
 

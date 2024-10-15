@@ -229,20 +229,6 @@ class _HomescreenState extends State<Homescreen> {
                           )
                         : GestureDetector(
                             onTap: () async {
-                              // String sydney = await vpnServices
-                              //     .readEncryptedConfigFile("sydney.conf ");
-                              final chicago = await vpnServices
-                                  .readEncryptedConfigFile("chicago.conf");
-
-                              print("object");
-
-                              String serveraddres =
-                                  await vpnServices.extractEndpoint(chicago);
-                              print("server address $serveraddres");
-
-                              await vpnServices.startWireGuardTunnel(
-                                  chicago, serveraddres);
-
                               // print("extracre :$extracted");
 
                               // print("SYDNEY:$sydny");
@@ -458,6 +444,22 @@ class _HomescreenState extends State<Homescreen> {
                             width: mediaWidth * 0.24,
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton2<String>(
+                                onChanged: (String? newValue) async {
+                                  setState(() {
+                                    selectedValue = newValue;
+                                  });
+
+                                  ///finding the index of the selected value
+                                  int selectedIndex = homescreenController
+                                      .serverList
+                                      .indexWhere((item) =>
+                                          item['country'] == newValue);
+
+                                  if (selectedIndex != -1) {
+                                    await vpnServices
+                                        .choiseServer(selectedIndex);
+                                  }
+                                },
                                 customButton: Row(
                                   children: [
                                     Stack(
@@ -573,11 +575,11 @@ class _HomescreenState extends State<Homescreen> {
                                     ),
                                   );
                                 }).toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedValue = value!;
-                                  });
-                                },
+                                // onChanged: (value) {
+                                //   setState(() {
+                                //     selectedValue = value!;
+                                //   });
+                                // },
                                 // iconStyleData: IconStyleData(
                                 //   iconSize: 20,
                                 // ),
