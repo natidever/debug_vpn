@@ -10,6 +10,17 @@ class ServerConfigs {
   static String tokyo = '''''';
   static String toronto = '''''';
 
+  static String chicagoConf = "chicago.conf";
+  static String frankfurtConf = "frankfurt.conf";
+  static String londonConf = "london.conf";
+  static String losAngelesConf = "los_angeles.conf";
+  static String newYorkConf = "new_york.conf";
+  static String seoulConf = "seoul.conf";
+  static String singaporeConf = "singapore.conf";
+  static String sydneyConf = "sydney.conf";
+  static String tokyoConf = "tokyo.conf";
+  static String torontoConf = "toronto.conf";
+
   static void extractConfigs(Map<String, dynamic> serverConfigs) {
     chicago = formatConfig(serverConfigs['Chicago']);
     frankfurt = formatConfig(serverConfigs['Frankfurt']);
@@ -25,9 +36,11 @@ class ServerConfigs {
 
   static String formatConfig(Map<String, dynamic> config) {
     return '''
+[Interface]
 PrivateKey = ${config['private_key']}
 Address = ${config['address']}
 DNS = ${config['dns']}
+[Peer]
 PublicKey = ${config['public_key']}
 Endpoint = ${config['endpoint']}
 AllowedIPs = ${config['allowed_ips']}

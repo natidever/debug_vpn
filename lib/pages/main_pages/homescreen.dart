@@ -129,7 +129,8 @@ class _HomescreenState extends State<Homescreen> {
                               GestureDetector(
                                 onTap: () {
                                   print("object");
-                                  Get.toNamed(AppRoute.setting);
+                                  vpnServices.stopWireGuardTunnel();
+                                  // Get.toNamed(AppRoute.setting);
                                 },
                                 child: Image.asset(
                                   Constants.settingIcon,
@@ -228,8 +229,22 @@ class _HomescreenState extends State<Homescreen> {
                           )
                         : GestureDetector(
                             onTap: () async {
-                              // final sydny = await vpnServices
-                              //     .readEncryptedConfigFile("sydney.conf");
+                              // String sydney = await vpnServices
+                              //     .readEncryptedConfigFile("sydney.conf ");
+                              final chicago = await vpnServices
+                                  .readEncryptedConfigFile("chicago.conf");
+
+                              print("object");
+
+                              String serveraddres =
+                                  await vpnServices.extractEndpoint(chicago);
+                              print("server address $serveraddres");
+
+                              await vpnServices.startWireGuardTunnel(
+                                  chicago, serveraddres);
+
+                              // print("extracre :$extracted");
+
                               // print("SYDNEY:$sydny");
                               //send request to the server
                               // homescreenController.decideToUpdateServerConifg(

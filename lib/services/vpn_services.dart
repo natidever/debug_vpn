@@ -8,8 +8,18 @@ import 'package:path_provider/path_provider.dart';
 import 'package:reward_vpn/models/server_config.dart';
 import 'package:reward_vpn/services/api_services.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+// import 'package:wireguard_flutter/wireguard_flutter.dart';
+import 'package:wireguard_flutter/wireguard_flutter.dart';
+import 'package:wireguard_flutter/wireguard_flutter_platform_interface.dart';
 
 class VpnServices extends GetxService {
+  final wireguard = WireGuardFlutter.instance;
+
+  String? serverAddress;
+  String? serverConfig;
+
+// initialize the interface
+
   bool isServerUpdated = true;
   var logger = Logger();
   final apiServices = Get.find<APIServices>();
@@ -22,7 +32,7 @@ class VpnServices extends GetxService {
   Future<dio.Response> getServerse(String deviceName, String deviceID) async {
     try {
       final response = await apiServices.postRequest("vpn/configs/all/",
-          {"device_name": "deviceName", "device_id": "deviceID"});
+          {"device_name": "deviceName", "device_id": deviceID});
 
       return response;
     } on dio.DioException catch (E) {
@@ -40,12 +50,14 @@ class VpnServices extends GetxService {
 
   dynamic decideToUpdateServerConifg(
       bool isServerUpdated, String deviceName, String deviceId) async {
+    // 8EL19RdVsCJjRMNimdWeNZ0yDBQVdNqqLy3FGAmcZn0=
     if (isServerUpdated) {
-      final response = await getServerse(deviceName, deviceId);
+      final response = await getServerse("sdfasf9y9871298", "121212");
 
       if (response.statusCode == 200) {
         isServerUpdated = false;
-        // logger.i("response :$response");
+// 0EKvzpKOA7qvnwbhRH5DkCdiY3s0ZMsGGApm1HP+wFw
+        logger.i("response :$response");
         // logger.i("response_data :$response");
         // final decoded = jsonDecode(source),
 //this extract file and store them in string format
@@ -104,12 +116,10 @@ class VpnServices extends GetxService {
   }
 
   Future<void> saveServerConfiguration() async {
-    String sydneyConfig = ServerConfigs.sydney;
+    String sydneyConfig = ServerConfigs.chicago;
 
-    String torontoConfig = ServerConfigs.toronto;
-
-    await saveEncryptedConfigFile("sydney.conf", sydneyConfig);
-    await saveEncryptedConfigFile("toronto.conf", torontoConfig);
+    await saveEncryptedConfigFile("chicago.conf", sydneyConfig);
+    // await saveEncryptedConfigFile("toronto.conf", torontoConfig);
   }
 
   // String decryptContent(String encryptedText) {
@@ -141,5 +151,39 @@ class VpnServices extends GetxService {
 
   /////                                           /////
   ///           WireGuardConfiguraions            /////
-}///                                           ///////
+  ///
+  ///
+  Future<void> stopWireGuardTunnel() async {
+    await wireguard.stopVpn();
+  }
 
+  String extractEndpoint(String configContent) {
+    try {
+      List<String> lines = configContent.split('\n');
+      for (String line in lines) {
+        if (line.startsWith('Endpoint')) {
+          return line.split('=')[1].trim();
+        }
+      }
+      throw Exception("Endpoint not found in config");
+    } catch (e) {
+      logger.e("Error extracting endpoint: $e");
+      throw Exception("Exception thrown while extracting endpoint: $e");
+    }
+  }
+
+  Future<void> startWireGuardTunnel(String confg, String serverAddress) async {
+    try {
+      await wireguard.initialize(interfaceName: 'wg0');
+
+      await wireguard.startVpn(
+        serverAddress: serverAddress,
+        // wgQuickConfig: confg, // Your Endpoint
+        wgQuickConfig: confg, // Ensure no additional characters or whitespace
+        providerBundleIdentifier: 'com.example.yourapp',
+      );
+    } catch (e) {
+      print("Error starting WireGuard tunnel: $e");
+    }
+  }
+}
