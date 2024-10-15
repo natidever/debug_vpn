@@ -4,8 +4,10 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:reward_vpn/controller/main_page_controllers/homescreen_controller.dart';
 import 'package:reward_vpn/route/app_route.dart';
+import 'package:reward_vpn/services/vpn_services.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
@@ -22,7 +24,10 @@ class _HomescreenState extends State<Homescreen> {
   OverlayEntry? overlayEntry;
 
   final homescreenController = Get.find<HomescreenController>();
+  // final utilServices = Get.find<UtiliteServices>();
+  final vpnServices = Get.find<VpnServices>();
 
+  var logger = Logger();
   String? selectedValue;
 
   bool isSpecialCondition = false;
@@ -222,8 +227,28 @@ class _HomescreenState extends State<Homescreen> {
                             showGradiant: true,
                           )
                         : GestureDetector(
-                            onTap: () {
-                              // homescreenController.getDeviceData();
+                            onTap: () async {
+                              // final sydny = await vpnServices
+                              //     .readEncryptedConfigFile("sydney.conf");
+                              // print("SYDNEY:$sydny");
+                              //send request to the server
+                              // homescreenController.decideToUpdateServerConifg(
+                              //     //  "true"
+                              //     true,
+                              //     "deviceName",
+                              //     "d");
+
+                              // //save to the local storaage
+                              // homescreenController.saveServerConfiguration();
+                              // //read the saved file from local
+                              // final sydneyConfig = await homescreenController
+                              //     .readEncryptedConfigFile("sydney.conf");
+                              // final torontoConfig = await homescreenController
+                              //     .readEncryptedConfigFile("toronto.conf");
+                              // logger.e("Saved file_torronto :$torontoConfig");
+                              // logger.e("Saved file_syndey :$sydneyConfig");
+
+                              // print("object");
                             },
                             child: SecondaryButton(
                                 text: isVPNConnected.value
@@ -232,7 +257,7 @@ class _HomescreenState extends State<Homescreen> {
                           ),
 
                     VerticalSpace(mediaHeight * 0.02),
-                    // VerticalSpace(screenWidht * 0.07),
+                    // VerticalSpace(screenWidht * 0.07),hoscsc
                     Stack(
                       children: [
                         Align(

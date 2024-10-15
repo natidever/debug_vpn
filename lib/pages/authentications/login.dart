@@ -219,10 +219,10 @@ class _LoginState extends State<Login> {
                           padding: const EdgeInsets.only(bottom: 1000.0),
                           child: GestureDetector(
                             onTap: () async {
-                              await homeController.saveServerConfiguration();
-                              String? content = await homeController
-                                  .readEncryptedConfigFile("sydney.conf");
-                              print("Content after decryption: $content");
+                              // await homeController.saveServerConfiguration();
+                              // String? content = await homeController
+                              //     .readEncryptedConfigFile("sydney.conf");
+                              // print("Content after decryption: $content");
                             },
                             // onTap: () async {
                             //   String email =

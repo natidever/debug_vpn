@@ -14,12 +14,14 @@ import 'package:reward_vpn/controller/setting_controllers/privacy_setting_contro
 import 'package:reward_vpn/controller/streak_controllers/streak_controller.dart';
 import 'package:reward_vpn/services/api_services.dart';
 import 'package:reward_vpn/services/user_data_services.dart';
+import 'package:reward_vpn/services/vpn_services.dart';
 
 class MainBinder extends Bindings {
   @override
   void dependencies() {
     Get.put(APIServices());
     Get.put(UserDataServices());
+    Get.put(VpnServices());
 
     Get.put(AuthenticationController());
     Get.put(SignupController());

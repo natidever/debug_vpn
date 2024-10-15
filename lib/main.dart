@@ -5,12 +5,23 @@ import 'package:reward_vpn/bindings/main_binder.dart';
 import 'package:reward_vpn/controller/main_page_controllers/homescreen_controller.dart';
 import 'package:reward_vpn/pages/main_pages/homescreen.dart';
 import 'package:reward_vpn/route/app_route.dart';
+import 'package:reward_vpn/services/vpn_services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Get.put(HomescreenController());
-  // final homscreenController = Get.find<HomescreenController>();
-  // await homscreenController.saveServerConfiguration();
+
+  MainBinder().dependencies();
+  final vpnService = Get.find<VpnServices>();
+  try {
+    final decison = await vpnService.decideToUpdateServerConifg(
+        true, "automatedTesDn", "id");
+    final sydney = await vpnService.readEncryptedConfigFile("sydney.conf");
+    print("From file $sydney ");
+
+    // print("SYDNEY:$sydny");
+  } catch (e) {
+    print(e);
+  }
 
   runApp(MyApp());
 }
@@ -24,7 +35,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           initialRoute: AppRoute.bottomNavWrapper,
           getPages: AppRoute.route,
-          initialBinding: MainBinder(),
+          // initialBinding: MainBinder(),
           debugShowCheckedModeBanner: false,
           // initialBinding: ,
         );
