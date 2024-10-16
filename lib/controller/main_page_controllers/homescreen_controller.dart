@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart' as dio;
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -10,6 +11,7 @@ import 'package:reward_vpn/models/server_config.dart';
 import 'package:reward_vpn/services/api_services.dart';
 import 'package:reward_vpn/services/vpn_services.dart';
 import 'package:reward_vpn/utils/constants.dart';
+import 'package:reward_vpn/widgets/ask_to_login.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:wireguard_flutter/wireguard_flutter.dart';
@@ -18,8 +20,7 @@ import 'package:wireguard_flutter/wireguard_flutter.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
 class HomescreenController extends GetxController {
-  final ConnectionStateModel connectionStateModel = ConnectionStateModel();
-  final StopWatchTimer _stopWatchTimer = StopWatchTimer();
+  // final ConnectionStateModel connectionStateModel = ConnectionStateModel();
   final apiServices = Get.find<APIServices>();
   final vpnServices = Get.find<VpnServices>();
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -28,6 +29,22 @@ class HomescreenController extends GetxController {
   String deviceName = '';
   String deviceId = '';
   var logger = Logger();
+
+  RxBool isOverLayShown = false.obs;
+
+  OverlayEntry? overlayEntry;
+
+  void showLoginOverLay(BuildContext context) {
+    OverlayState? overlayState = Overlay.of(context);
+
+    overlayEntry = OverlayEntry(builder: (context) {
+      return AskToLogin();
+    });
+
+    overlayState.insert(overlayEntry!);
+
+    isOverLayShown.value = true;
+  }
 
   ///Servers
   // String chicago = ''; US
@@ -84,60 +101,35 @@ class HomescreenController extends GetxController {
     },
   ];
   // RxString elabsedTime = "00:00:00".obs;
-  RxString connectionTime = "00:00:00".obs;
 
-  RxBool connectionReach1Minute = false.obs;
+  // void handleVPNConnection() async {
+  //   connectionStateModel.isConnecting.value = true;
+  //   // Future.delayed(Duration(seconds: 1), () {
+  //   //   connectionStateModel.isConnecting.value = false;
+  //   //   connectionStateModel.isConnected.value = true;
+  //   //   _startTimer();
+  //   // });
+  //   await vpnServices.assignDefaultConfig();
+  //   await vpnServices.startWireGuardTunnel(
+  //       vpnServices.defautConfigChicago, vpnServices.defaultServerAddress);
+  //   connectionStateModel.isConnecting.value = false;
+  //   connectionStateModel.isConnected.value = true;
+  //   // startTimer();
 
-  void handleVPNConnection() async {
-    connectionStateModel.isConnecting.value = true;
-    // Future.delayed(Duration(seconds: 1), () {
-    //   connectionStateModel.isConnecting.value = false;
-    //   connectionStateModel.isConnected.value = true;
-    //   _startTimer();
-    // });
-    await vpnServices.assignDefaultConfig();
-    await vpnServices.startWireGuardTunnel(
-        vpnServices.defautConfigChicago, vpnServices.defaultServerAddress);
-    connectionStateModel.isConnecting.value = false;
-    connectionStateModel.isConnected.value = true;
-    _startTimer();
+  //   // logger.i("defauld server address${vpnServices.defaultServerAddress}");
+  //   // logger.i("defauld server config${vpnServices.defautConfigChicago}");
+  // }
 
-    // logger.i("defauld server address${vpnServices.defaultServerAddress}");
-    // logger.i("defauld server config${vpnServices.defautConfigChicago}");
-  }
+  // void handleDisconnection() {
+  //   connectionStateModel.isConnected.value = false;
+  //   vpnServices.stopWireGuardTunnel();
 
-  void handleDisconnection() {
-    connectionStateModel.isConnected.value = false;
-    vpnServices.stopWireGuardTunnel();
+  //   _resetimer();
+  // }
 
-    _resetimer();
-  }
-
-  void _startTimer() {
-    _stopWatchTimer.onStartTimer();
-    _stopWatchTimer.rawTime.listen((value) {
-      // Format the raw time to "hh:mm:ss"
-      final formattedTime = StopWatchTimer.getDisplayTime(value, hours: true);
-      // Update the displayed connection time
-      _stopWatchTimer.rawTime.listen((value) {
-        final formattedTime = StopWatchTimer.getDisplayTime(value,
-            hours: true, minute: true, second: true, milliSecond: false);
-
-        connectionTime.value =
-            formattedTime; // Update the displayed connection time
-
-        if (value >= 60000) {
-          connectionReach1Minute.value = true;
-        } else {
-          connectionReach1Minute.value = false;
-        }
-      });
-    });
-  }
-
-  void _resetimer() {
-    _stopWatchTimer.onResetTimer(); // Stop the timer
-  }
+  // void _resetimer() {
+  //   _stopWatchTimer.onResetTimer(); // Stop the timer
+}
 
 //
 //
@@ -185,4 +177,4 @@ class HomescreenController extends GetxController {
   //     print("sydny config file is not found ");
   //   }
   // }
-}
+

@@ -2,21 +2,34 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:dio/dio.dart' as dio;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:reward_vpn/controller/main_page_controllers/homescreen_controller.dart';
+import 'package:reward_vpn/models/connection_state_model.dart';
 import 'package:reward_vpn/models/server_config.dart';
 import 'package:reward_vpn/services/api_services.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 // import 'package:wireguard_flutter/wireguard_flutter.dart';
 import 'package:wireguard_flutter/wireguard_flutter.dart';
 import 'package:wireguard_flutter/wireguard_flutter_platform_interface.dart';
 
 class VpnServices extends GetxService {
   final wireguard = WireGuardFlutter.instance;
+  FlutterSecureStorage storage = FlutterSecureStorage();
 
   String defautConfigChicago = '';
   String defaultServerAddress = '';
+  String serverConfig = "defautConfigChicago";
+  String serverAddress = "";
+  // final homeScreenController = Get.find<HomescreenController>();
+  final ConnectionStateModel connectionStateModel = ConnectionStateModel();
+  final StopWatchTimer stopWatchTimer = StopWatchTimer();
+  RxString connectionTime = "00:00:00".obs;
+
+  RxBool connectionReach1Minute = false.obs;
 
   Future<void> assignDefaultConfig() async {
     defautConfigChicago =
@@ -24,12 +37,10 @@ class VpnServices extends GetxService {
     defaultServerAddress = await extractEndpoint(defautConfigChicago);
   }
 
-  String serverConfig = "defautConfigChicago";
-  String serverAddress = "";
-
 // initialize the interface
 
   bool isServerUpdated = true;
+
   var logger = Logger();
   final apiServices = Get.find<APIServices>();
 ////////                          ////////disco
@@ -40,6 +51,9 @@ class VpnServices extends GetxService {
 
   Future<dio.Response> getServerse(String deviceName, String deviceID) async {
     try {
+      isServerUpdated = false;
+      storage.write(key: "serverFlag", value: "$isServerUpdated");
+
       final response = await apiServices.postRequest("vpn/configs/all/",
           {"device_name": "deviceName", "device_id": deviceID});
 
@@ -241,7 +255,58 @@ class VpnServices extends GetxService {
   //                         print("server address $serveraddres");
 
   //                         await vpnServices.startWireGuardTunnel(
-  //                             chicago, serveraddres);
+  //                             chicago, serveraddres);]
+
+  void startTimer() {
+    stopWatchTimer.onStartTimer();
+    stopWatchTimer.rawTime.listen((value) {
+      // Format the raw time to "hh:mm:ss"
+      final formattedTime = StopWatchTimer.getDisplayTime(value, hours: true);
+      // Update the displayed connection time
+      stopWatchTimer.rawTime.listen((value) {
+        final formattedTime = StopWatchTimer.getDisplayTime(value,
+            hours: true, minute: true, second: true, milliSecond: false);
+
+        connectionTime.value =
+            formattedTime; // Update the displayed connection time
+
+        if (value >= 60000) {
+          connectionReach1Minute.value = true;
+        } else {
+          connectionReach1Minute.value = false;
+        }
+      });
+    });
+  }
+
+  void handleVPNConnection() async {
+    connectionStateModel.isConnecting.value = true;
+    // Future.delayed(Duration(seconds: 1), () {
+    //   connectionStateModel.isConnecting.value = false;
+    //   connectionStateModel.isConnected.value = true;
+    //   _startTimer();is
+    // });
+    await assignDefaultConfig();
+    await startWireGuardTunnel(defautConfigChicago, defaultServerAddress);
+    connectionStateModel.isConnecting.value = false;
+    connectionStateModel.isConnected.value = true;
+    startTimer();
+
+    // logger.i("defauld server address${vpnServices.defaultServerAddress}");
+    // logger.i("defauld server config${vpnServices.defautConfigChicago}");
+  }
+
+  void handleDisconnection() {
+    connectionStateModel.isConnected.value = false;
+    stopWireGuardTunnel();
+
+    resetimer();
+  }
+
+  void resetimer() {
+    stopWatchTimer.onResetTimer(); // Stop the timer
+  }
+
   Future<void> choiseServer(int index) async {
     switch (index) {
       case 0:
@@ -292,9 +357,9 @@ class VpnServices extends GetxService {
     }
 
     // Start the WireGuard tunnel with the selected server configuration
-    await stopWireGuardTunnel();
+
     await startWireGuardTunnel(serverConfig, serverAddress);
+    startTimer();
+    connectionStateModel.isConnected.value = true;
   }
 }
-
-

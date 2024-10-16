@@ -14,7 +14,9 @@ void main() async {
   final vpnService = Get.find<VpnServices>();
   try {
     final decison = await vpnService.decideToUpdateServerConifg(
-        false, "oasdfasdfnasndfkasjfn  ", "isdasdfasdfasdfsd");
+        vpnService.isServerUpdated,
+        "oasdfasdfnasndfkasjfn  ",
+        "isdasdfasdfasdfsd");
     final chicago = await vpnService.readEncryptedConfigFile("chicago.conf");
     print("From file $chicago ");
     // 8EL19RdVsCJjRMNimdWeNZ0yDBQVdNqqLy3FGAmcZn0

@@ -7,10 +7,12 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:reward_vpn/controller/main_page_controllers/homescreen_controller.dart';
 import 'package:reward_vpn/route/app_route.dart';
+import 'package:reward_vpn/services/user_data_services.dart';
 import 'package:reward_vpn/services/vpn_services.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
+import 'package:reward_vpn/widgets/ask_to_login.dart';
 import 'package:reward_vpn/widgets/buttons.dart';
 
 class Homescreen extends StatefulWidget {
@@ -34,8 +36,7 @@ class _HomescreenState extends State<Homescreen> {
 
   @override
   Widget build(BuildContext context) {
-    RxBool isVPNConnected =
-        homescreenController.connectionStateModel.isConnected;
+    RxBool isVPNConnected = vpnServices.connectionStateModel.isConnected;
 
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 0, 0, 0),
@@ -205,27 +206,30 @@ class _HomescreenState extends State<Homescreen> {
                     VerticalSpace(mediaHeight * 0.03),
 
                     ///App bar en
-                    homescreenController.connectionReach1Minute.value
-                        ? SecondaryButton(
-                            text: '',
-                            textColor: Color.fromRGBO(21, 23, 24, 1),
-                            row: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Montserrat(
-                                    text: "Claim",
-                                    color: Constants.buttonTextColor,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400),
-                                HorizontalSpace(5),
-                                Montserrat(
-                                    color: Constants.buttonTextColor,
-                                    text: "3O\$RV",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600),
-                              ],
+                    vpnServices.connectionReach1Minute.value
+                        ? GestureDetector(
+                            onTap: () {},
+                            child: SecondaryButton(
+                              text: '',
+                              textColor: Color.fromRGBO(21, 23, 24, 1),
+                              row: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Montserrat(
+                                      text: "Claim",
+                                      color: Constants.buttonTextColor,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400),
+                                  HorizontalSpace(5),
+                                  Montserrat(
+                                      color: Constants.buttonTextColor,
+                                      text: "3O\$RV",
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600),
+                                ],
+                              ),
+                              showGradiant: true,
                             ),
-                            showGradiant: true,
                           )
                         : GestureDetector(
                             onTap: () async {
@@ -251,10 +255,25 @@ class _HomescreenState extends State<Homescreen> {
 
                               // print("object");
                             },
-                            child: SecondaryButton(
-                                text: isVPNConnected.value
-                                    ? "Claim in 1 min"
-                                    : "Connect VPN first"),
+                            child: GestureDetector(
+                              onTap: () {
+                                final userdata = Get.find<UserDataServices>();
+                                if (!userdata.isUserLogin.value) {
+                                  // homescreenController
+                                  //     .showLoginOverLay(context);
+                                  showDialog(
+                                      barrierColor: Colors.black,
+                                      context: context,
+                                      builder: (builder) {
+                                        return AskToLogin();
+                                      });
+                                }
+                              },
+                              child: SecondaryButton(
+                                  text: isVPNConnected.value
+                                      ? "Claim in 1 min"
+                                      : "Connect VPN first"),
+                            ),
                           ),
 
                     VerticalSpace(mediaHeight * 0.02),
@@ -276,7 +295,7 @@ class _HomescreenState extends State<Homescreen> {
                               screenWidht * 0.13, screenHeight * 0.008, 0, 0),
                           child: MontserratNoHeight(
                             color: Constants.textColor,
-                            text: homescreenController.connectionTime.value,
+                            text: vpnServices.connectionTime.value,
                             // fontSize: getResponsiveFontSize(52),
                             fontSize: getResponsiveFontSize(52),
                             fontWeight: FontWeight.w500,
@@ -293,11 +312,11 @@ class _HomescreenState extends State<Homescreen> {
 
                     GestureDetector(
                       onTap: () {
-                        if (homescreenController
+                        if (vpnServices
                             .connectionStateModel.isConnected.value) {
-                          homescreenController.handleDisconnection();
+                          vpnServices.handleDisconnection();
                         } else {
-                          homescreenController.handleVPNConnection();
+                          vpnServices.handleVPNConnection();
                         }
                       },
                       child: Image.asset(
@@ -306,19 +325,16 @@ class _HomescreenState extends State<Homescreen> {
                         // height: getResponsiveHeight(context, 241),
                         // width: getResponsiveWidth(context, 233),
 
-                        homescreenController
-                                .connectionStateModel.isConnected.value
+                        vpnServices.connectionStateModel.isConnected.value
                             ? Constants.connectButtonActive
                             : Constants.connectButton,
                       ),
                     ),
 
                     MontserratNoHeight(
-                      text: homescreenController
-                              .connectionStateModel.isConnecting.isTrue
+                      text: vpnServices.connectionStateModel.isConnecting.isTrue
                           ? "Connecting"
-                          : homescreenController
-                                  .connectionStateModel.isConnected.isTrue
+                          : vpnServices.connectionStateModel.isConnected.isTrue
                               ? "Connected"
                               : "Tap to connect",
                       fontSize: 14.sp,
@@ -492,7 +508,7 @@ class _HomescreenState extends State<Homescreen> {
                                             // height: 33,
                                             // width: 33,
                                             decoration: BoxDecoration(
-                                                color: homescreenController
+                                                color: vpnServices
                                                         .connectionStateModel
                                                         .isConnected
                                                         .value

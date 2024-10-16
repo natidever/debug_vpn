@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reward_vpn/controller/authentication_controllers/login_controller.dart';
 import 'package:reward_vpn/controller/main_page_controllers/homescreen_controller.dart';
 import 'package:reward_vpn/route/app_route.dart';
+import 'package:reward_vpn/services/user_data_services.dart';
+import 'package:reward_vpn/services/vpn_services.dart';
 import 'package:reward_vpn/utils/constants.dart';
 import 'package:reward_vpn/utils/layout.dart';
 import 'package:reward_vpn/utils/texts.dart';
@@ -219,35 +221,33 @@ class _LoginState extends State<Login> {
                           padding: const EdgeInsets.only(bottom: 1000.0),
                           child: GestureDetector(
                             onTap: () async {
-                              // await homeController.saveServerConfiguration();
-                              // String? content = await homeController
-                              //     .readEncryptedConfigFile("sydney.conf");
-                              // print("Content after decryption: $content");
+                              String email =
+                                  loginController.emialController.text;
+
+                              String password =
+                                  loginController.passwordController.text;
+
+                              final response =
+                                  await loginController.login(email, password);
+                              if (response.statusCode == 200) {
+                                final userdataServices =
+                                    Get.find<UserDataServices>();
+
+                                userdataServices.isUserLogin.value = true;
+                                // Get.snackbar("title", "pissnw");
+                                print("success:response $response");
+                                loginController.isLoading.value = false;
+                              } else {
+                                loginController.isLoading.value = false;
+                                print("error:respone ${response.statusCode}");
+                                Get.snackbar(
+                                    colorText: Constants.white,
+                                    "Error",
+                                    "Please ,Check Your Credentials ");
+                              }
+
+                              // Get.toNamed(AppRoute.bottomNavWrapper);
                             },
-                            // onTap: () async {
-                            //   String email =
-                            //       loginController.emialController.text;
-
-                            //   String password =
-                            //       loginController.passwordController.text;
-
-                            //   final response =
-                            //       await loginController.login(email, password);
-                            //   if (response.statusCode == 200) {
-                            //     // Get.snackbar("title", "pissnw");
-                            //     print("success:response $response");
-                            //     loginController.isLoading.value = false;
-                            //   } else {
-                            //     loginController.isLoading.value = false;
-                            //     print("error:respone ${response.statusCode}");
-                            //     Get.snackbar(
-                            //         colorText: Constants.white,
-                            //         "Error",
-                            //         "Please ,Check Your Credentials ");
-                            //   }
-
-                            //   // Get.toNamed(AppRoute.bottomNavWrapper);
-                            // },
                             child: PrimaryButton(text: "Login"),
                           ),
                         )

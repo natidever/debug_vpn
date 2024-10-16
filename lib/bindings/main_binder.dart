@@ -21,6 +21,7 @@ class MainBinder extends Bindings {
   void dependencies() {
     Get.put(APIServices());
     Get.put(UserDataServices());
+
     Get.put(VpnServices());
 
     Get.put(AuthenticationController());
