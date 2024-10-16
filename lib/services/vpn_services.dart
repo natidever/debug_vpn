@@ -19,8 +19,9 @@ class VpnServices extends GetxService {
   String defaultServerAddress = '';
 
   Future<void> assignDefaultConfig() async {
-    defautConfigChicago = await readEncryptedConfigFile(ServerConfigs.chicago);
-    defaultServerAddress = extractEndpoint(defautConfigChicago);
+    defautConfigChicago =
+        await readEncryptedConfigFile(ServerConfigs.chicagoConf);
+    defaultServerAddress = await extractEndpoint(defautConfigChicago);
   }
 
   String serverConfig = "defautConfigChicago";
@@ -31,7 +32,7 @@ class VpnServices extends GetxService {
   bool isServerUpdated = true;
   var logger = Logger();
   final apiServices = Get.find<APIServices>();
-////////                          ////////
+////////                          ////////disco
 ////////                          ////////
 ////////  Getting VPN DATAT       ////////
 ////////                          ////////
@@ -291,6 +292,9 @@ class VpnServices extends GetxService {
     }
 
     // Start the WireGuard tunnel with the selected server configuration
+    await stopWireGuardTunnel();
     await startWireGuardTunnel(serverConfig, serverAddress);
   }
 }
+
+

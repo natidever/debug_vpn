@@ -30,24 +30,58 @@ class HomescreenController extends GetxController {
   var logger = Logger();
 
   ///Servers
-  // String chicago = '';
-  // String frankfurt = '';
-  // String london = '';
+  // String chicago = ''; US
+  // String london = '';uk
+  // static String frankfurt = '''''';german
+  // static String losAngeles = '''''';US
+  // static String newYork = '''''';US
+  // static String seoul = ''''''; sk
+  // static String singapore = '''''';SGp
+  // static String sydney = ''''''; australiua
+  // static String tokyo = ''''''; japan
+  // static String toronto = ''''''; canada
 
   List<Map<String, dynamic>> serverList = [
     {
-      "country": "UK",
-      "image": Constants.uk,
-    },
-    {
-      "country": "US",
+      "country": "CHI",
       "image": Constants.usa,
     },
     {
-      "country": "CA",
+      "country": "FRA",
+      "image": Constants.german,
+    },
+    {
+      "country": "LO",
+      "image": Constants.uk,
+    },
+    {
+      "country": "LA",
+      "image": Constants.usa,
+    },
+    {
+      "country": "NYC",
+      "image": Constants.usa,
+    },
+    {
+      "country": "SEO",
+      "image": Constants.southKorea,
+    },
+    {
+      "country": "SG",
+      "image": Constants.singapor,
+    },
+    {
+      "country": "SYD",
+      "image": Constants.australia,
+    },
+    {
+      "country": "TYO",
+      "image": Constants.japan,
+    },
+    {
+      "country": "TO",
       "image": Constants.cananda,
     },
-    {"country": "GR", "image": Constants.german},
   ];
   // RxString elabsedTime = "00:00:00".obs;
   RxString connectionTime = "00:00:00".obs;
@@ -62,14 +96,19 @@ class HomescreenController extends GetxController {
     //   _startTimer();
     // });
     await vpnServices.assignDefaultConfig();
-    logger.i("default config ${vpnServices.defautConfigChicago}");
-    logger.i("default server address ${vpnServices.serverAddress}");
-    vpnServices.startWireGuardTunnel(
+    await vpnServices.startWireGuardTunnel(
         vpnServices.defautConfigChicago, vpnServices.defaultServerAddress);
+    connectionStateModel.isConnecting.value = false;
+    connectionStateModel.isConnected.value = true;
+    _startTimer();
+
+    // logger.i("defauld server address${vpnServices.defaultServerAddress}");
+    // logger.i("defauld server config${vpnServices.defautConfigChicago}");
   }
 
   void handleDisconnection() {
     connectionStateModel.isConnected.value = false;
+    vpnServices.stopWireGuardTunnel();
 
     _resetimer();
   }

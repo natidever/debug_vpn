@@ -101,7 +101,11 @@ class Constants {
   static const secure = 'assets/icons/secure.png';
   static const usa = 'assets/icons/usa.png';
   static const cananda = 'assets/icons/canada.png';
+  static const japan = 'assets/icons/japan.png';
+  static const southKorea = 'assets/icons/sk.png';
+  static const singapor = 'assets/icons/singapor.png';
   static const german = 'assets/icons/german.png';
+  static const australia = 'assets/icons/aus.png';
   static const freezed_ice = 'assets/icons/ice.png';
   static const freez2 = 'assets/icons/freez2.png';
   static const cry = 'assets/icons/cry.png';
