@@ -147,6 +147,24 @@ class _HomescreenState extends State<Homescreen> {
                       ],
                     ),
                     //this row show total point earned by the user
+                    if (!homescreenController.isThereInternet.value)
+                      Container(
+                        width: mediaWidth * 0.8,
+                        height: mediaHeight * 0.05,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 58, 58, 58)
+                              .withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Center(
+                          child: MontserratNoHeight(
+                            color: Colors.red,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            text: "Please,connect to the internet first",
+                          ),
+                        ),
+                      ),
 
                     VerticalSpace(screenHeight * 0.02),
                     Row(
@@ -455,7 +473,7 @@ class _HomescreenState extends State<Homescreen> {
                           //     fontWeight: FontWeight.w700),
 
                           Container(
-                            // color: Colors.transparent,
+                            // color: Colors.red,
                             // height: 20,
                             width: mediaWidth * 0.24,
                             child: DropdownButtonHideUnderline(
@@ -558,7 +576,8 @@ class _HomescreenState extends State<Homescreen> {
                                 // barrierColor: Colors.red,
                                 dropdownStyleData: DropdownStyleData(
                                     decoration: BoxDecoration(
-                                      color: Color.fromRGBO(78, 78, 78, 0.38),
+                                      // color: Color.fromRGBO(78, 78, 78, 0.38),
+                                      color: Color.fromRGBO(54, 54, 54, 1),
                                     ),
                                     width: mediaWidth * 0.33,
                                     maxHeight: mediaHeight * 0.3

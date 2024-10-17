@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:reward_vpn/models/connection_state_model.dart';
@@ -15,15 +16,83 @@ import 'package:reward_vpn/widgets/ask_to_login.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:wireguard_flutter/wireguard_flutter.dart';
-
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 // import 'package:device_info_plus/device_info_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:internet_speed_meter/internet_speed_meter.dart';
 
 class HomescreenController extends GetxController {
   // final ConnectionStateModel connectionStateModel = ConnectionStateModel();
   final apiServices = Get.find<APIServices>();
   final vpnServices = Get.find<VpnServices>();
+  RxBool isThereInternet = true.obs;
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+  RxString uploadSpeed = '0 Mbps'.obs;
+  RxString downloadSpeed = '0 Mbps'.obs;
+  RxString errorMessage = ''.obs;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    checkInternet();
+    checkInternetSpeed();
+    super.onInit();
+  }
+
+  void checkInternet() {
+    final listener =
+        InternetConnection().onStatusChange.listen((InternetStatus status) {
+      switch (status) {
+        case InternetStatus.connected:
+          // The internet is now connected
+          isThereInternet.value = true;
+          break;
+        case InternetStatus.disconnected:
+          isThereInternet.value = false;
+
+          // The internet is now disconnected
+          break;
+      }
+    });
+  }
+
+  ////speed test
+
+  // void internetSpeedCheck(){
+
+  // final speedTest = FlutterInternetSpeedTest();
+
+  // void checkInternetSpeed() {
+  //   try {
+  //     speedTest.startTesting(
+  //         uploadTestServer: 'write herer',
+  //         downloadTestServer: 'write here',
+  //         onDone: (TestResult download, TestResult upload) {
+  //           downloadSpeed.value = download.transferRate.toString();
+  //           uploadSpeed.value = upload.transferRate.toString();
+  //           logger.d("Downlaod speed $downloadSpeed");
+  //           logger.d("Upload speed $uploadSpeed");
+  //         },
+  //         onProgress: (double percent, TestResult data) {},
+  //         onError: (String errorMessage, String speedTestError) {
+  //           this.errorMessage.value = errorMessage;
+  //           logger.e("Error: $errorMessage, SpeedTestError: $speedTestError");
+  //         });
+  //   } catch (e) {
+  //     logger.e("Error during testing internet speed: $e");
+  //   }
+  // }
+
+  // }
+
+  void checkInternetSpeed() {
+    InternetSpeedMeter _internetSpeedMeterPlugin = InternetSpeedMeter();
+
+    _internetSpeedMeterPlugin.getCurrentInternetSpeed().listen((speed) {
+      logger.f('Current Speed: $speed');
+    });
+  }
 
   // final utilServices = Get.find<UtiliteServices>();
   String deviceName = '';
@@ -139,42 +208,41 @@ class HomescreenController extends GetxController {
 
 //
 
-  ///Saving the encrypted file
-  ///the first step in stroing is getting the application directory to store the file
-  ///for that path_provider is used
-  ///
+///Saving the encrypted file
+///the first step in stroing is getting the application directory to store the file
+///for that path_provider is used
+///
 
 // save envrypted config ifle
 
-  //actual saving of the config file (Syndny example)
+//actual saving of the config file (Syndny example)
 
-  ///
-  ///
-  ///
-  ///void got all teh confg
-  ///synd
-  ///re
-  ///asd
-  ///asdf
-  ///asdf
-  ///asdf
-  ///
-  ///
-  ///
+///
+///
+///
+///void got all teh confg
+///synd
+///re
+///asd
+///asdf
+///asdf
+///asdf
+///
+///
+///
 
-  /// 3.Decryption
-  /// 4.reading the file
-  ///
-  ///
-  ///
-  /// 3.decryption starts here
+/// 3.Decryption
+/// 4.reading the file
+///
+///
+///
+/// 3.decryption starts here
 
-  // Future<void> loadSydnyConfiFile() async {
-  //   String sydnyConfigFile = await readEncryptedConfigFile('sydney.conf');
-  //   if (sydnyConfigFile != null) {
-  //     print("decrypted file $sydnyConfigFile");
-  //   } else {
-  //     print("sydny config file is not found ");
-  //   }
-  // }
-
+// Future<void> loadSydnyConfiFile() async {
+//   String sydnyConfigFile = await readEncryptedConfigFile('sydney.conf');
+//   if (sydnyConfigFile != null) {
+//     print("decrypted file $sydnyConfigFile");
+//   } else {
+//     print("sydny config file is not found ");
+//   }
+// }
