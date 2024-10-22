@@ -44,12 +44,10 @@ class HomescreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    FlutterBackgroundService().on('updateTimer').listen((event) {
+    FlutterBackgroundService().on('update').listen((event) {
       if (event != null && event['time'] != null) {
         connectionTimes.value = event['time'];
       }
-    }, onError: (error) {
-      print("Error receiving timer update: $error");
     });
   }
 

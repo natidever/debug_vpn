@@ -39,6 +39,11 @@
         android:foregroundServiceType="dataSync"
         android:exported="true" />
         
+        <service
+            android:name="com.dexterous.flutterlocalnotifications.ForegroundService"        
+            android:exported="false"
+            android:stopWithTask="false"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

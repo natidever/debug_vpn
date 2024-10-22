@@ -430,9 +430,7 @@ class _HomescreenState extends State<Homescreen> with WidgetsBindingObserver {
                             return MontserratNoHeight(
                               color: Constants.textColor,
                               // text: backgroundServices.connectionTime.value,
-                              text: vpnServices.isServerClosed.value
-                                  ? '00:00:00'
-                                  : vpnServices.connectionTime.value,
+                              text: homescreenController.connectionTimes.value,
                               // text: 's',
                               // fontSize: getResponsiveFontSize(52),
                               fontSize: getResponsiveFontSize(52),

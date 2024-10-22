@@ -25,6 +25,7 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:wireguard_flutter/wireguard_flutter.dart';
 import 'package:wireguard_flutter/wireguard_flutter_platform_interface.dart';
 import 'package:material_dialogs/material_dialogs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VpnServices extends GetxService {
   final wireguard = WireGuardFlutter.instance;
@@ -350,15 +351,14 @@ class VpnServices extends GetxService {
     connectionStateModel.isConnecting.value = false;
     connectionStateModel.isConnected.value = true;
 
-    // Reset the existing timer
-    stopWatchTimer.onResetTimer();
-
-    // Start the timer
-    startTimer();
+    // Start the background timer
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('startTime', DateTime.now().millisecondsSinceEpoch);
+    await prefs.setBool('isTimerRunning', true);
+    await FlutterBackgroundService().startService();
 
     storage.write(
         key: "vpn_status", value: "${connectionStateModel.isConnected.value}");
-    await FlutterBackgroundService().startService();
     isServerClosed.value = false;
   }
 
@@ -437,18 +437,13 @@ class VpnServices extends GetxService {
     await storage.write(key: "vpn_status", value: "false");
     await stopWireGuardTunnel();
     stopInternetSpeedCounter();
-    await stopServiceSafely();
 
-    // Stop the timer
-    stopWatchTimer.onStopTimer();
+    // Stop the background timer
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isTimerRunning', false);
+    FlutterBackgroundService().invoke('stopService');
 
-    // Reset the timer
-    stopWatchTimer.onResetTimer();
-
-    // Manually update the connectionTime to "00:00:00"
     connectionTime.value = "00:00:00";
-
-    // Reset the connectionReach1Minute flag
     connectionReach1Minute.value = false;
   }
   // void handleDisconnection() async {
