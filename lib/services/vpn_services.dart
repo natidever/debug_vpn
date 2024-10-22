@@ -438,13 +438,18 @@ class VpnServices extends GetxService {
     await stopWireGuardTunnel();
     stopInternetSpeedCounter();
 
-    // Stop the background timer
+    // Stop the background timer and reset it
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isTimerRunning', false);
+    await prefs.remove('startTime'); // Remove the start time to reset the timer
     FlutterBackgroundService().invoke('stopService');
 
+    // Update the UI immediately
     connectionTime.value = "00:00:00";
     connectionReach1Minute.value = false;
+
+    // Ensure the HomescreenController updates its timer display
+    Get.find<HomescreenController>().connectionTimes.value = "00:00:00";
   }
   // void handleDisconnection() async {
   //   try {

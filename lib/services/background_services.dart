@@ -3,10 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
-import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stop_watch_timer/stop_watch_timer.dart';
-import 'package:get/get.dart';
 
 // // RxString connectionTime = '00:0:00'.obs;
 
@@ -19,9 +16,9 @@ Future<void> initializeService() async {
   await service.configure(
     androidConfiguration: AndroidConfiguration(
       onStart: onStart,
-      autoStart: true,
-      isForegroundMode: false, // Set to false for background-only operation
-      autoStartOnBoot: false,
+      // autoStart: true,
+      isForegroundMode: false,
+      // autoStartOnBoot: true,
     ),
     iosConfiguration: IosConfiguration(
       autoStart: true,
@@ -29,8 +26,9 @@ Future<void> initializeService() async {
       onBackground: onIosBackground,
     ),
   );
+
+  service.startService();
 }
-// }
 
 @pragma('vm:entry-point')
 Future<bool> onIosBackground(ServiceInstance service) async {
@@ -43,25 +41,28 @@ Future<bool> onIosBackground(ServiceInstance service) async {
 void onStart(ServiceInstance service) async {
   // DartPluginRegistrant.ensureInitialized();
 
-  if (service is AndroidServiceInstance) {
-    service.on('setAsBackground').listen((event) {
-      service.setAsBackgroundService();
-    });
-  }
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  service.on('stopService').listen((event) {
+  service.on('stopService').listen((event) async {
+    await prefs.remove('startTime');
+    await prefs.setBool('isTimerRunning', false);
     service.stopSelf();
   });
 
   Timer.periodic(Duration(seconds: 1), (timer) async {
-    final prefs = await SharedPreferences.getInstance();
+    if (!(await prefs.getBool('isTimerRunning') ?? false)) {
+      timer.cancel();
+      return;
+    }
+
     int? startTime = prefs.getInt('startTime');
     if (startTime == null) {
       startTime = DateTime.now().millisecondsSinceEpoch;
       await prefs.setInt('startTime', startTime);
     }
 
-    int elapsedTime = DateTime.now().millisecondsSinceEpoch - startTime;
+    int currentTime = DateTime.now().millisecondsSinceEpoch;
+    int elapsedTime = currentTime - startTime;
     String formattedTime = formatDuration(Duration(milliseconds: elapsedTime));
 
     service.invoke(
