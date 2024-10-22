@@ -1,4 +1,4 @@
-package com.example.reward_vpn
+package com.svai.reward_vpn
 
 import io.flutter.embedding.android.FlutterActivity
 

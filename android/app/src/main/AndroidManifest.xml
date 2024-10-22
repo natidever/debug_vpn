@@ -4,9 +4,19 @@
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.BIND_VPN_SERVICE" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+<uses-permission android:name="android.permission.WAKE_LOCK" />
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+<!-- for the background services -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+ 
+
+
 
     <application
-        android:label="reward_vpn"
+        android:label="Reward VPN"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
      <service
@@ -17,6 +27,17 @@
             <action android:name="android.net.VpnService" />
         </intent-filter>
     </service>
+
+  <!--This is also for flutter background -->
+          <service
+            android:name="de.julianassmann.flutter_background.IsolateHolderService"
+            android:exported="false"
+         />
+            <!--this is also for the background services-->
+             <service
+        android:name="com.pravera.flutter_background_service.BackgroundService"
+        android:foregroundServiceType="dataSync"
+        android:exported="true" />
         
         <activity
             android:name=".MainActivity"
@@ -57,4 +78,5 @@
             <data android:mimeType="text/plain"/>
         </intent>
     </queries>
+    
 </manifest>

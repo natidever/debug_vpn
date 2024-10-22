@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:logger/logger.dart';
@@ -28,16 +30,27 @@ class HomescreenController extends GetxController {
   RxBool isThereInternet = true.obs;
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
-  RxString uploadSpeed = '0 Mbps'.obs;
-  RxString downloadSpeed = '0 Mbps'.obs;
-  RxString errorMessage = ''.obs;
+  RxString connectionTimes = '00:00:00'.obs;
+  RxBool isServerChanged = false.obs;
+
+  void successServerChanged() {
+    Get.snackbar(
+        colorText: Colors.black,
+        backgroundColor: Constants.greenColor,
+        "Success",
+        "Server Changed Successfully");
+  }
 
   @override
   void onInit() {
-    // TODO: implement onInit
-    checkInternet();
-    checkInternetSpeed();
     super.onInit();
+    FlutterBackgroundService().on('updateTimer').listen((event) {
+      if (event != null && event['time'] != null) {
+        connectionTimes.value = event['time'];
+      }
+    }, onError: (error) {
+      print("Error receiving timer update: $error");
+    });
   }
 
   void checkInternet() {
@@ -86,14 +99,6 @@ class HomescreenController extends GetxController {
 
   // }
 
-  void checkInternetSpeed() {
-    InternetSpeedMeter _internetSpeedMeterPlugin = InternetSpeedMeter();
-
-    _internetSpeedMeterPlugin.getCurrentInternetSpeed().listen((speed) {
-      logger.f('Current Speed: $speed');
-    });
-  }
-
   // final utilServices = Get.find<UtiliteServices>();
   String deviceName = '';
   String deviceId = '';
@@ -102,6 +107,17 @@ class HomescreenController extends GetxController {
   RxBool isOverLayShown = false.obs;
 
   OverlayEntry? overlayEntry;
+
+  void getDeviceInformation() async {
+    try {
+      final deviceInfoPlugin = DeviceInfoPlugin();
+      final deviceInfo = await deviceInfoPlugin.androidInfo;
+      deviceName = deviceInfo.model;
+      deviceId = deviceInfo.id;
+    } catch (e) {
+      logger.f("during getting device in formation $e");
+    }
+  }
 
   void showLoginOverLay(BuildContext context) {
     OverlayState? overlayState = Overlay.of(context);
@@ -129,46 +145,59 @@ class HomescreenController extends GetxController {
 
   List<Map<String, dynamic>> serverList = [
     {
-      "country": "CHI",
+      "country": "United States",
+      "city": "Chicago",
       "image": Constants.usa,
     },
     {
-      "country": "FRA",
+      "country": "German",
+      "city": "Frankfurt",
       "image": Constants.german,
     },
     {
-      "country": "LO",
+      "city": "London",
+      'country': "United Kingdom",
       "image": Constants.uk,
     },
     {
-      "country": "LA",
+      "city": "Los Angeles",
+      "country": "United States",
       "image": Constants.usa,
     },
     {
-      "country": "NYC",
+      "city": "New York",
+      "country": "United States",
       "image": Constants.usa,
     },
     {
-      "country": "SEO",
+      "city": "Seoul",
+      "country": "southKorea",
       "image": Constants.southKorea,
     },
     {
-      "country": "SG",
+      "country": "Singapor",
+      "city": "singapor",
       "image": Constants.singapor,
     },
     {
-      "country": "SYD",
+      "city": "Sydney",
+      "country": "Australia",
       "image": Constants.australia,
     },
     {
-      "country": "TYO",
+      "city": "Tokiyo",
+      "country": "Japan",
       "image": Constants.japan,
     },
     {
-      "country": "TO",
+      "city": "Toronto",
+      "country": "Canada",
       "image": Constants.cananda,
     },
   ];
+
+  List<Map<String, dynamic>> currentServer = [];
+
   // RxString elabsedTime = "00:00:00".obs;
 
   // void handleVPNConnection() async {
@@ -198,51 +227,14 @@ class HomescreenController extends GetxController {
 
   // void _resetimer() {
   //   _stopWatchTimer.onResetTimer(); // Stop the timer
+  // }
+
+  // Future<void> loadSydnyConfiFile() async {
+  //   String sydnyConfigFile = await readEncryptedConfigFile('sydney.conf');
+  //   if (sydnyConfigFile != null) {
+  //     print("decrypted file $sydnyConfigFile");
+  //   } else {
+  //     print("sydny config file is not found ");
+  //   }
+  // }
 }
-
-//
-//
-//     1. Encrypting the config file(USING AES)
-//     2.Store them in local storage
-//
-
-//
-
-///Saving the encrypted file
-///the first step in stroing is getting the application directory to store the file
-///for that path_provider is used
-///
-
-// save envrypted config ifle
-
-//actual saving of the config file (Syndny example)
-
-///
-///
-///
-///void got all teh confg
-///synd
-///re
-///asd
-///asdf
-///asdf
-///asdf
-///
-///
-///
-
-/// 3.Decryption
-/// 4.reading the file
-///
-///
-///
-/// 3.decryption starts here
-
-// Future<void> loadSydnyConfiFile() async {
-//   String sydnyConfigFile = await readEncryptedConfigFile('sydney.conf');
-//   if (sydnyConfigFile != null) {
-//     print("decrypted file $sydnyConfigFile");
-//   } else {
-//     print("sydny config file is not found ");
-//   }
-// }

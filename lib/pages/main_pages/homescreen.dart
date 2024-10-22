@@ -2,11 +2,14 @@ import 'dart:ui';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:reward_vpn/controller/main_page_controllers/homescreen_controller.dart';
 import 'package:reward_vpn/route/app_route.dart';
+import 'package:reward_vpn/services/background_services.dart';
 import 'package:reward_vpn/services/user_data_services.dart';
 import 'package:reward_vpn/services/vpn_services.dart';
 import 'package:reward_vpn/utils/constants.dart';
@@ -22,17 +25,91 @@ class Homescreen extends StatefulWidget {
   State<Homescreen> createState() => _HomescreenState();
 }
 
-class _HomescreenState extends State<Homescreen> {
-  OverlayEntry? overlayEntry;
-
-  final homescreenController = Get.find<HomescreenController>();
-  // final utilServices = Get.find<UtiliteServices>();
+class _HomescreenState extends State<Homescreen> with WidgetsBindingObserver {
+  late final HomescreenController homescreenController;
   final vpnServices = Get.find<VpnServices>();
+
+  @override
+  void initState() {
+    super.initState();
+    homescreenController = Get.find<HomescreenController>();
+    WidgetsBinding.instance.addObserver(this);
+
+    FlutterBackgroundService().on('update').listen((event) {
+      if (event != null && event['time'] != null) {
+        setState(() {
+          vpnServices.connectionTime.value = event['time'];
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.detached) {
+      vpnServices.handleAppTermination();
+    }
+  }
+
+  OverlayEntry? overlayEntry;
+  RxBool isSerrviceClosed = true.obs;
+  // final backgroundServices = Get.find<BackgroundServices>();
+  // final utilServices = Get.find<UtiliteServices>();
+
+  Future<void> stopServiceSafely() async {
+    // FlutterBackgroundService service = FlutterBackgroundService();
+
+    // await Future.delayed(Duration(seconds: 3)); // Optional grace period
+
+    final service = FlutterBackgroundService();
+
+    // Optionally: Add a grace period or any pending task checks
+    await Future.delayed(Duration(seconds: 1)); // Grace period of 1 second
+
+    // Stop the service
+    print("service status:${service.isRunning()}");
+
+    service.invoke("stopService");
+
+    print("service status:${service.isRunning()}");
+
+    isSerrviceClosed.value = true;
+  }
+
+  Future<void> initializeServiceIfNotRunning() async {
+    final service = FlutterBackgroundService();
+
+    // Check if the service is already running
+    bool isRunning = await service.isRunning();
+
+    if (!isRunning) {
+      print("Starting service...");
+      await initializeService(); // Only initialize the service if it's not running
+    } else {
+      print("Service already running.");
+    }
+  }
 
   var logger = Logger();
   String? selectedValue;
 
   bool isSpecialCondition = false;
+  AppLifecycleState? _appLifecycleState;
+
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   setState(() {
+  //     _appLifecycleState = state;
+  //     if (_appLifecycleState == AppLifecycleState.paused) {
+  //       //connectio
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -103,36 +180,51 @@ class _HomescreenState extends State<Homescreen> {
                         GestureDetector(
                           onTap: () {
                             // _showCustomDialog(context);
-                            Get.toNamed(AppRoute.streak);
+                            // Get.toNamed(AppRoute.streak);
                           },
                           child: Row(
                             children: [
                               Stack(
-                                children: [
-                                  Image.asset(
-                                    Constants.buna,
-                                    width: getResponsiveWidth(context, 54),
-                                    height: getResponsiveHeight(context, 54),
-                                    // width: 54,
-                                    // height: 54,
+                                  // children: [
+                                  //   Image.asset(
+                                  //     Constants.buna,
+                                  //     width: getResponsiveWidth(context, 54),
+                                  //     height: getResponsiveHeight(context, 54),
+                                  //     // width: 54,
+                                  //     // height: 54,
+                                  //   ),
+                                  //   Positioned(
+                                  //     right: screenWidht * 0.015,
+                                  //     top: screenHeight * 0.015,
+                                  //     child: Montserrat(
+                                  //         text: "2",
+                                  //         fontSize: 12.sp,
+                                  //         fontWeight: FontWeight.w600),
+                                  //   )
+                                  // ],
                                   ),
-                                  Positioned(
-                                    right: screenWidht * 0.015,
-                                    top: screenHeight * 0.015,
-                                    child: Montserrat(
-                                        text: "2",
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w600),
-                                  )
-                                ],
-                              ),
                               HorizontalSpace(screenWidht * 0.01),
                               GestureDetector(
                                 onTap: () {
-                                  print("object");
-                                  vpnServices.stopWireGuardTunnel();
-                                  // Get.toNamed(AppRoute.setting);
+                                  Get.toNamed(AppRoute.setting);
                                 },
+                                // onTap: () async {
+                                //   final service = FlutterBackgroundService();
+                                //   bool isRunning = await service.isRunning();
+
+                                //   if (isRunning) {
+                                //     // Switch to background mode
+                                //     service.invoke("stopService");
+
+                                //     // service.invoke("setAsBackground");
+                                //     logger.e("sTOPPEDSERVERSE");
+                                //   } else {
+                                //     // Switch to foreground mode
+                                //     service.invoke("stopService");
+
+                                //     logger.e("sTOPPEDSERVERSE");
+                                //   }
+                                // },
                                 child: Image.asset(
                                   Constants.settingIcon,
                                   // width: 24,
@@ -161,7 +253,7 @@ class _HomescreenState extends State<Homescreen> {
                             color: Colors.red,
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
-                            text: "Please,connect to the internet first",
+                            text: "Please,Check Your Internet Connection!",
                           ),
                         ),
                       ),
@@ -226,7 +318,11 @@ class _HomescreenState extends State<Homescreen> {
                     ///App bar en
                     vpnServices.connectionReach1Minute.value
                         ? GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              homescreenController.showLoginOverLay(context);
+                              // homescreenController.showLoginOverLay(context);
+                              Get.toNamed(AppRoute.authentication);
+                            },
                             child: SecondaryButton(
                               text: '',
                               textColor: Color.fromRGBO(21, 23, 24, 1),
@@ -274,19 +370,38 @@ class _HomescreenState extends State<Homescreen> {
                               // print("object");
                             },
                             child: GestureDetector(
-                              onTap: () {
-                                final userdata = Get.find<UserDataServices>();
-                                if (!userdata.isUserLogin.value) {
-                                  // homescreenController
-                                  //     .showLoginOverLay(context);
-                                  showDialog(
-                                      barrierColor: Colors.black,
-                                      context: context,
-                                      builder: (builder) {
-                                        return AskToLogin();
-                                      });
-                                }
+                              onTap: () async {
+                                // final service = FlutterBackgroundService();
+                                // service.invoke("setAsBackground");
+
+                                // var isrunning = await service.isRunning();
+                                // if (isrunning) {
+                                //   service.invoke("stopService");
+                                // } else {
+                                //   service.startService();
+                                // }
+
+                                // if (!isrunning) {
+                                //   logger.e("Not Running");
+                                // } else {
+                                //   logger.e("Start service");
+                                // }
                               },
+                              // onTap: () {
+                              //   final userdata = Get.find<UserDataServices>();
+                              //   if (!userdata.isUserLogin.value) {
+                              //     // if (true) {
+                              //     logger.i("ckucjedd sdfasdfsa");
+                              //     // homescreenController
+                              //     //     .showLoginOverLay(context);
+                              //     showDialog(
+                              //         barrierColor: Colors.black,
+                              //         context: context,
+                              //         builder: (builder) {
+                              //           return AskToLogin();
+                              //         });
+                              //   }
+                              // },
                               child: SecondaryButton(
                                   text: isVPNConnected.value
                                       ? "Claim in 1 min"
@@ -311,13 +426,19 @@ class _HomescreenState extends State<Homescreen> {
                         Padding(
                           padding: EdgeInsets.fromLTRB(
                               screenWidht * 0.13, screenHeight * 0.008, 0, 0),
-                          child: MontserratNoHeight(
-                            color: Constants.textColor,
-                            text: vpnServices.connectionTime.value,
-                            // fontSize: getResponsiveFontSize(52),
-                            fontSize: getResponsiveFontSize(52),
-                            fontWeight: FontWeight.w500,
-                          ),
+                          child: Obx(() {
+                            return MontserratNoHeight(
+                              color: Constants.textColor,
+                              // text: backgroundServices.connectionTime.value,
+                              text: vpnServices.isServerClosed.value
+                                  ? '00:00:00'
+                                  : vpnServices.connectionTime.value,
+                              // text: 's',
+                              // fontSize: getResponsiveFontSize(52),
+                              fontSize: getResponsiveFontSize(52),
+                              fontWeight: FontWeight.w500,
+                            );
+                          }),
                         )
                       ],
                     ),
@@ -327,16 +448,71 @@ class _HomescreenState extends State<Homescreen> {
                       getResponsiveHeight(context, 22),
                     ),
                     // VerticalSpace(41.h),
-
+//forground
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                        print("Clikced");
+                        // await stopServiceSafely();
+                        // FlutterBackgroundService().startService();
+                        // iserrviceClosed.value = false;
+
+                        // FlutterBackgroundService().invoe('stopService');
                         if (vpnServices
                             .connectionStateModel.isConnected.value) {
-                          vpnServices.handleDisconnection();
+                          // vpnServices.handleDisconnection(context);
+                          vpnServices.showDisconnectionDialog(context);
+
+                          // FlutterBackgroundService().invoke('stopService');
                         } else {
                           vpnServices.handleVPNConnection();
                         }
                       },
+
+                      // onTap: () async {
+                      //   // Check if there's an active internet connection
+                      //   if (homescreenController.isThereInternet.value) {
+                      //     // If VPN is connected, handle disconnection logic
+                      //     if (vpnServices
+                      //         .connectionStateModel.isConnected.value) {
+                      //       // Stop the stopwatch and reset the timer
+                      //       FlutterBackgroundService().invoke('stopTimer');
+                      //       FlutterBackgroundService().invoke('resetTimer');
+
+                      //       // Handle VPN disconnection
+                      //       vpnServices.handleDisconnection();
+
+                      //       Logger().i('VPN disconnected and timer stopped.');
+                      //     } else {
+                      //       // If VPN is not connected, handle VPN connection logic
+                      //       vpnServices.handleVPNConnection().then((_) async {
+                      //         // Start the stopwatch when VPN connects successfully
+                      //         FlutterBackgroundService().startService();
+                      //         FlutterBackgroundService().invoke('startTimer');
+
+                      //         Logger().i('VPN connected and timer started.');
+                      //       }).catchError((e) {
+                      //         Logger().e('Error during VPN connection: $e');
+                      //       });
+                      //     }
+                      //   } else {
+                      //     // If there is no internet
+                      //     homescreenController.isThereInternet.value = false;
+
+                      //     // Ensure VPN is disconnected if no internet connection
+                      //     if (vpnServices
+                      //         .connectionStateModel.isConnected.value) {
+                      //       // Stop the stopwatch and reset the timer
+                      //       FlutterBackgroundService().invoke('stopTimer');
+                      //       FlutterBackgroundService().invoke('resetTimer');
+
+                      //       // Handle VPN disconnection
+                      //       vpnServices.handleDisconnection();
+
+                      //       Logger()
+                      //           .i('VPN disconnected due to lack of internet.');
+                      //     }
+                      //   }
+                      // },
                       child: Image.asset(
                         width: 233.w,
                         height: 241.h,
@@ -374,32 +550,32 @@ class _HomescreenState extends State<Homescreen> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.asset(
-                            Constants.download,
-                            width: 12.w,
-                            height: 12.h,
-                          ),
-                          HorizontalSpace(screenWidht * 0.02),
-                          Column(
-                            children: [
-                              MontserratNoHeight(
-                                  text: "Download",
-                                  fontSize: 9.sp,
-                                  fontWeight: FontWeight.w300),
-                              VerticalSpace(getResponsiveHeight(context, 2)),
-                              MontserratNoHeight(
-                                  text: "10 Mbp/s",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600),
-                            ],
-                          ),
-                          HorizontalSpace(screenWidht * 0.06),
-                          VerticalLine(
-                            height: getResponsiveHeight(context, 30),
-                            // height :30
-                            width: 1,
-                          ),
-                          HorizontalSpace(screenWidht * 0.02),
+                          // Image.asset(
+                          //   Constants.download,
+                          //   width: 12.w,
+                          //   height: 12.h,
+                          // ),
+                          // HorizontalSpace(screenWidht * 0.02),
+                          // Column(
+                          //   children: [
+                          //     MontserratNoHeight(
+                          //         text: "Download",
+                          //         fontSize: 9.sp,
+                          //         fontWeight: FontWeight.w300),
+                          //     VerticalSpace(getResponsiveHeight(context, 2)),
+                          //     MontserratNoHeight(
+                          //         text: "10 Mbp/s",
+                          //         fontSize: 12,
+                          //         fontWeight: FontWeight.w600),
+                          //   ],
+                          // ),
+
+                          // VerticalLine(
+                          //   height: getResponsiveHeight(context, 30),
+                          //   // height :30
+                          //   width: 1,
+                          // ),
+                          HorizontalSpace(mediaWidth * 0.07),
                           Row(
                             children: [
                               Image.asset(
@@ -415,26 +591,26 @@ class _HomescreenState extends State<Homescreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   MontserratNoHeight(
-                                      text: "Upload",
+                                      text: "Internet Speed",
                                       fontSize: 9,
                                       fontWeight: FontWeight.w300),
                                   // VerticalSpace(2),
                                   VerticalSpace(
                                       getResponsiveHeight(context, 2)),
                                   MontserratNoHeight(
-                                      text: "10 Mbp/s",
+                                      text: vpnServices.internetSpeed.value,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600),
                                 ],
                               ),
                             ],
                           ),
-                          HorizontalSpace(screenWidht * 0.06),
+                          HorizontalSpace(mediaWidth * 0.1),
                           VerticalLine(
                             height: 30,
                             width: 1,
                           ),
-                          HorizontalSpace(screenWidht * 0.02),
+                          HorizontalSpace(mediaWidth * 0.05),
                           // Stack(
                           //   children: [
                           //     Image.asset(
@@ -472,174 +648,44 @@ class _HomescreenState extends State<Homescreen> {
                           //     fontSize: 15,
                           //     fontWeight: FontWeight.w700),
 
-                          Container(
-                            // color: Colors.red,
-                            // height: 20,
-                            width: mediaWidth * 0.24,
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton2<String>(
-                                onChanged: (String? newValue) async {
-                                  setState(() {
-                                    selectedValue = newValue;
-                                  });
-
-                                  ///finding the index of the selected value
-                                  int selectedIndex = homescreenController
-                                      .serverList
-                                      .indexWhere((item) =>
-                                          item['country'] == newValue);
-
-                                  if (selectedIndex != -1) {
-                                    await vpnServices
-                                        .choiseServer(selectedIndex);
-                                  }
-                                },
-                                customButton: Row(
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.toNamed(AppRoute.choiseCountry);
+                              },
+                              child: Container(
+                                // color: Colors.red,
+                                // height: 20,
+                                width: mediaWidth * 0.24,
+                                child: Row(
                                   children: [
-                                    Stack(
-                                      children: [
-                                        Image.asset(
-                                          height:
-                                              getResponsiveHeight(context, 33),
-                                          width:
-                                              getResponsiveWidth(context, 33),
-                                          // height: 33,
-                                          // width: 33,
-                                          // color: Color.fromARGB(24, 192, 169, 169),
-                                          // Constants.uk,
-
-                                          selectedValue != null
-                                              ? homescreenController.serverList
-                                                  .firstWhere((item) =>
-                                                      item['country'] ==
-                                                      selectedValue)["image"]
-                                              : Constants.uk,
-                                        ),
-                                        Positioned(
-                                          top: mediaHeight * 0.005,
-                                          left: mediaWidth * 0.0,
-                                          right: mediaWidth * 0.0,
-                                          child: Container(
-                                            height: getResponsiveHeight(
-                                                context, 25),
-                                            width: mediaWidth * 0.1,
-                                            // height: 33,
-                                            // width: 33,
-                                            decoration: BoxDecoration(
-                                                color: vpnServices
-                                                        .connectionStateModel
-                                                        .isConnected
-                                                        .value
-                                                    ? Colors.transparent
-                                                    : Color.fromRGBO(
-                                                        19, 19, 19, 0.6),
-                                                shape: BoxShape.circle),
-                                          ),
-                                        ),
-                                      ],
+                                    Container(
+                                      width: mediaWidth * 0.06,
+                                      height: mediaHeight * 0.03,
+                                      child: ClipOval(
+                                        child: Image.asset(
+                                            fit: BoxFit.cover,
+                                            homescreenController
+                                                    .currentServer.isNotEmpty
+                                                ? homescreenController
+                                                    .currentServer[0]['image']
+                                                : Constants.german),
+                                      ),
                                     ),
                                     HorizontalSpace(mediaWidth * 0.02),
                                     MontserratNoHeight(
-                                        text: selectedValue != null
-                                            ? homescreenController.serverList
-                                                .firstWhere((item) =>
-                                                    item['country'] ==
-                                                    selectedValue)["country"]
-                                            : "UK",
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w700),
+                                        text: homescreenController
+                                                .currentServer.isNotEmpty
+                                            ? homescreenController
+                                                .currentServer[0]['city']
+                                            : "Frankfurt",
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600)
                                   ],
                                 ),
-                                // selectedItemBuilder: (a){
-
-                                // },
-                                hint: Row(
-                                  // mainAxisAlignment:
-                                  //     MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Image.asset(width: 24, Constants.uk),
-                                    HorizontalSpace(mediaWidth * 0.03),
-                                    MontserratNoHeight(
-                                      // text: "item",
-                                      text: "UK",
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ],
-                                ),
-                                buttonStyleData: ButtonStyleData(width: 1),
-                                isDense: true,
-                                isExpanded: true,
-                                // alignment: Alignment.bottomLeft,
-                                // buttonPadding: EdgeInsets.symmetric(horizontal: 0), // Remove extra space around button
-
-                                // barrierColor: Colors.red,
-                                dropdownStyleData: DropdownStyleData(
-                                    decoration: BoxDecoration(
-                                      // color: Color.fromRGBO(78, 78, 78, 0.38),
-                                      color: Color.fromRGBO(54, 54, 54, 1),
-                                    ),
-                                    width: mediaWidth * 0.33,
-                                    maxHeight: mediaHeight * 0.3
-                                    // padding: EdgeInsets.all(0),
-                                    ),
-
-                                value: selectedValue,
-                                items:
-                                    homescreenController.serverList.map((item) {
-                                  print(item['country']);
-                                  return DropdownMenuItem<String>(
-                                    // buttonPadding: const EdgeInsets.only(left: 10, right: 10), // Adjust padding between the icon and the list
-
-                                    value: item['country'],
-                                    child: Row(
-                                      // mainAxisAlignment:
-                                      //     MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Image.asset(
-                                          width: 24,
-                                          item["image"],
-                                        ),
-                                        HorizontalSpace(mediaWidth * 0.03),
-                                        MontserratNoHeight(
-                                            // text: "item",
-                                            text: item['country'],
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w700),
-                                      ],
-                                    ),
-                                  );
-                                }).toList(),
-                                // onChanged: (value) {
-                                //   setState(() {
-                                //     selectedValue = value!;
-                                //   });
-                                // },
-                                // iconStyleData: IconStyleData(
-                                //   iconSize: 20,
-                                // ),
-
-                                // customButton: Text("data"),
                               ),
                             ),
-                            // child: DropdownButton(items: [
-                            //   DropdownMenuItem(
-                            //       child: Row(
-                            //         children: [
-                            //           Image.asset(
-                            //               height: 33,
-                            //               width: 33,
-                            //               Constants.country),
-                            //           // HorizontalSpace(width)
-                            //           MontserratNoHeight(
-                            //               text: "UK",
-                            //               fontSize: 15,
-                            //               color: Colors.black,
-                            //               fontWeight: FontWeight.w700),
-                            //         ],
-                            //       ),
-                            //       value: "Item 1"),
-                            // ], onChanged: (onChanged) {}),
                           )
                         ],
                       ),

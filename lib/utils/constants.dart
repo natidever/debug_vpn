@@ -97,17 +97,18 @@ class Constants {
   //images
   static const background = 'assets/images/purplePlanet.png';
   static const curvedLine = 'assets/images/curvedLine.png';
-  static const uk = 'assets/icons/uk.png';
   static const secure = 'assets/icons/secure.png';
-  static const usa = 'assets/icons/usa.png';
-  static const cananda = 'assets/icons/canada.png';
-  static const japan = 'assets/icons/japan.png';
-  static const southKorea = 'assets/icons/sk.png';
-  static const singapor = 'assets/icons/singapor.png';
-  static const german = 'assets/icons/german.png';
-  static const australia = 'assets/icons/aus.png';
-  static const freezed_ice = 'assets/icons/ice.png';
-  static const freez2 = 'assets/icons/freez2.png';
+
+  static const uk = 'assets/images/flag_uk.png';
+  static const usa = 'assets/images/flag_usa.png';
+  static const cananda = 'assets/images/flag_toronto.png';
+  static const japan = 'assets/images/flag_japan.png';
+  static const southKorea = 'assets/images/flag_sk.png';
+  static const singapor = 'assets/images/flag_singapor.png';
+  static const german = 'assets/images/flag_german.png';
+  static const australia = 'assets/images/flag_aus.png';
+  static const freezed_ice = 'assets/images/ice.png';
+  static const freez2 = 'assets/images/freez2.png';
   static const cry = 'assets/icons/cry.png';
 
   static const key = 'assets/icons/key.png';

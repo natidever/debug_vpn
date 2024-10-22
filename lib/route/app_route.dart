@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:reward_vpn/pages/main_pages/choise_country.dart';
 import 'package:reward_vpn/pages/main_pages/settings/general_setting.dart';
 import 'package:reward_vpn/pages/main_pages/settings/help.dart';
 import 'package:reward_vpn/pages/main_pages/settings/notifications.dart';
@@ -37,11 +38,13 @@ class AppRoute {
   static const privacy = '/privacy';
   static const notification = '/notification';
   static const help = '/help';
+  static const choiseCountry = '/choiseCountry';
 
   static List<GetPage> route = [
     // GetPage(name: onBoarding, page: () => OnboardingWrapper()),
     // GetPage(name: onBoarding1, page: () => OnboardingWrapper()),
     GetPage(name: onboarding, page: () => OnboardingWrapper()),
+    GetPage(name: choiseCountry, page: () => ChoiseCountry()),
 
     GetPage(name: authentication, page: () => Authentication()),
     GetPage(name: forgot, page: () => ForgotPassword()),

@@ -13,6 +13,7 @@ import 'package:reward_vpn/controller/setting_controllers/notification_controlle
 import 'package:reward_vpn/controller/setting_controllers/privacy_setting_controller.dart';
 import 'package:reward_vpn/controller/streak_controllers/streak_controller.dart';
 import 'package:reward_vpn/services/api_services.dart';
+import 'package:reward_vpn/services/background_services.dart';
 import 'package:reward_vpn/services/user_data_services.dart';
 import 'package:reward_vpn/services/vpn_services.dart';
 
@@ -23,6 +24,7 @@ class MainBinder extends Bindings {
     Get.put(UserDataServices());
 
     Get.put(VpnServices());
+    // Get.put(BackgroundServices());
 
     Get.put(AuthenticationController());
     Get.put(SignupController());

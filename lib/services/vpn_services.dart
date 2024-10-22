@@ -1,45 +1,83 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:dio/dio.dart' as dio;
+import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:internet_speed_meter/internet_speed_meter.dart';
 import 'package:logger/logger.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:reward_vpn/controller/main_page_controllers/homescreen_controller.dart';
 import 'package:reward_vpn/models/connection_state_model.dart';
 import 'package:reward_vpn/models/server_config.dart';
 import 'package:reward_vpn/services/api_services.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:reward_vpn/utils/constants.dart';
+import 'package:reward_vpn/utils/texts.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 // import 'package:wireguard_flutter/wireguard_flutter.dart';
 import 'package:wireguard_flutter/wireguard_flutter.dart';
 import 'package:wireguard_flutter/wireguard_flutter_platform_interface.dart';
+import 'package:material_dialogs/material_dialogs.dart';
 
 class VpnServices extends GetxService {
   final wireguard = WireGuardFlutter.instance;
   FlutterSecureStorage storage = FlutterSecureStorage();
 
-  String defautConfigChicago = '';
+  String defautConfigFrankfurt = '';
   String defaultServerAddress = '';
   String serverConfig = "defautConfigChicago";
   String serverAddress = "";
+
+  RxBool isServerClosed = true.obs;
   // final homeScreenController = Get.find<HomescreenController>();
   final ConnectionStateModel connectionStateModel = ConnectionStateModel();
   final StopWatchTimer stopWatchTimer = StopWatchTimer();
   RxString connectionTime = "00:00:00".obs;
-
+  RxString internetSpeed = 'Connect First'.obs;
+  StreamSubscription<String>? internetSpeedSubscription;
   RxBool connectionReach1Minute = false.obs;
+  RxBool isAdAvialable = false.obs;
+  RxInt countdown = 3.obs;
+
+  // void checkAdisAvialable() {
+  //   // StopWatchTimer timer = StopWatchTimer();
+
+  //   Timer((Duration(seconds: 1)), () {
+  //     while (countdown.value > 0) {
+  //       countdown.value--;
+  //     }
+  //   });
+  // }
+  @override
+  void onClose() {
+    stopWatchTimer.dispose();
+    stopInternetSpeedCounter();
+    super.onClose();
+  }
+
+  Future<void> handleAppTermination() async {
+    await stopWireGuardTunnel();
+    await stopServiceSafely();
+    stopWatchTimer.dispose();
+    stopInternetSpeedCounter();
+  }
 
   Future<void> assignDefaultConfig() async {
-    defautConfigChicago =
-        await readEncryptedConfigFile(ServerConfigs.chicagoConf);
-    defaultServerAddress = await extractEndpoint(defautConfigChicago);
+    defautConfigFrankfurt =
+        await readEncryptedConfigFile(ServerConfigs.frankfurtConf);
+    defaultServerAddress = await extractEndpoint(defautConfigFrankfurt);
   }
 
 // initialize the interface
 
-  bool isServerUpdated = true;
+  bool isServerUpdateds = true;
 
   var logger = Logger();
   final apiServices = Get.find<APIServices>();
@@ -51,11 +89,11 @@ class VpnServices extends GetxService {
 
   Future<dio.Response> getServerse(String deviceName, String deviceID) async {
     try {
-      isServerUpdated = false;
-      storage.write(key: "serverFlag", value: "$isServerUpdated");
+      isServerUpdateds = false;
+      storage.write(key: "serverFlag", value: "$isServerUpdateds");
 
       final response = await apiServices.postRequest("vpn/configs/all/",
-          {"device_name": "deviceName", "device_id": deviceID});
+          {"device_name": deviceName, "device_id": deviceID});
 
       return response;
     } on dio.DioException catch (E) {
@@ -72,13 +110,16 @@ class VpnServices extends GetxService {
   }
 
   dynamic decideToUpdateServerConifg(
-      bool isServerUpdated, String deviceName, String deviceId) async {
+      {required bool isServerUpdated,
+      required String deviceName,
+      required String deviceId}) async {
     // 8EL19RdVsCJjRMNimdWeNZ0yDBQVdNqqLy3FGAmcZn0=
     if (isServerUpdated) {
-      final response = await getServerse("sdfasf9y9871298", "121212");
+      final response = await getServerse(deviceName, deviceId);
+      logger.i("response :$response");
 
       if (response.statusCode == 200) {
-        isServerUpdated = false;
+        isServerUpdateds = false;
 // 0EKvzpKOA7qvnwbhRH5DkCdiY3s0ZMsGGApm1HP+wFw
         logger.i("response :$response");
         // logger.i("response_data :$response");
@@ -227,6 +268,7 @@ class VpnServices extends GetxService {
       );
     } catch (e) {
       print("Error starting WireGuard tunnel: $e");
+      throw Exception();
     }
   }
 
@@ -257,7 +299,7 @@ class VpnServices extends GetxService {
   //                         await vpnServices.startWireGuardTunnel(
   //                             chicago, serveraddres);]
 
-  void startTimer() {
+  void startTimer() async {
     stopWatchTimer.onStartTimer();
     stopWatchTimer.rawTime.listen((value) {
       // Format the raw time to "hh:mm:ss"
@@ -279,35 +321,170 @@ class VpnServices extends GetxService {
     });
   }
 
+  void checkInternetSpeed() {
+    InternetSpeedMeter _internetSpeedMeterPlugin = InternetSpeedMeter();
+
+    internetSpeedSubscription =
+        _internetSpeedMeterPlugin.getCurrentInternetSpeed().listen((speed) {
+      // logger.f('Current Speed: $speed');
+      internetSpeed.value = speed;
+    });
+
+    // _internetSpeedMeterPlugin.getCurrentInternetSpeed().l
+  }
+
+  void stopInternetSpeedCounter() {
+    internetSpeedSubscription?.cancel();
+    internetSpeedSubscription = null;
+    internetSpeed.value = 'Connect First';
+  }
+
   void handleVPNConnection() async {
     connectionStateModel.isConnecting.value = true;
-    // Future.delayed(Duration(seconds: 1), () {
-    //   connectionStateModel.isConnecting.value = false;
-    //   connectionStateModel.isConnected.value = true;
-    //   _startTimer();is
-    // });
+    checkInternetSpeed();
+
     await assignDefaultConfig();
-    await startWireGuardTunnel(defautConfigChicago, defaultServerAddress);
+    await Future.delayed(Duration(seconds: 3), () {
+      startWireGuardTunnel(defautConfigFrankfurt, defaultServerAddress);
+    });
     connectionStateModel.isConnecting.value = false;
     connectionStateModel.isConnected.value = true;
+
+    // Reset the existing timer
+    stopWatchTimer.onResetTimer();
+
+    // Start the timer
     startTimer();
 
-    // logger.i("defauld server address${vpnServices.defaultServerAddress}");
-    // logger.i("defauld server config${vpnServices.defautConfigChicago}");
+    storage.write(
+        key: "vpn_status", value: "${connectionStateModel.isConnected.value}");
+    await FlutterBackgroundService().startService();
+    isServerClosed.value = false;
   }
 
-  void handleDisconnection() {
+  void showDisconnectionDialog(BuildContext context) {
+    // checkAdisAvialable();
+    Dialogs.materialDialog(
+        msg: 'Are you sure ? ',
+        title: "Disconnect VPN",
+        // color: Constants.greenColor.withOpacity(0.5),
+        color: Color.fromARGB(255, 234, 234, 234),
+        context: context,
+        actions: [
+          GestureDetector(
+            onTap: () {
+              print("Clikced");
+              Get.back();
+              isAdAvialable.value = false;
+            },
+            child: Container(
+              child: MontserratNoHeight(
+                  color: Colors.black,
+                  text: "Cancel",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500),
+            ),
+          ),
+          GestureDetector(
+            onTap: () async {
+              handleDisconnection();
+              Get.back();
+              isAdAvialable.value = false;
+            },
+            child: Container(
+              child: Obx(() {
+                return Row(
+                  children: [
+                    MontserratNoHeight(
+                        color: Colors.black,
+                        text: "OK",
+                        fontSize: 12,
+                        fontWeight: isAdAvialable.value
+                            ? FontWeight.w600
+                            : FontWeight.w300),
+                    // MontserratNoHeight(
+                    //     color: Colors.black,
+                    //     text: isAdAvialable.value ? 'x' : "${countdown.value}",
+                    //     fontSize: 12,
+                    //     fontWeight: FontWeight.w300),
+                  ],
+                );
+              }),
+            ),
+          )
+        ]);
+  }
+
+  Future<void> stopServiceSafely() async {
+    final service = FlutterBackgroundService();
+    bool isRunning = await service.isRunning();
+    if (isRunning) {
+      service.invoke("stopService");
+      // Wait for the service to fully stop
+      for (int i = 0; i < 10; i++) {
+        await Future.delayed(Duration(milliseconds: 500));
+        isRunning = await service.isRunning();
+        if (!isRunning) break;
+      }
+      if (isRunning) {
+        print("Service failed to stop after 5 seconds");
+      }
+    }
+  }
+
+  void handleDisconnection() async {
     connectionStateModel.isConnected.value = false;
-    stopWireGuardTunnel();
+    await storage.write(key: "vpn_status", value: "false");
+    await stopWireGuardTunnel();
+    stopInternetSpeedCounter();
+    await stopServiceSafely();
 
-    resetimer();
+    // Stop the timer
+    stopWatchTimer.onStopTimer();
+
+    // Reset the timer
+    stopWatchTimer.onResetTimer();
+
+    // Manually update the connectionTime to "00:00:00"
+    connectionTime.value = "00:00:00";
+
+    // Reset the connectionReach1Minute flag
+    connectionReach1Minute.value = false;
   }
+  // void handleDisconnection() async {
+  //   try {
+  //     // Stop the stopwatch and reset the timer when VPN disconnects
+  //     FlutterBackgroundService().invoke('stopTimer');
+  //     FlutterBackgroundService().invoke('resetTimer');
+
+  //     connectionStateModel.isConnected.value = false;
+  //     storage.write(
+  //         key: "vpn_status",
+  //         value: "${connectionStateModel.isConnected.value}");
+
+  //     stopWireGuardTunnel();
+  //     stopInternetSpeedCounter();
+  //     Logger().i('VPN disconnected and timer stopped.');
+  //   } catch (e) {
+  //     Logger().e('Error stopping VPN service: $e');
+  //   }
+  // }
 
   void resetimer() {
     stopWatchTimer.onResetTimer(); // Stop the timer
   }
 
+  ///                          //
+  ///                              //
+  ///      Background Services   //
+  ///
+  Future<void> retry() async {
+    //
+  }
+
+  //
   Future<void> choiseServer(int index) async {
+    // int? failedServer;
     switch (index) {
       case 0:
         serverConfig = await readEncryptedConfigFile(ServerConfigs.chicagoConf);
@@ -339,6 +516,7 @@ class VpnServices extends GetxService {
         serverConfig =
             await readEncryptedConfigFile(ServerConfigs.singaporeConf);
         serverAddress = await extractEndpoint(serverConfig);
+
         break;
       case 7:
         serverConfig = await readEncryptedConfigFile(ServerConfigs.sydneyConf);
@@ -358,8 +536,21 @@ class VpnServices extends GetxService {
 
     // Start the WireGuard tunnel with the selected server configuration
 
-    await startWireGuardTunnel(serverConfig, serverAddress);
-    startTimer();
-    connectionStateModel.isConnected.value = true;
+    try {
+      await Future.delayed(Duration(seconds: 1), () {
+        startWireGuardTunnel(serverConfig, serverAddress);
+        // startTimer();
+        connectionStateModel.isConnected.value = true;
+      });
+    } catch (e) {
+      // retry
+      //
+    }
+    ;
   }
+
+//
+//
+//Background Task //
+//
 }
