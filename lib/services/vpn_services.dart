@@ -26,6 +26,7 @@ import 'package:wireguard_flutter/wireguard_flutter.dart';
 import 'package:wireguard_flutter/wireguard_flutter_platform_interface.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 class VpnServices extends GetxService {
   final wireguard = WireGuardFlutter.instance;
@@ -300,27 +301,27 @@ class VpnServices extends GetxService {
   //                         await vpnServices.startWireGuardTunnel(
   //                             chicago, serveraddres);]
 
-  void startTimer() async {
-    stopWatchTimer.onStartTimer();
-    stopWatchTimer.rawTime.listen((value) {
-      // Format the raw time to "hh:mm:ss"
-      final formattedTime = StopWatchTimer.getDisplayTime(value, hours: true);
-      // Update the displayed connection time
-      stopWatchTimer.rawTime.listen((value) {
-        final formattedTime = StopWatchTimer.getDisplayTime(value,
-            hours: true, minute: true, second: true, milliSecond: false);
+  // void startTimer() async {
+  //   stopWatchTimer.onStartTimer();
+  //   stopWatchTimer.rawTime.listen((value) {
+  //     // Format the raw time to "hh:mm:ss"
+  //     final formattedTime = StopWatchTimer.getDisplayTime(value, hours: true);
+  //     // Update the displayed connection time
+  //     stopWatchTimer.rawTime.listen((value) {
+  //       final formattedTime = StopWatchTimer.getDisplayTime(value,
+  //           hours: true, minute: true, second: true, milliSecond: false);
 
-        connectionTime.value =
-            formattedTime; // Update the displayed connection time
+  //       connectionTime.value =
+  //           formattedTime; // Update the displayed connection time
 
-        if (value >= 60000) {
-          connectionReach1Minute.value = true;
-        } else {
-          connectionReach1Minute.value = false;
-        }
-      });
-    });
-  }
+  //       if (value >= 60000) {
+  //         connectionReach1Minute.value = true;
+  //       } else {
+  //         connectionReach1Minute.value = false;
+  //       }
+  //     });
+  //   });
+  // }
 
   void checkInternetSpeed() {
     InternetSpeedMeter _internetSpeedMeterPlugin = InternetSpeedMeter();
@@ -340,7 +341,97 @@ class VpnServices extends GetxService {
     internetSpeed.value = 'Connect First';
   }
 
+  static const platform = MethodChannel('com.svai.reward_vpn/vpn');
+
+  Future<bool> checkVpnPermission() async {
+    try {
+      final bool hasPermission =
+          await platform.invokeMethod('checkVpnPermission');
+      if (!hasPermission) {
+        // Request permission
+        final bool granted =
+            await platform.invokeMethod('requestVpnPermission');
+        return granted;
+      }
+      return hasPermission;
+    } on PlatformException catch (e) {
+      print("Failed to check/request VPN permission: '${e.message}'.");
+      return false;
+    }
+  }
+
+  // void handleVPNConnection() async {
+  //   bool isGranted = await checkVpnPermission();
+  //   if (isGranted) {
+  //     Future.delayed(Duration(seconds: 0), () async {
+  //       connectionStateModel.isConnecting.value = true;
+  //       checkInternetSpeed();
+
+  //       await assignDefaultConfig();
+  //       await Future.delayed(Duration(seconds: 3), () {
+  //         startWireGuardTunnel(defautConfigFrankfurt, defaultServerAddress);
+  //       });
+  //       connectionStateModel.isConnecting.value = false;
+  //       connectionStateModel.isConnected.value = true;
+
+  //       // Start the background timer*b
+  //       final prefs = await SharedPreferences.getInstance();
+  //       await prefs.setInt('startTime', DateTime.now().millisecondsSinceEpoch);
+  //       await prefs.setBool('isTimerRunning', true);
+  //       await FlutterBackgroundService().startService();
+
+  //       storage.write(
+  //           key: "vpn_status",
+  //           value: "${connectionStateModel.isConnected.value}");
+  //       isServerClosed.value = false;
+  //     });
+  //   } else {
+  //     // Show native Android VPN permission dialog
+  //     try {
+  //       final bool permissionGranted =
+  //           await platform.invokeMethod('showVpnPermissionDialog');
+  //       if (permissionGranted) {
+  //         // Permission granted, you can call handleVPNConnection() again or start the VPN directly
+  //         handleVPNConnection();
+  //       } else {
+  //         // Permission denied, handle accordingly (e.g., show a message to the user)
+  //         Get.snackbar(
+  //           'Permission Required',
+  //           'VPN permission is required to use this feature.',
+  //           snackPosition: SnackPosition.BOTTOM,
+  //         );
+  //       }
+  //     } on PlatformException catch (e) {
+  //       print("Error showing VPN permission dialog: ${e.message}");
+  //     }
+  //   }
+  // }
+
   void handleVPNConnection() async {
+    bool isGranted = await checkVpnPermission();
+    if (isGranted) {
+      await _startVpnAndTimer();
+    } else {
+      try {
+        final bool permissionGranted =
+            await platform.invokeMethod('showVpnPermissionDialog');
+        if (permissionGranted) {
+          await _startVpnAndTimer();
+        } else {
+          Get.snackbar(
+            'Permission Required',
+            'VPN permission is required to use this feature.',
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
+      } on PlatformException catch (e) {
+        print("Error showing VPN permission dialog: ${e.message}");
+      }
+    }
+  }
+
+  Future<void> _startVpnAndTimer() async {
+    logger.i("Starting VPN and Timer");
     connectionStateModel.isConnecting.value = true;
     checkInternetSpeed();
 
@@ -357,23 +448,35 @@ class VpnServices extends GetxService {
     await prefs.setBool('isTimerRunning', true);
     await FlutterBackgroundService().startService();
 
+    // Start the stopwatch timer
+    logger.i("Starting VPN and Timer");
+
+    startTimer();
+
     storage.write(
         key: "vpn_status", value: "${connectionStateModel.isConnected.value}");
     isServerClosed.value = false;
   }
 
+  void startTimer() {
+    stopWatchTimer.onStartTimer();
+    stopWatchTimer.rawTime.listen((value) {
+      final formattedTime = StopWatchTimer.getDisplayTime(value,
+          hours: true, minute: true, second: true, milliSecond: false);
+      connectionTime.value = formattedTime;
+      connectionReach1Minute.value = value >= 60000;
+    });
+  }
+
   void showDisconnectionDialog(BuildContext context) {
-    // checkAdisAvialable();
     Dialogs.materialDialog(
         msg: 'Are you sure ? ',
         title: "Disconnect VPN",
-        // color: Constants.greenColor.withOpacity(0.5),
         color: Color.fromARGB(255, 234, 234, 234),
         context: context,
         actions: [
           GestureDetector(
             onTap: () {
-              print("Clikced");
               Get.back();
               isAdAvialable.value = false;
             },
@@ -387,33 +490,96 @@ class VpnServices extends GetxService {
           ),
           GestureDetector(
             onTap: () async {
-              handleDisconnection();
               Get.back();
+              await handleDisconnection(); // Call handleDisconnection when OK is pressed
               isAdAvialable.value = false;
             },
             child: Container(
-              child: Obx(() {
-                return Row(
-                  children: [
-                    MontserratNoHeight(
-                        color: Colors.black,
-                        text: "OK",
-                        fontSize: 12,
-                        fontWeight: isAdAvialable.value
-                            ? FontWeight.w600
-                            : FontWeight.w300),
-                    // MontserratNoHeight(
-                    //     color: Colors.black,
-                    //     text: isAdAvialable.value ? 'x' : "${countdown.value}",
-                    //     fontSize: 12,
-                    //     fontWeight: FontWeight.w300),
-                  ],
-                );
-              }),
+              child: MontserratNoHeight(
+                  color: Colors.black,
+                  text: "OK",
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600),
             ),
           )
         ]);
   }
+
+  Future<void> handleDisconnection() async {
+    connectionStateModel.isConnected.value = false;
+    await storage.write(key: "vpn_status", value: "false");
+    await stopWireGuardTunnel();
+    stopInternetSpeedCounter();
+
+    // Stop the background timer and reset it
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isTimerRunning', false);
+    await prefs.remove('startTime'); // Remove the start time to reset the timer
+    FlutterBackgroundService().invoke('stopService');
+
+    // Stop the stopwatch timer
+    stopWatchTimer.onStopTimer();
+    stopWatchTimer.onResetTimer();
+
+    // Update the UI immediately
+    connectionTime.value = "00:00:00";
+    connectionReach1Minute.value = false;
+
+    // Ensure the HomescreenController updates its timer display
+    Get.find<HomescreenController>().connectionTimes.value = "00:00:00";
+  }
+  // void showDisconnectionDialog(BuildContext context) {
+  //   // checkAdisAvialable();
+  //   Dialogs.materialDialog(
+  //       msg: 'Are you sure ? ',
+  //       title: "Disconnect VPN",
+  //       // color: Constants.greenColor.withOpacity(0.5),
+  //       color: Color.fromARGB(255, 234, 234, 234),
+  //       context: context,
+  //       actions: [
+  //         GestureDetector(
+  //           onTap: () {
+  //             print("Clikced");
+  //             Get.back();
+  //             isAdAvialable.value = false;
+  //           },
+  //           child: Container(
+  //             child: MontserratNoHeight(
+  //                 color: Colors.black,
+  //                 text: "Cancel",
+  //                 fontSize: 12,
+  //                 fontWeight: FontWeight.w500),
+  //           ),
+  //         ),
+  //         GestureDetector(
+  //           onTap: () async {
+  //             handleDisconnection();
+  //             Get.back();
+  //             isAdAvialable.value = false;
+  //           },
+  //           child: Container(
+  //             child: Obx(() {
+  //               return Row(
+  //                 children: [
+  //                   MontserratNoHeight(
+  //                       color: Colors.black,
+  //                       text: "OK",
+  //                       fontSize: 12,
+  //                       fontWeight: isAdAvialable.value
+  //                           ? FontWeight.w600
+  //                           : FontWeight.w300),
+  //                   // MontserratNoHeight(
+  //                   //     color: Colors.black,
+  //                   //     text: isAdAvialable.value ? 'x' : "${countdown.value}",
+  //                   //     fontSize: 12,
+  //                   //     fontWeight: FontWeight.w300),
+  //                 ],
+  //               );
+  //             }),
+  //           ),
+  //         )
+  //       ]);
+  // }
 
   Future<void> stopServiceSafely() async {
     final service = FlutterBackgroundService();
@@ -432,25 +598,25 @@ class VpnServices extends GetxService {
     }
   }
 
-  void handleDisconnection() async {
-    connectionStateModel.isConnected.value = false;
-    await storage.write(key: "vpn_status", value: "false");
-    await stopWireGuardTunnel();
-    stopInternetSpeedCounter();
+  // void handleDisconnection() async {
+  //   connectionStateModel.isConnected.value = false;
+  //   await storage.write(key: "vpn_status", value: "false");
+  //   await stopWireGuardTunnel();
+  //   stopInternetSpeedCounter();
 
-    // Stop the background timer and reset it
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isTimerRunning', false);
-    await prefs.remove('startTime'); // Remove the start time to reset the timer
-    FlutterBackgroundService().invoke('stopService');
+  //   // Stop the background timer and reset it
+  //   final prefs = await SharedPreferences.getInstance();
+  //   await prefs.setBool('isTimerRunning', false);
+  //   await prefs.remove('startTime'); // Remove the start time to reset the timer
+  //   FlutterBackgroundService().invoke('stopService');
 
-    // Update the UI immediately
-    connectionTime.value = "00:00:00";
-    connectionReach1Minute.value = false;
+  //   // Update the UI immediately
+  //   connectionTime.value = "00:00:00";
+  //   connectionReach1Minute.value = false;
 
-    // Ensure the HomescreenController updates its timer display
-    Get.find<HomescreenController>().connectionTimes.value = "00:00:00";
-  }
+  //   // Ensure the HomescreenController updates its timer display
+  //   Get.find<HomescreenController>().connectionTimes.value = "00:00:00";
+  // }
   // void handleDisconnection() async {
   //   try {
   //     // Stop the stopwatch and reset the timer when VPN disconnects

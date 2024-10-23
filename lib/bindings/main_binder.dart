@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:reward_vpn/app_config.dart';
 import 'package:reward_vpn/controller/authentication_controllers/authentication_controller.dart';
 import 'package:reward_vpn/controller/authentication_controllers/forgot_password_ask_email_controller.dart';
 import 'package:reward_vpn/controller/authentication_controllers/forgot_password_otp_controller.dart';
@@ -20,6 +21,8 @@ import 'package:reward_vpn/services/vpn_services.dart';
 class MainBinder extends Bindings {
   @override
   void dependencies() {
+    Get.put(AppConfigService());
+
     Get.put(APIServices());
     Get.put(UserDataServices());
 
